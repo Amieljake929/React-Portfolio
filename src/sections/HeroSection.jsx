@@ -14,7 +14,7 @@ export default function HeroSection() {
           className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden mb-6 bg-gray-200 border border-gray-200 shadow-sm"
         >
           <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" 
+            src="public/images/Jake.jpg" 
             alt="Amiel Jake"
             className="w-full h-full object-cover grayscale"
           />
