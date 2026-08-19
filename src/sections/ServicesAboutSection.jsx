@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import PhotoGalleryMarquee from "../components/PhotoGalleryMarquee";
 
 export default function ServicesAboutSection() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -78,7 +79,7 @@ export default function ServicesAboutSection() {
           <h2 className="text-2xl font-medium text-gray-900 mb-6">About</h2>
           <div className="flex flex-col items-start gap-6">
             <div className="w-28 h-32 bg-gray-300 rounded-2xl overflow-hidden flex items-center justify-center text-gray-500 text-xs">
-              [Your Photo]
+              <PhotoGalleryMarquee />
             </div>
             <p className="text-gray-800 text-base md:text-lg leading-relaxed max-w-2xl">
               I'm Amiel Jake, a passionate Web Developer with experience in building fast, beautiful, and responsive websites. I blend clean UI design with modern code to turn ideas into functional digital experiences.
