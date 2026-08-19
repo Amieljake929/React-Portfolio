@@ -1,38 +1,43 @@
 export default function HeroSection() {
   return (
-    <section className="min-h-screen pt-24 flex items-center justify-center bg-gray-950 text-white px-6">
-      <div className="max-w-4xl mx-auto text-center">
-        {/* Greeting Badge */}
-        <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-950 text-indigo-400 border border-indigo-800 inline-block mb-4">
-          Welcome to my portfolio
-        </span>
+    <section className="min-h-screen bg-gray-100 text-gray-900 flex flex-col justify-center items-center px-6 pt-20">
+      <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
+        
+        {/* Status Badge with Glowing Green Dot */}
+        <div className="inline-flex items-center gap-2 bg-gray-200/80 border border-gray-300/60 px-3.5 py-1.5 rounded-full text-xs font-medium text-gray-700 mb-6">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          Available for new projects
+        </div>
 
-        {/* Hero Title */}
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-          Hi, I'm <span className="text-indigo-500">Your Name</span>
+        {/* Main Name Heading */}
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-2">
+          Amiel Jake
         </h1>
 
-        {/* Subtitle / Bio */}
-        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
-          Aspiring Web Developer passionate about building interactive, clean, 
-          and responsive web applications using React and JavaScript.
+        {/* Sub-title / Role */}
+        <p className="text-gray-600 font-medium text-base md:text-lg mb-8">
+          Web Developer & React Specialist
         </p>
 
-        {/* Call-to-Action Buttons */}
-        <div className="flex justify-center gap-4">
-          <a 
-            href="#projects" 
-            className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-lg shadow-indigo-600/30"
+        {/* Minimalist Action Buttons */}
+        <div className="flex items-center gap-3">
+          <a
+            href="#contact"
+            className="bg-black text-white hover:bg-gray-800 text-sm font-medium px-6 py-2.5 rounded-full transition-colors duration-200 shadow-sm"
           >
-            View Projects
+            Hire Me
           </a>
-          <a 
-            href="#contact" 
-            className="border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white px-6 py-3 rounded-lg font-medium transition-all"
+          <a
+            href="#projects"
+            className="bg-gray-200/80 hover:bg-gray-300/80 text-gray-900 border border-gray-300/80 text-sm font-medium px-6 py-2.5 rounded-full transition-colors duration-200"
           >
-            Contact Me
+            My Work
           </a>
         </div>
+
       </div>
     </section>
   );

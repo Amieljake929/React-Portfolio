@@ -1,37 +1,66 @@
-import { projects } from "../data/projectsData";
-
 export default function ProjectsSection() {
+  // Sample data na kamukha nung nasa reference image
+  const projects = [
+    {
+      id: 1,
+      title: "Livvy",
+      imageColor: "bg-[#1a1a1a]", // Dark placeholder
+    },
+    {
+      id: 2,
+      title: "Orbit",
+      imageColor: "bg-[#121216]", // Dark blue-ish placeholder
+    }
+  ];
+
   return (
-    <section id="projects" className="py-20 bg-gray-950 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-3">
-            Featured <span className="text-indigo-500">Projects</span>
+    <section id="projects" className="bg-gray-100 py-20 px-6">
+      <div className="max-w-3xl mx-auto">
+        
+        {/* Section Header */}
+        <div className="flex justify-between items-baseline mb-10">
+          <h2 className="text-2xl md:text-3xl font-medium text-gray-900 tracking-tight">
+            Selected Work
           </h2>
-          <p className="text-gray-400">Mga sample projects na ginawa ko gamit ang React at Web Dev tools.</p>
+          <a href="#" className="text-sm text-gray-600 hover:text-gray-900 underline underline-offset-4 transition-colors">
+            view more
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Projects Stack */}
+        <div className="flex flex-col gap-12">
           {projects.map((proj) => (
-            <div key={proj.id} className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-indigo-500/50 transition-all">
-              <h3 className="text-xl font-bold text-white mb-2">{proj.title}</h3>
-              <p className="text-gray-400 text-sm mb-4">{proj.description}</p>
+            <a href="#" key={proj.id} className="group block cursor-pointer">
               
-              <div className="flex flex-wrap gap-2 mb-6">
-                {proj.tags.map((tag, idx) => (
-                  <span key={idx} className="text-xs px-2.5 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">
-                    {tag}
-                  </span>
-                ))}
+              {/* Image Container */}
+              <div className={`w-full aspect-[16/9] md:aspect-[16/8] ${proj.imageColor} rounded-2xl md:rounded-3xl overflow-hidden mb-4 relative transition-transform duration-500 group-hover:scale-[1.02] shadow-sm`}>
+                {/* Temporary placeholder (Palitan mo ng <img> tag kapag may pics ka na) */}
+                <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-4xl tracking-widest uppercase">
+                  {proj.title}
+                </div>
               </div>
 
-              <div className="flex gap-4 text-sm font-medium">
-                <a href={proj.githubUrl} target="_blank" rel="noreferrer" className="text-gray-300 hover:text-white">GitHub →</a>
-                <a href={proj.liveUrl} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300">Live Demo ↗</a>
+              {/* Title & Arrow */}
+              <div className="flex justify-between items-center px-2">
+                <h3 className="text-xl font-medium text-gray-900">
+                  {proj.title}
+                </h3>
+                
+                {/* Arrow Icon */}
+                <svg 
+                  className="w-5 h-5 text-gray-900 transform transition-transform duration-300 group-hover:translate-x-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </div>
-            </div>
+
+            </a>
           ))}
         </div>
+
       </div>
     </section>
   );

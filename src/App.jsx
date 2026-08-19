@@ -1,19 +1,19 @@
 import Navbar from "./components/Navbar";
 import HeroSection from "./sections/HeroSection";
-import SkillsSection from "./sections/SkillsSection";
 import ProjectsSection from "./sections/ProjectsSection";
-import ContactSection from "./sections/ContactSection"; // 👈 dagdag
-import Footer from "./components/Footer";               // 👈 dagdag
+import ServicesAboutSection from "./sections/ServicesAboutSection";
+import TestimonialsSection from "./sections/TestimonialsSection";
+import ContactFooterSection from "./sections/ContactFooterSection"; // 👈 dagdag ito
 
 function App() {
   return (
-    <div className="bg-gray-950 min-h-screen text-gray-100 font-sans">
+    <div className="bg-gray-100 min-h-screen font-sans text-gray-900 antialiased selection:bg-gray-300">
       <Navbar />
       <HeroSection />
-      <SkillsSection />
       <ProjectsSection />
-      <ContactSection />
-      <Footer />
+      <ServicesAboutSection />
+      <TestimonialsSection />
+      <ContactFooterSection /> {/* 👈 dagdag ito */}
     </div>
   );
 }
