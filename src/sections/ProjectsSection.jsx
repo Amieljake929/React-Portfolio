@@ -1,16 +1,9 @@
+import { motion } from "framer-motion";
+
 export default function ProjectsSection() {
-  // Sample data na kamukha nung nasa reference image
   const projects = [
-    {
-      id: 1,
-      title: "Livvy",
-      imageColor: "bg-[#1a1a1a]", // Dark placeholder
-    },
-    {
-      id: 2,
-      title: "Orbit",
-      imageColor: "bg-[#121216]", // Dark blue-ish placeholder
-    }
+    { id: 1, title: "Livvy", imageColor: "bg-[#1a1a1a]" },
+    { id: 2, title: "Orbit", imageColor: "bg-[#121216]" }
   ];
 
   return (
@@ -27,28 +20,37 @@ export default function ProjectsSection() {
           </a>
         </div>
 
-        {/* Projects Stack */}
+        {/* Projects Stack with Scroll Reveal */}
         <div className="flex flex-col gap-12">
           {projects.map((proj) => (
-            <a href="#" key={proj.id} className="group block cursor-pointer">
-              
-              {/* Image Container */}
-              <div className={`w-full aspect-[16/9] md:aspect-[16/8] ${proj.imageColor} rounded-2xl md:rounded-3xl overflow-hidden mb-4 relative transition-transform duration-500 group-hover:scale-[1.02] shadow-sm`}>
-                {/* Temporary placeholder (Palitan mo ng <img> tag kapag may pics ka na) */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/10 font-bold text-4xl tracking-widest uppercase">
+            <motion.a 
+              href="#" 
+              key={proj.id} 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="group block cursor-pointer"
+            >
+              {/* Image Container with Smooth Scale */}
+              <div className={`w-full aspect-[16/9] md:aspect-[16/8] ${proj.imageColor} rounded-2xl md:rounded-3xl overflow-hidden mb-4 relative transition-all duration-500 group-hover:shadow-xl`}>
+                <motion.div 
+                  className="w-full h-full flex items-center justify-center text-white/10 font-bold text-4xl tracking-widest uppercase"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.4 }}
+                >
                   {proj.title}
-                </div>
+                </motion.div>
               </div>
 
-              {/* Title & Arrow */}
+              {/* Title & Animated Arrow */}
               <div className="flex justify-between items-center px-2">
                 <h3 className="text-xl font-medium text-gray-900">
                   {proj.title}
                 </h3>
                 
-                {/* Arrow Icon */}
                 <svg 
-                  className="w-5 h-5 text-gray-900 transform transition-transform duration-300 group-hover:translate-x-1" 
+                  className="w-5 h-5 text-gray-900 transform transition-transform duration-300 group-hover:translate-x-2" 
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -56,8 +58,7 @@ export default function ProjectsSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </div>
-
-            </a>
+            </motion.a>
           ))}
         </div>
 
