@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background Circle (Dark Mode Friendly) -->
+  <rect width="100" height="100" rx="20" fill="#111827" />
+  
+  <!-- Text "AJ" -->
+  <text 
+    x="50%" 
+    y="55%" 
+    dominant-baseline="middle" 
+    text-anchor="middle" 
+    fill="#ffffff" 
+    font-family="system-ui, -apple-system, sans-serif" 
+    font-weight="900" 
+    font-size="48"
+  >
+    AJ
+  </text>
+</svg>
