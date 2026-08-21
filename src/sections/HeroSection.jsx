@@ -73,7 +73,7 @@ export default function HeroSection() {
         <motion.a
           whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}
-          href="public/Amiel_Jake_Resume.pdf"
+          href="/Amiel_Jake_Resume.pdf"
           download="Amiel_Jake_Resume.pdf"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-all shadow-sm"
         >
