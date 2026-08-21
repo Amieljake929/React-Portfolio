@@ -1,32 +1,32 @@
 import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Home, User, Folder, Layers, Mail, Shield, Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { name: 'Home', icon: Home, href: '#home', active: true },
-    { name: 'About', icon: User, href: '#about' },
-    { name: 'Projects', icon: Folder, href: '#projects' },
-    { name: 'Stack', icon: Layers, href: '#stack' },
-    { name: 'Contact', icon: Mail, href: '#contact' },
-    { name: 'Licensing', icon: Shield, href: '#licensing' },
+    { name: 'Home', icon: Home, path: '/' },
+    { name: 'About', icon: User, path: '/about' },
+    { name: 'Projects', icon: Folder, path: '/projects' },
+    { name: 'Stack', icon: Layers, path: '/stack' },
+    { name: 'Contact', icon: Mail, path: '/contact' },
+    { name: 'Licensing', icon: Shield, path: '/licensing' },
   ];
 
-  // Container Variant: Controls staggered animation of child elements
   const sidebarContainerVariants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08, // Sunod-sunod na pag-angat ng bawat element
+        staggerChildren: 0.08,
         delayChildren: 0.1,
       },
     },
   };
 
-  // Item Variant: Slides up from bottom with BOUNCE effect
   const springItemVariants = {
     hidden: { opacity: 0, y: 80 },
     visible: {
@@ -34,8 +34,8 @@ export default function Sidebar() {
       y: 0,
       transition: {
         type: 'spring',
-        stiffness: 140, // Kakapalan/Tigas ng spring
-        damping: 12,    // Bawas sa alog para sakto lang ang bounce
+        stiffness: 140,
+        damping: 12,
         mass: 0.8,
       },
     },
@@ -46,8 +46,8 @@ export default function Sidebar() {
       {/* Mobile Top Header */}
       <div className="lg:hidden fixed top-0 left-0 w-full bg-white border-b border-gray-200 p-4 flex items-center justify-between z-50">
         <div>
-          <h2 className="font-bold text-gray-900 text-base">Patrick Kombo</h2>
-          <p className="text-[10px] text-gray-500 font-medium">Product Designer</p>
+          <h2 className="font-bold text-gray-900 text-base">Amiel Jake</h2>
+          <p className="text-[10px] text-gray-500 font-medium">Web Developer</p>
         </div>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -83,10 +83,10 @@ export default function Sidebar() {
             {/* Profile Header */}
             <motion.div variants={springItemVariants} className="text-center mt-10 mb-12 px-2">
               <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
-                Patrick Kombo
+                Amiel Jake Baril
               </h2>
               <p className="text-xs text-gray-500 font-medium mt-1.5">
-                Product Designer
+                web designer & developer
               </p>
             </motion.div>
 
@@ -95,22 +95,46 @@ export default function Sidebar() {
 
             {/* Navlinks */}
             <nav className="flex flex-col gap-3 mt-8">
-              {navItems.map((item) => (
-                <motion.a
-                  key={item.name}
-                  variants={springItemVariants}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all ${
-                    item.active
-                      ? 'text-gray-900 bg-gray-100/80 font-semibold'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  <item.icon size={18} className="text-gray-500" />
-                  {item.name}
-                </motion.a>
-              ))}
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
+                const isActive = location.pathname === item.path;
+
+                return (
+                  <motion.div key={item.name} variants={springItemVariants}>
+                    <NavLink
+                      to={item.path}
+                      onClick={() => setIsOpen(false)}
+                      className="block"
+                    >
+                      <motion.div
+                        whileHover={{ x: 6 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`group flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all duration-300 ${
+                          isActive
+                            ? 'text-gray-900 bg-gray-100/80 font-semibold'
+                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                        }`}
+                      >
+                        {/* Icon with Bouncy Pop Animation on Hover */}
+                        <motion.div
+                          whileHover={{ scale: 1.25, rotate: [0, -10, 10, 0] }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+                        >
+                          <IconComponent
+                            size={18}
+                            className={`transition-colors duration-300 ${
+                              isActive ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-900'
+                            }`}
+                          />
+                        </motion.div>
+
+                        {/* Nav Title */}
+                        <span>{item.name}</span>
+                      </motion.div>
+                    </NavLink>
+                  </motion.div>
+                );
+              })}
             </nav>
           </div>
 
