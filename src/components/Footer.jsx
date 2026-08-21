@@ -1,16 +1,44 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 border-t border-gray-800/80 py-8 text-center text-gray-500 text-sm">
-      <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>© {new Date().getFullYear()} All rights reserved.</p>
-        
-        {/* Social Links */}
-        <div className="flex gap-6">
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-            GitHub
+    <footer className="w-full pt-4 pb-2 text-xs text-gray-500 font-medium">
+      {/* Horizontal Divider Line for Footer */}
+      <hr className="border-gray-200 mb-6" />
+
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Left: Copyright */}
+        <p>© Copyright 2026. All rights Reserved.</p>
+
+        {/* Center: Made by credit */}
+        <p>
+          Made by{' '}
+          <a
+            href="#"
+            className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
+          >
+            Ulhub.design
+          </a>{' '}
+          in{' '}
+          <a
+            href="#"
+            className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
+          >
+            Framer
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-            LinkedIn
+        </p>
+
+        {/* Right: Policy Links */}
+        <div className="flex items-center gap-4">
+          <a
+            href="#privacy"
+            className="hover:text-gray-900 underline underline-offset-2 transition-colors"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="#cookie"
+            className="hover:text-gray-900 underline underline-offset-2 transition-colors"
+          >
+            Cookie Policy
           </a>
         </div>
       </div>

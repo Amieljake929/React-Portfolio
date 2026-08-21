@@ -1,100 +1,97 @@
-import { useRef } from "react";
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
-
 export default function ProjectsSection() {
   const projects = [
-    { id: 1, title: "Simplify Conversations", tag: "Web App", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80" },
-    { id: 2, title: "Discover The Beauty Of Nature", tag: "Landing Page", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" },
-    { id: 3, title: "Design With Icons", tag: "Design System", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80" },
-    { id: 4, title: "Crypto Portfolio Tracker", tag: "SaaS Platform", img: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=800&q=80" },
-    { id: 5, title: "Minimalist E-Commerce", tag: "Online Store", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" },
-    { id: 6, title: "AI Voice Assistant", tag: "Mobile App", img: "https://images.unsplash.com/photo-1589254065878-42c9da997008?w=800&q=80" },
-    { id: 7, title: "Creative Agency Studio", tag: "Branding", img: "https://images.unsplash.com/photo-1542744094-3a3121699563?w=800&q=80" },
-    { id: 8, title: "Fintech Mobile Dashboard", tag: "iOS App", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" },
+    {
+      id: 1,
+      category: 'WEB DESIGN',
+      title: 'Reelio - Photography & Film Studio Framer Template',
+      image: '/projects/project1.png',
+    },
+    {
+      id: 2,
+      category: 'WEB DESIGN',
+      title: 'Vitalo - Personal Training & Coaching Framer Template',
+      image: '/projects/project2.png',
+    },
+    {
+      id: 3,
+      category: 'WEB DESIGN',
+      title: 'Artikle - Membership Framer Template',
+      image: '/projects/project3.png',
+    },
   ];
 
-  const doubleProjects = [...projects, ...projects];
-
-  const baseX = useMotionValue(0);
-  const speedRef = useRef(1); 
-
-  const x = useTransform(baseX, (v) => `${v}%`);
-
-  useAnimationFrame((_, delta) => {
-    // Ginawa nating 4 mula 12 para mas mabagal at chill ang takbo
-    let moveBy = (delta / 1000) * 2 * speedRef.current;
-    
-    let currentX = baseX.get() - moveBy;
-    if (currentX <= -50) {
-      currentX = 0; 
-    }
-    baseX.set(currentX);
-  });
-
   return (
-    <section id="projects" className="bg-white py-12 border-b border-gray-100 relative">
-      {/* Header Section */}
-      <div className="px-8 sm:px-12 flex justify-between items-baseline mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-gray-900 tracking-tight">
-          Selected Work
-        </h2>
-        <a 
-          href="#" 
-          className="text-xs text-gray-500 hover:text-gray-900 underline underline-offset-4 transition-colors"
-        >
-          view more
-        </a>
-      </div>
+    <section id="projects" className="py-8 w-full">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">Recent Projects</h2>
 
-      {/* Marquee Wrapper */}
-      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden select-none">
-        <motion.div 
-          style={{ x }}
-          onMouseEnter={() => { speedRef.current = 0.3; }} // Mas mabagal pa nang kaunti kapag hino-hover
-          onMouseLeave={() => { speedRef.current = 1; }}   
-          className="flex gap-5 py-2 w-max"
-        >
-          {doubleProjects.map((proj, index) => (
-            <div 
-              key={`${proj.id}-${index}`} 
-              className="w-[250px] sm:w-[300px] flex-shrink-0 cursor-pointer group"
-            >
-              {/* Device Frame Box */}
-              <div className="bg-[#f3f3f3] border border-gray-200/70 rounded-2xl p-3 mb-2.5 shadow-2xs group-hover:border-gray-300 transition-all">
-                {/* Window Dots */}
-                <div className="flex items-center gap-1.5 mb-2.5 px-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                </div>
+      {/* Grid Container */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+        {projects.map((project) => (
+          <div key={project.id} className="group cursor-pointer flex flex-col w-full">
+            
+            {/* Floating Laptop Container */}
+            <div className="w-full aspect-[4/3] flex items-center justify-center p-2 mb-4 relative">
+              
+              {/* Laptop Wrapper with 3D Elevation & Shadows */}
+              <div className="w-full relative z-10 transition-all duration-500 ease-out group-hover:scale-105 group-hover:-translate-y-2 flex flex-col items-center">
                 
-                {/* Image Placeholder */}
-                <div className="w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-200">
-                  <img
-                    src={proj.img}
-                    alt={proj.title}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                  />
-                </div>
-              </div>
+                {/* Laptop Top / Screen Bezel */}
+                <div className="w-full bg-[#0a0a0b] border-[2.5px] border-[#38383a] rounded-t-xl p-[3px] relative shadow-[0_20px_50px_rgba(0,0,0,0.3)] group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.45)] transition-shadow duration-500">
+                  
+                  {/* Laptop Camera Notch */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-2 bg-[#0a0a0b] border-b border-x border-[#2b2b2e] rounded-b-md z-30 flex justify-center items-center">
+                    <div className="w-1 h-1 rounded-full bg-[#111] border border-gray-700"></div>
+                  </div>
 
-              {/* Title & Category */}
-              <div className="px-1">
-                <h3 className="text-xs sm:text-sm font-bold text-gray-900 truncate group-hover:text-black">
-                  {proj.title}
-                </h3>
-                <p className="text-[11px] text-gray-400 font-normal mt-0.5">
-                  {proj.tag}
-                </p>
+                  {/* Laptop Screen Content */}
+                  <div className="w-full aspect-[16/10] bg-black rounded-t-md overflow-hidden relative">
+                    {/* Screen Glass Glare Effect (3D Reflection) */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 z-20 pointer-events-none"></div>
+
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                </div>
+
+                {/* Laptop Bottom Lid / Stand */}
+                <div className="w-[105%] h-2.5 bg-gradient-to-r from-[#2c2c2e] via-[#4a4a4d] to-[#2c2c2e] rounded-b-md relative shadow-md flex justify-center border-t border-gray-700/50">
+                  {/* Laptop Opening Notch */}
+                  <div className="w-10 h-1 bg-[#1a1a1c] rounded-b-sm border-t border-gray-600"></div>
+                </div>
+
+                {/* Deep 3D Soft Contact Shadow */}
+                <div className="w-[92%] h-4 bg-black/40 rounded-[100%] blur-md mt-1 transition-all duration-500 group-hover:w-[98%] group-hover:bg-black/50 group-hover:blur-lg group-hover:mt-2"></div>
+
               </div>
             </div>
-          ))}
-        </motion.div>
+
+            {/* Category Tag */}
+            <span className="text-[11px] font-bold text-gray-400 tracking-wider uppercase mb-1">
+              {project.category}
+            </span>
+
+            {/* Title with Marquee Effect */}
+            <div className="overflow-hidden whitespace-nowrap w-full">
+              <h3 className="text-sm font-semibold text-gray-900 transition-all duration-300 inline-block group-hover:animate-marquee">
+                {project.title}
+              </h3>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      {/* Button */}
+      <div className="mt-8">
+        <a
+          href="#projects"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all"
+        >
+          All Projects <span>&rarr;</span>
+        </a>
       </div>
     </section>
   );
