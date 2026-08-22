@@ -3,26 +3,27 @@ import BlurFade from '../components/BlurFade';
 
 export default function AboutSection() {
   const experiences = [
+
     {
-      title: 'Freelance Web Designer',
-      company: 'InnovateTech Inc.',
-      period: '2020 - present',
+      title: 'On-the-job Training IT / Technical Support',
+      company: 'Philippine Red Cross - QC Chapter',
+      period: 'December 2025 - March 2026',
       description:
-        "Currently, I'm a freelance web designer, working with clients from different industries, and enjoying the freedom to bring creative ideas to life.",
+        'Minimized workstation downtime for staff, improved internal software stability through QA testing, and enhanced the visual reach of chapter announcements. Troubleshot hardware/network connectivity issues, logged software bugs for the dev team, and designed promotional materials (pubmats).',
     },
     {
-      title: 'Lead Designer',
-      company: 'XYZ Creative Agency',
-      period: '2015 - 2019',
+      title: 'Full Stack Designer',
+      company: 'School Management System III - Capstone.',
+      period: '2025 - 2026',
       description:
-        'I led a talented team of designers, overseeing projects for a diverse range of clients and helping the agency earn multiple industry awards.',
+        "Developed the web application using Laravel Framework, PHP, JSON, Node.js, and RESTful APIs while structuring the centralized database and user access controls.",
     },
     {
-      title: 'Senior Web Designer',
-      company: 'ABC Web Studio',
-      period: '2010 - 2015',
+      title: 'Full Stack Designer',
+      company: 'Barangay Management System - BMS',
+      period: '2025 - 2026',
       description:
-        'I started my career here, where I learned the ropes of web design and developed a keen eye for detail.',
+        'Built mobile-first interfaces using Tailwind CSS and HTML, integrated RESTful APIs, and handled backend workflows with PHP and Node.js.',
     },
   ];
 
@@ -38,18 +39,19 @@ export default function AboutSection() {
             </span>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
               About Me: <br />
-              Crafting Digital Excellence
+              Code. Design. Repeat.
             </h1>
             <p className="text-gray-500 leading-relaxed text-sm mt-2">
-              I'm a passionate web designer dedicated to crafting visually stunning and user-friendly websites. I thrive on transforming ideas into captivating online experiences while staying at the forefront of design trends.
+              As a Web Designer and Developer, I am focused on the synergy between visual storytelling and seamless usability. I specialize in building digital products that are not just beautiful but are robust, responsive, and crafted to deliver exceptional user experiences from end-to-end.
             </p>
           </div>
 
-          <div className="w-full h-[280px] md:h-[340px] bg-black rounded-2xl overflow-hidden shadow-sm relative">
+          {/* Tinanggal ang grayscale at pinalitan ang bg-black ng bg-gray-100 */}
+          <div className="w-full h-[280px] md:h-[340px] bg-gray-100 rounded-2xl overflow-hidden shadow-sm relative">
             <img
-              src="/assets/hero.png"
+              src="/images/Jakes.jpg"
               alt="Profile"
-              className="w-full h-full object-cover grayscale"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>
@@ -63,7 +65,7 @@ export default function AboutSection() {
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold text-gray-900">Education</h2>
             <p className="text-gray-500 text-sm leading-relaxed">
-              I earned my Bachelor's degree in Web Design and Development from XYZ University, where I honed my skills in design principles, user experience, and front-end development. My education provided a solid foundation for my career in web design.
+              My career is built on the strong educational foundation of a Bachelor’s degree in Web Design and Development. This training solidified my core competencies in modern engineering standards and design thinking, enabling me to transition seamlessly from a studio student to a production-ready professional.
             </p>
             <div>
               <a
@@ -78,7 +80,7 @@ export default function AboutSection() {
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold text-gray-900">Stack</h2>
             <p className="text-gray-500 text-sm leading-relaxed">
-              My technical toolkit includes proficiency in Framer, Figma, HTML, CSS, JavaScript, and various design software like Adobe Creative Suite. I'm also well-versed in responsive web design, ensuring that websites I create look and function flawlessly across all devices.
+              I operate across the full product development lifecycle, utilizing my core stack of (React, Blade, Javascript, PHP and modern CSS frameworks like Tailwind). My technical philosophy prioritizes code performance, accessibility, and modular design. My skills extend from user-centric visual mockups to deploying full-responsive web applications.
             </p>
             <div>
               <a
@@ -97,7 +99,7 @@ export default function AboutSection() {
       {/* Bottom Section: Experience */}
       <BlurFade delay={0.3}>
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Experience</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Experience / Project Experience</h2>
 
           <div className="flex flex-col gap-4 mb-8">
             {experiences.map((exp, index) => (
