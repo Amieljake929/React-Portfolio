@@ -6,6 +6,7 @@ import HeroSection from './sections/HeroSection';
 import ProjectsSection from './sections/ProjectsSection';
 import StackSection from './sections/StackSection';
 import AboutSection from './sections/AboutSection';
+import ContactSection from './sections/ContactSection';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 
@@ -77,7 +78,7 @@ function App() {
               path="/contact"
               element={
                 <PageTransition delay={0.1}>
-                  <div className="py-10 text-2xl font-bold">Contact Page</div>
+                  <ContactSection />
                 </PageTransition>
               }
             />
