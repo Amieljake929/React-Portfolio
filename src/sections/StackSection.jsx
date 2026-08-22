@@ -2,11 +2,12 @@ import { motion } from 'framer-motion';
 
 export default function StackSection() {
   const stackItems = [
-    {
-      name: 'Framer',
-      category: 'Web Design',
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/framer/framer-original.svg',
-    },
+    // Palitan ang URL ng Framer Icon sa iyong stackItems array:
+{
+  name: 'Framer',
+  category: 'Web Design',
+  icon: 'https://cdn.simpleicons.org/framer/0055FF', // Official Framer SVG Icon
+},
     {
       name: 'Figma',
       category: 'Collaborative Design',
@@ -24,7 +25,7 @@ export default function StackSection() {
     },
     {
       name: 'HTML 5',
-      category: 'Structure and Content',
+      category: 'Structure & Content',
       icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
     },
     {
@@ -70,20 +71,20 @@ export default function StackSection() {
       viewport={{ once: true, margin: '-50px' }}
     >
       {/* Title */}
-      <motion.h2 variants={itemVariants} className="text-3xl font-bold text-gray-900 mb-8">
+      <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center sm:text-left">
         Stack
       </motion.h2>
 
-      {/* Grid Container */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+      {/* Grid Container: Updated to grid-cols-2 in mobile (3 top, 3 bottom layout) */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 w-full">
         {stackItems.map((item, index) => (
           <motion.div
             key={index}
             variants={itemVariants}
-            className="flex items-center gap-4 p-4 bg-[#f8f8f8] hover:bg-[#f1f1f1] border border-transparent hover:border-gray-200 rounded-2xl transition-all duration-300 cursor-pointer group"
+            className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-2 sm:gap-3.5 p-2.5 sm:p-4 bg-[#f8f8f8] hover:bg-[#f1f1f1] border border-transparent hover:border-gray-200 rounded-xl sm:rounded-2xl transition-all duration-300 cursor-pointer group"
           >
-            {/* Icon */}
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-2.5 shadow-sm border border-gray-100 group-hover:scale-105 transition-transform duration-300">
+            {/* Icon - Pinaliit nang kaunti sa mobile */}
+            <div className="w-8 h-8 sm:w-11 sm:h-11 bg-white rounded-lg sm:rounded-xl flex items-center justify-center p-1.5 sm:p-2 shadow-sm border border-gray-100 group-hover:scale-105 transition-transform duration-300 shrink-0">
               <img
                 src={item.icon}
                 alt={item.name}
@@ -92,11 +93,11 @@ export default function StackSection() {
             </div>
 
             {/* Text */}
-            <div className="flex flex-col">
-              <h3 className="text-sm font-bold text-gray-900 leading-tight">
+            <div className="flex flex-col min-w-0 w-full">
+              <h3 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight truncate">
                 {item.name}
               </h3>
-              <p className="text-xs text-gray-500 font-medium mt-0.5">
+              <p className="text-[10px] sm:text-xs text-gray-500 font-medium mt-0.5 truncate">
                 {item.category}
               </p>
             </div>
@@ -105,10 +106,10 @@ export default function StackSection() {
       </div>
 
       {/* Button */}
-      <motion.div variants={itemVariants} className="mt-8">
+      <motion.div variants={itemVariants} className="mt-6 sm:mt-8 flex justify-center sm:justify-start">
         <a
           href="#stack"
-          className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all"
         >
           All Stack <span>&rarr;</span>
         </a>
