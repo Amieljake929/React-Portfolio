@@ -32,6 +32,7 @@ export default function Sidebar() {
     visible: {
       opacity: 1,
       y: 0,
+      filter: 'blur(0px)',
       transition: {
         type: 'spring',
         stiffness: 140,
@@ -68,7 +69,7 @@ export default function Sidebar() {
 
       {/* Sidebar Aside Wrapper */}
       <aside
-        className={`w-72 h-screen fixed left-0 top-0 border-r border-gray-200 bg-white z-50 transition-transform lg:transition-none duration-300 ease-in-out ${
+        className={`w-72 h-[100dvh] fixed left-0 top-0 border-r border-gray-200 bg-white z-50 transition-transform lg:transition-none duration-300 ease-in-out overflow-hidden ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
@@ -79,75 +80,77 @@ export default function Sidebar() {
           animate="visible"
           className="h-full flex flex-col justify-between p-6"
         >
-          <div>
-            {/* Profile Header */}
-            <motion.div variants={springItemVariants} className="text-center mt-10 mb-12 px-2">
-              <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
-                Amiel Jake Baril
-              </h2>
-              <p className="text-xs text-gray-500 font-medium mt-1.5">
-                web designer & developer
-              </p>
-            </motion.div>
+          {/* Main Top Content Wrapper */}
+          <div className="flex flex-col h-full justify-between">
+            <div>
+              {/* Profile Header */}
+              <motion.div variants={springItemVariants} className="text-center mt-6 lg:mt-10 mb-6 lg:mb-12 px-2">
+                <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
+                  Amiel Jake Baril
+                </h2>
+                {/* Mobile-only extra margin bottom sa p tag */}
+                <p className="text-xs text-gray-500 font-medium mt-1.5 mb-6 lg:mb-0">
+                  web designer & developer
+                </p>
+              </motion.div>
 
-            {/* Divider Line */}
-            <motion.hr variants={springItemVariants} className="border-gray-200 my-4" />
+              {/* Divider Line */}
+              <motion.hr variants={springItemVariants} className="border-gray-200 my-4" />
 
-            {/* Navlinks */}
-            <nav className="flex flex-col gap-3 mt-8">
-              {navItems.map((item) => {
-                const IconComponent = item.icon;
-                const isActive = location.pathname === item.path;
+              {/* Navlinks */}
+              <nav className="flex flex-col gap-3 mt-6 lg:mt-8">
+                {navItems.map((item) => {
+                  const IconComponent = item.icon;
+                  const isActive = location.pathname === item.path;
 
-                return (
-                  <motion.div key={item.name} variants={springItemVariants}>
-                    <NavLink
-                      to={item.path}
-                      onClick={() => setIsOpen(false)}
-                      className="block"
-                    >
-                      <motion.div
-                        whileHover={{ x: 6 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`group flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all duration-300 ${
-                          isActive
-                            ? 'text-gray-900 bg-gray-100/80 font-semibold'
-                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                        }`}
+                  return (
+                    <motion.div key={item.name} variants={springItemVariants}>
+                      <NavLink
+                        to={item.path}
+                        onClick={() => setIsOpen(false)}
+                        className="block"
                       >
-                        {/* Icon with Bouncy Pop Animation on Hover */}
                         <motion.div
-                          whileHover={{ scale: 1.25, rotate: [0, -10, 10, 0] }}
-                          transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+                          whileHover={{ x: 6 }}
+                          whileTap={{ scale: 0.98 }}
+                          className={`group flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all duration-300 ${
+                            isActive
+                              ? 'text-gray-900 bg-gray-100/80 font-semibold'
+                              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                          }`}
                         >
-                          <IconComponent
-                            size={18}
-                            className={`transition-colors duration-300 ${
-                              isActive ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-900'
-                            }`}
-                          />
+                          <motion.div
+                            whileHover={{ scale: 1.25, rotate: [0, -10, 10, 0] }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 10 }}
+                          >
+                            <IconComponent
+                              size={18}
+                              className={`transition-colors duration-300 ${
+                                isActive ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-900'
+                              }`}
+                            />
+                          </motion.div>
+
+                          <span>{item.name}</span>
                         </motion.div>
+                      </NavLink>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            </div>
 
-                        {/* Nav Title */}
-                        <span>{item.name}</span>
-                      </motion.div>
-                    </NavLink>
-                  </motion.div>
-                );
-              })}
-            </nav>
+            {/* Social Links Footer */}
+            <motion.div
+              variants={springItemVariants}
+              className="flex items-center justify-around text-gray-400 mt-auto pt-4 border-t border-gray-200 text-xs font-semibold"
+            >
+              <a href="#" className="hover:text-gray-900 transition-colors">X</a>
+              <a href="#" className="hover:text-gray-900 transition-colors">Figma</a>
+              <a href="#" className="hover:text-gray-900 transition-colors">IG</a>
+              <a href="#" className="hover:text-gray-900 transition-colors">LinkedIn</a>
+            </motion.div>
           </div>
-
-          {/* Social Links Footer */}
-          <motion.div
-            variants={springItemVariants}
-            className="flex items-center justify-around text-gray-400 my-2 pt-5 border-t border-gray-200 text-xs font-semibold"
-          >
-            <a href="#" className="hover:text-gray-900 transition-colors">X</a>
-            <a href="#" className="hover:text-gray-900 transition-colors">Figma</a>
-            <a href="#" className="hover:text-gray-900 transition-colors">IG</a>
-            <a href="#" className="hover:text-gray-900 transition-colors">LinkedIn</a>
-          </motion.div>
         </motion.div>
       </aside>
     </>

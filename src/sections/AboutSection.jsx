@@ -65,7 +65,7 @@ export default function AboutSection() {
           <div className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold text-gray-900">Education</h2>
             <p className="text-gray-500 text-sm leading-relaxed">
-              My career is built on the strong educational foundation of a Bachelor’s degree in Web Design and Development. This training solidified my core competencies in modern engineering standards and design thinking, enabling me to transition seamlessly from a studio student to a production-ready professional.
+              My career is built on a strong foundation in Information Technology (BSIT). This academic background solidified my competencies in modern engineering standards and design thinking, allowing me to transition seamlessly into a production-ready professional.
             </p>
             <div>
               <a
