@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import HeroSection from './sections/HeroSection';
 import ProjectsSection from './sections/ProjectsSection';
 import StackSection from './sections/StackSection';
+import GithubSection from './sections/GithubSection';
 import AboutSection from './sections/AboutSection';
 import ContactSection from './sections/ContactSection';
 import Footer from './components/Footer';
@@ -18,6 +19,8 @@ function HomeOverview() {
       <ProjectsSection />
       <hr className="my-4 border-gray-200" />
       <StackSection />
+      <hr className="my-4 border-gray-200" />
+      <GithubSection />
     </>
   );
 }

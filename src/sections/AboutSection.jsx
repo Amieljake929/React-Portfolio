@@ -35,7 +35,7 @@ export default function AboutSection() {
           <div className="flex flex-col items-start gap-4">
             <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-100">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              Available for Work
+              Open for new opportunities
             </span>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
               About Me: <br />

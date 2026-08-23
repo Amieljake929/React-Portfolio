@@ -47,7 +47,7 @@ export default function HeroSection() {
         className="inline-flex items-center gap-2 px-4 py-1.5 sm:px-3 sm:py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-medium mb-7 sm:mb-8 shadow-xs"
       >
         <span className="w-2 h-2 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        Available for Work
+        Open for new opportunities!
       </motion.div>
 
       {/* Main Title */}
