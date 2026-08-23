@@ -10,19 +10,19 @@ export default function Footer() {
 
         {/* Center: Made by credit */}
         <p>
-          Made by{' '}
+          Inspired by{' '}
           <a
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            Ulhub.design
+            Kombo Website
           </a>{' '}
-          in{' '}
+          &{' '}
           <a
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            Framer
+            Bryl Lim
           </a>
         </p>
 

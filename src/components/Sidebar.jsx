@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Home, User, Folder, Layers, Mail, Shield, Menu, X } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 export default function Sidebar() {
@@ -14,6 +15,14 @@ export default function Sidebar() {
     { name: 'Stack', icon: Layers, path: '/stack' },
     { name: 'Contact', icon: Mail, path: '/contact' },
     { name: 'Licensing', icon: Shield, path: '/licensing' },
+  ];
+
+  // Social Links List - Palitan ang 'href' ng totoong URLs mo
+  const socialLinks = [
+    { name: 'Facebook', icon: FaFacebook, href: 'https://www.facebook.com/amieljakee' },
+    { name: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/amieljake/' },
+    { name: 'GitHub', icon: FaGithub, href: 'https://github.com/Amieljake929' },
+    { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
   ];
 
   const sidebarContainerVariants = {
@@ -88,7 +97,6 @@ export default function Sidebar() {
                 <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
                   Amiel Jake Baril
                 </h2>
-                {/* Mobile-only extra margin bottom sa p tag */}
                 <p className="text-xs text-gray-500 font-medium mt-1.5 mb-6 lg:mb-0">
                   web designer & developer
                 </p>
@@ -140,15 +148,28 @@ export default function Sidebar() {
               </nav>
             </div>
 
-            {/* Social Links Footer */}
+            {/* Updated Social Links Footer with Icons */}
             <motion.div
               variants={springItemVariants}
-              className="flex items-center justify-around text-gray-400 mt-auto pt-4 border-t border-gray-200 text-xs font-semibold"
+              className="flex items-center justify-around text-gray-500 mt-auto pt-4 border-t border-gray-200"
             >
-              <a href="#" className="hover:text-gray-900 transition-colors">X</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">Figma</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">IG</a>
-              <a href="#" className="hover:text-gray-900 transition-colors">LinkedIn</a>
+              {socialLinks.map((social) => {
+                const SocialIcon = social.icon;
+                return (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.name}
+                    whileHover={{ scale: 1.2, y: -2 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                  >
+                    <SocialIcon size={20} />
+                  </motion.a>
+                );
+              })}
             </motion.div>
           </div>
         </motion.div>
