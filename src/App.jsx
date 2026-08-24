@@ -8,6 +8,9 @@ import StackSection from './sections/StackSection';
 import GithubSection from './sections/GithubSection';
 import AboutSection from './sections/AboutSection';
 import ContactSection from './sections/ContactSection';
+import StackPage from './pages/StackPage';
+import ProjectsPage from './pages/ProjectsPage';
+import ProjectDetailPage from './pages/ProjectDetailPage'; // Dynamic detail page import
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 
@@ -57,7 +60,16 @@ function App() {
               path="/projects"
               element={
                 <PageTransition delay={0.1}>
-                  <ProjectsSection />
+                  <ProjectsPage />
+                </PageTransition>
+              }
+            />
+            {/* Registered dynamic project route */}
+            <Route
+              path="/projects/:id"
+              element={
+                <PageTransition delay={0.1}>
+                  <ProjectDetailPage />
                 </PageTransition>
               }
             />
@@ -65,7 +77,7 @@ function App() {
               path="/stack"
               element={
                 <PageTransition delay={0.1}>
-                  <StackSection />
+                  <StackPage />
                 </PageTransition>
               }
             />

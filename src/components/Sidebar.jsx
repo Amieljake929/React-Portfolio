@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Home, User, Folder, Layers, Mail, Shield, Menu, X } from 'lucide-react';
 import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
@@ -7,6 +7,18 @@ import { motion } from 'framer-motion';
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+
+  // Prevent background scrolling on mobile when open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const navItems = [
     { name: 'Home', icon: Home, path: '/' },
@@ -17,7 +29,6 @@ export default function Sidebar() {
     { name: 'Licensing', icon: Shield, path: '/licensing' },
   ];
 
-  // Social Links List - Palitan ang 'href' ng totoong URLs mo
   const socialLinks = [
     { name: 'Facebook', icon: FaFacebook, href: 'https://www.facebook.com/amieljakee' },
     { name: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/amieljake/' },
@@ -30,14 +41,15 @@ export default function Sidebar() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
+        staggerChildren: 0.06,
+        delayChildren: 0.05,
       },
     },
   };
 
+  // Reduced Y offset from 80 to 20 to prevent layout overflow during spring animation
   const springItemVariants = {
-    hidden: { opacity: 0, y: 80 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -45,7 +57,7 @@ export default function Sidebar() {
       transition: {
         type: 'spring',
         stiffness: 140,
-        damping: 12,
+        damping: 14,
         mass: 0.8,
       },
     },
@@ -72,106 +84,104 @@ export default function Sidebar() {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="lg:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-sm touch-none"
         />
       )}
 
       {/* Sidebar Aside Wrapper */}
       <aside
-        className={`w-72 h-[100dvh] fixed left-0 top-0 border-r border-gray-200 bg-white z-50 transition-transform lg:transition-none duration-300 ease-in-out overflow-hidden ${
+        className={`w-72 fixed left-0 top-0 bottom-0 border-r border-gray-200 bg-white z-50 transition-transform lg:transition-none duration-300 ease-in-out overflow-hidden ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Animated Inner Container */}
+        {/* Inner Flex Container with strict overflow-hidden */}
         <motion.div
           variants={sidebarContainerVariants}
           initial="hidden"
           animate="visible"
-          className="h-full flex flex-col justify-between p-6"
+          className="h-full flex flex-col justify-between p-6 overflow-hidden"
         >
-          {/* Main Top Content Wrapper */}
-          <div className="flex flex-col h-full justify-between">
-            <div>
-              {/* Profile Header */}
-              <motion.div variants={springItemVariants} className="text-center mt-6 lg:mt-10 mb-6 lg:mb-12 px-2">
-                <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
-                  Amiel Jake Baril
-                </h2>
-                <p className="text-xs text-gray-500 font-medium mt-1.5 mb-6 lg:mb-0">
-                  web designer & developer
-                </p>
-              </motion.div>
+          {/* Top Section: Header & Nav */}
+          <div className="flex flex-col">
+            {/* Profile Header */}
+            <motion.div variants={springItemVariants} className="text-center mt-6 lg:mt-10 mb-6 lg:mb-12 px-2">
+              <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
+                Amiel Jake Baril
+              </h2>
+              <p className="text-xs text-gray-500 font-medium mt-1.5 mb-6 lg:mb-0">
+                web designer & developer
+              </p>
+            </motion.div>
 
-              {/* Divider Line */}
-              <motion.hr variants={springItemVariants} className="border-gray-200 my-4" />
+            {/* Divider Line */}
+            <motion.hr variants={springItemVariants} className="border-gray-200 my-4" />
 
-              {/* Navlinks */}
-              <nav className="flex flex-col gap-3 mt-6 lg:mt-8">
-                {navItems.map((item) => {
-                  const IconComponent = item.icon;
-                  const isActive = location.pathname === item.path;
+            {/* Navlinks */}
+            <nav className="flex flex-col gap-3 mt-6 lg:mt-8">
+              {navItems.map((item) => {
+                const IconComponent = item.icon;
+                const isActive = location.pathname === item.path;
 
-                  return (
-                    <motion.div key={item.name} variants={springItemVariants}>
-                      <NavLink
-                        to={item.path}
-                        onClick={() => setIsOpen(false)}
-                        className="block"
+                return (
+                  <motion.div key={item.name} variants={springItemVariants}>
+                    <NavLink
+                      to={item.path}
+                      onClick={() => setIsOpen(false)}
+                      className="block"
+                    >
+                      <motion.div
+                        whileHover={{ x: 6 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`group flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all duration-300 ${
+                          isActive
+                            ? 'text-gray-900 bg-gray-100/80 font-semibold'
+                            : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                        }`}
                       >
                         <motion.div
-                          whileHover={{ x: 6 }}
-                          whileTap={{ scale: 0.98 }}
-                          className={`group flex items-center gap-3.5 px-4 py-2.5 text-sm font-medium leading-relaxed rounded-xl transition-all duration-300 ${
-                            isActive
-                              ? 'text-gray-900 bg-gray-100/80 font-semibold'
-                              : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                          }`}
+                          whileHover={{ scale: 1.25, rotate: [0, -10, 10, 0] }}
+                          transition={{ type: 'spring', stiffness: 300, damping: 10 }}
                         >
-                          <motion.div
-                            whileHover={{ scale: 1.25, rotate: [0, -10, 10, 0] }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 10 }}
-                          >
-                            <IconComponent
-                              size={18}
-                              className={`transition-colors duration-300 ${
-                                isActive ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-900'
-                              }`}
-                            />
-                          </motion.div>
-
-                          <span>{item.name}</span>
+                          <IconComponent
+                            size={18}
+                            className={`transition-colors duration-300 ${
+                              isActive ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-900'
+                            }`}
+                          />
                         </motion.div>
-                      </NavLink>
-                    </motion.div>
-                  );
-                })}
-              </nav>
-            </div>
 
-            {/* Updated Social Links Footer with Icons */}
-            <motion.div
-              variants={springItemVariants}
-              className="flex items-center justify-around text-gray-500 mt-auto pt-4 border-t border-gray-200"
-            >
-              {socialLinks.map((social) => {
-                const SocialIcon = social.icon;
-                return (
-                  <motion.a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.name}
-                    whileHover={{ scale: 1.2, y: -2 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors"
-                  >
-                    <SocialIcon size={20} />
-                  </motion.a>
+                        <span>{item.name}</span>
+                      </motion.div>
+                    </NavLink>
+                  </motion.div>
                 );
               })}
-            </motion.div>
+            </nav>
           </div>
+
+          {/* Social Links Footer */}
+          <motion.div
+            variants={springItemVariants}
+            className="flex items-center justify-around text-gray-500 pt-4 border-t border-gray-200 mt-6"
+          >
+            {socialLinks.map((social) => {
+              const SocialIcon = social.icon;
+              return (
+                <motion.a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.name}
+                  whileHover={{ scale: 1.2, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                >
+                  <SocialIcon size={20} />
+                </motion.a>
+              );
+            })}
+          </motion.div>
         </motion.div>
       </aside>
     </>
