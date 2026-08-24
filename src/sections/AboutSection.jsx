@@ -12,14 +12,14 @@ export default function AboutSection() {
         'Minimized workstation downtime for staff, improved internal software stability through QA testing, and enhanced the visual reach of chapter announcements. Troubleshot hardware/network connectivity issues, logged software bugs for the dev team, and designed promotional materials (pubmats).',
     },
     {
-      title: 'Full Stack Designer',
+      title: 'Full Stack Developer',
       company: 'School Management System III - Capstone.',
       period: '2025 - 2026',
       description:
         "Developed the web application using Laravel Framework, PHP, JSON, Node.js, and RESTful APIs while structuring the centralized database and user access controls.",
     },
     {
-      title: 'Full Stack Designer',
+      title: 'Full Stack Developer',
       company: 'Barangay Management System - BMS',
       period: '2025 - 2026',
       description:
