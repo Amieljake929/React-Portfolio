@@ -10,7 +10,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/Amieljake929/Enrollment-Management-System---Cluster-7.git',
     liveDemo: '',
     description: 'A comprehensive school management platform designed to streamline student enrollment, course registration, and administrative record management.',
-    techStack: ['React', 'Node.js', 'Express', 'MySQL', 'Tailwind CSS'],
+    techStack: ['Laravel Framework', 'PHP Backend', 'Node.js', 'Express', 'MySQL', 'HTML5','CSS3', 'JavaScript', 'RESTful APIs', 'JSON', 'Hostinger'],
     features: [
       'Student and administrator authentication roles',
       'Automated grade calculation and reporting',
@@ -25,7 +25,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/Amieljake929/Barangay-Bagbag-System.git',
     liveDemo: '',
     description: 'A digitized local municipal management portal to manage official clearance requests, resident databases, and blotter filings.',
-    techStack: ['React', 'Tailwind CSS', 'Firebase'],
+    techStack: ['Plain PHP', 'HTML5', 'Tailwind CSS', 'MySQL', 'JavaScript', 'RESTful APIs', 'JSON', 'Hostinger'],
     features: [
       'Online barangay clearance request processing',
       'Centralized resident record management',
@@ -40,7 +40,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/Amieljake929/Kaffa.git',
     liveDemo: '',
     description: 'An interactive web app for a coffee shop showcasing menu options, item customizations, and order flow simulations.',
-    techStack: ['React', 'Framer Motion', 'Tailwind CSS'],
+    techStack: ['HTML5', 'Framer Motion', 'Tailwind CSS', 'Javascript', 'JSON'],
     features: [
       'Interactive product menu filtering',
       'Custom drink option picker',
@@ -55,7 +55,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/Amieljake929/React-Portfolio.git',
     liveDemo: '',
     description: 'A modern single-page portfolio with interactive interactive UI elements, smooth scrolling, and page route transitions.',
-    techStack: ['React', 'Tailwind CSS', 'Framer Motion', 'Lenis Scroll'],
+    techStack: ['React', 'Tailwind CSS', 'Framer Motion', 'Lenis Scroll', 'React Router', 'JavaScript', 'JSON', 'Vercel'],
     features: [
       'Interactive 3D laptop drag showcase',
       'Responsive mobile-first layout',
@@ -70,7 +70,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/christianbacay042504-coder/coderistyarn2.git',
     liveDemo: '',
     description: 'A web platform assisting tourists in exploring local destinations, booking tour itineraries, and leaving venue feedback.',
-    techStack: ['React', 'Tailwind CSS', 'REST API'],
+    techStack: ['Plain PHP', 'HTML5','Tailwind CSS', 'REST API'],
     features: [
       'Destination search and categorizations',
       'Tour guide booking system',
@@ -85,7 +85,7 @@ const PROJECTS_DATA = [
     githubUrl: 'https://github.com/Amieljake929',
     liveDemo: '',
     description: 'An administrative web system built for chapter operations, inventory tracking, and volunteer management.',
-    techStack: ['React', 'Tailwind CSS', 'Node.js'],
+    techStack: ['Laravel Framework', 'PHP Backend', 'Tailwind CSS', 'JSON'],
     features: [
       'Volunteer activity logging',
       'Donation and inventory record keeping',

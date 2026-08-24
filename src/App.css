@@ -182,3 +182,50 @@
     border-right-color: var(--border);
   }
 }
+
+/* ==========================================================================
+   Intro Loader Styles
+   ========================================================================== */
+
+/* Fullscreen White Overlay */
+/* Intro Loader Screen Overlay */
+.intro-loader {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Individual Letter Typography */
+.loader-letter {
+  display: inline-block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+  will-change: transform, opacity, filter;
+}
+
+@media (max-width: 640px) {
+  .loader-letter {
+    font-size: 2.25rem;
+  }
+}
+
+/* Main Portfolio Entrance Container */
+.app-entrance {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.app-entrance.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}

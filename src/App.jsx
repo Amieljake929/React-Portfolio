@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
+import './App.css'; // Direct import
 import Sidebar from './components/Sidebar';
 import HeroSection from './sections/HeroSection';
 import ProjectsSection from './sections/ProjectsSection';
@@ -10,9 +11,10 @@ import AboutSection from './sections/AboutSection';
 import ContactSection from './sections/ContactSection';
 import StackPage from './pages/StackPage';
 import ProjectsPage from './pages/ProjectsPage';
-import ProjectDetailPage from './pages/ProjectDetailPage'; // Dynamic detail page import
+import ProjectDetailPage from './pages/ProjectDetailPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
+import IntroLoader from './components/IntroLoader';
 
 function HomeOverview() {
   return (
@@ -29,6 +31,8 @@ function HomeOverview() {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.4,
@@ -48,70 +52,78 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex font-sans text-gray-900">
-      <Sidebar />
+    <>
+      {/* Intro Loader Screen Overlay */}
+      {isLoading && <IntroLoader onFinish={() => setIsLoading(false)} />}
 
       {/* Main Container */}
-      <main className="ml-0 lg:ml-72 flex-1 px-4 sm:px-8 lg:px-12 pt-20 lg:pt-8 pb-6 w-full lg:w-[calc(100%-18rem)] overflow-x-hidden flex flex-col justify-between min-h-screen">
-        <div className="flex flex-col gap-2">
-          <Routes>
-            <Route path="/" element={<HomeOverview />} />
-            <Route
-              path="/projects"
-              element={
-                <PageTransition delay={0.1}>
-                  <ProjectsPage />
-                </PageTransition>
-              }
-            />
-            {/* Registered dynamic project route */}
-            <Route
-              path="/projects/:id"
-              element={
-                <PageTransition delay={0.1}>
-                  <ProjectDetailPage />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/stack"
-              element={
-                <PageTransition delay={0.1}>
-                  <StackPage />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/about"
-              element={
-                <PageTransition delay={0.1}>
-                  <AboutSection />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <PageTransition delay={0.1}>
-                  <ContactSection />
-                </PageTransition>
-              }
-            />
-            <Route
-              path="/licensing"
-              element={
-                <PageTransition delay={0.1}>
-                  <div className="py-10 text-2xl font-bold">Licensing Page</div>
-                </PageTransition>
-              }
-            />
-          </Routes>
-        </div>
+      <div className="min-h-screen bg-white flex font-sans text-gray-900">
+        <Sidebar isLoading={isLoading} />
 
-        {/* Footer */}
-        <Footer />
-      </main>
-    </div>
+        <main className="ml-0 lg:ml-72 flex-1 px-4 sm:px-8 lg:px-12 pt-20 lg:pt-8 pb-6 w-full lg:w-[calc(100%-18rem)] overflow-x-hidden flex flex-col justify-between min-h-screen">
+          {!isLoading && (
+            <PageTransition delay={0}>
+              <div className="flex flex-col gap-2">
+                <Routes>
+                  <Route path="/" element={<HomeOverview />} />
+                  <Route
+                    path="/projects"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <ProjectsPage />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/projects/:id"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <ProjectDetailPage />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/stack"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <StackPage />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/about"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <AboutSection />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/contact"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <ContactSection />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/licensing"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <div className="py-10 text-2xl font-bold">Licensing Page</div>
+                      </PageTransition>
+                    }
+                  />
+                </Routes>
+              </div>
+
+              {/* Inilipat ang Footer sa loob ng !isLoading para sabay silang mag-fade in */}
+              <Footer />
+            </PageTransition>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
 

@@ -4,7 +4,7 @@ import { Home, User, Folder, Layers, Mail, Shield, Menu, X } from 'lucide-react'
 import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
-export default function Sidebar() {
+export default function Sidebar({ isLoading = false }) { // Add isLoading prop
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -42,12 +42,11 @@ export default function Sidebar() {
       opacity: 1,
       transition: {
         staggerChildren: 0.06,
-        delayChildren: 0.05,
+        delayChildren: 0.1,
       },
     },
   };
 
-  // Reduced Y offset from 80 to 20 to prevent layout overflow during spring animation
   const springItemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -94,11 +93,11 @@ export default function Sidebar() {
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
-        {/* Inner Flex Container with strict overflow-hidden */}
+        {/* Inner Container: Mag-a-animate lang kung tapos na ang loader (!isLoading) */}
         <motion.div
           variants={sidebarContainerVariants}
           initial="hidden"
-          animate="visible"
+          animate={isLoading ? 'hidden' : 'visible'}
           className="h-full flex flex-col justify-between p-6 overflow-hidden"
         >
           {/* Top Section: Header & Nav */}
