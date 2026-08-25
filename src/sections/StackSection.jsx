@@ -14,24 +14,24 @@ export default function StackSection() {
       icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
     },
     {
-      name: 'Notion',
-      category: 'Project Management',
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg',
+      name: 'React',
+          description: 'Component-based UI development.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
     },
     {
-      name: 'Chat GPT',
-      category: 'Content Generation',
-      icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+      name: 'JavaScript',
+          description: 'Dynamic frontend functionality.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
     },
     {
-      name: 'HTML 5',
-      category: 'Structure & Content',
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg',
+      name: 'ESLint',
+          description: 'Pluggable JavaScript linter.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg',
     },
     {
-      name: 'CSS 3',
-      category: 'Visual Styling',
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg',
+      name: 'Laravel',
+          description: 'Web application PHP framework.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg',
     },
   ];
 

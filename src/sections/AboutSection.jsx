@@ -39,7 +39,7 @@ export default function AboutSection() {
             </span>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
               About Me: <br />
-              Code, Kape, Breakdown, ulit.
+              code, kape, breakdown, ulit.
             </h1>
             <p className="text-gray-500 leading-relaxed text-sm mt-2">
               As a Web Designer and Developer, I am focused on the synergy between visual storytelling and seamless usability. I specialize in building digital products that are not just beautiful but are robust, responsive, and crafted to deliver exceptional user experiences from end-to-end.

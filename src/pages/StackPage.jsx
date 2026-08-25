@@ -36,14 +36,29 @@ export default function StackPage() {
           icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
         },
         {
+          name: 'TypeScript',
+          description: 'Strongly typed JavaScript subset.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+        },
+        {
           name: 'React',
           description: 'Component-based UI development.',
           icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
         },
         {
+          name: 'Vite',
+          description: 'Next-generation frontend tooling.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg',
+        },
+        {
           name: 'Tailwind CSS',
           description: 'Utility-first rapid styling framework.',
           icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg',
+        },
+        {
+          name: 'ESLint',
+          description: 'Pluggable JavaScript linter.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg',
         },
       ],
     },
@@ -56,9 +71,44 @@ export default function StackPage() {
           icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
         },
         {
-          name: 'Express.js',
-          description: 'Minimalist web framework for Node.',
-          icon: 'https://cdn.simpleicons.org/express/000000',
+          name: 'Laravel',
+          description: 'Web application PHP framework.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg',
+        },
+        {
+          name: 'Python',
+          description: 'High-level programming language.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
+        },
+        {
+          name: 'MySQL',
+          description: 'Relational database management system.',
+          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg',
+        },
+        {
+          name: 'REST API',
+          description: 'Architectural style for web services.',
+          icon: 'https://cdn.simpleicons.org/fastapi/009688',
+        },
+      ],
+    },
+    {
+      category: 'AI & Machine Learning',
+      items: [
+        {
+          name: 'OpenAI',
+          description: 'AI research & LLM deployment.',
+          icon: 'https://api.iconify.design/logos:openai-icon.svg',
+        },
+        {
+          name: 'Hugging Face',
+          description: 'ML models & dataset hub.',
+          icon: 'https://api.iconify.design/logos:hugging-face-icon.svg',
+        },
+        {
+          name: 'Claude Code',
+          description: 'Anthropic AI development assistant.',
+          icon: 'https://api.iconify.design/logos:claude-icon.svg',
         },
       ],
     },
@@ -93,7 +143,17 @@ export default function StackPage() {
         {
           name: 'ChatGPT',
           description: 'AI-assisted code optimization.',
-          icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+          icon: 'https://api.iconify.design/logos:openai-icon.svg',
+        },
+        {
+          name: 'Discord',
+          description: 'Community & team communication.',
+          icon: 'https://api.iconify.design/logos:discord-icon.svg',
+        },
+        {
+          name: 'Microsoft Teams',
+          description: 'Business messaging & collaboration.',
+          icon: 'https://api.iconify.design/logos:microsoft-teams.svg',
         },
       ],
     },
