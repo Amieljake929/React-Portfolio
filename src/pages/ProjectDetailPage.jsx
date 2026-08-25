@@ -9,7 +9,6 @@ const PROJECTS_DATA = [
     title: 'School Management System III - Capstone Project',
     image: '/projects/project1.png',
     gallery: [
-      '/projects/EMS/project1.png',
       '/projects/EMS/project2.png',
       '/projects/EMS/project3.png',
       '/projects/EMS/project4.png',
@@ -19,6 +18,7 @@ const PROJECTS_DATA = [
       '/projects/EMS/project8.png',
       '/projects/EMS/project9.png',
       '/projects/EMS/project10.png',
+      '/projects/EMS/project1.png',
     ],
     githubUrl: 'https://github.com/Amieljake929/Enrollment-Management-System---Cluster-7.git',
     liveDemo: '',
