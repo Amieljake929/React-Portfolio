@@ -10,5 +10,11 @@ export default defineConfig({
   ],
   server: {
     host: true, // Ine-expose ang app sa local network
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000', // I-fo-forward ang /api requests kapag nagre-run ng Vercel CLI
+        changeOrigin: true,
+      },
+    },
   },
 })

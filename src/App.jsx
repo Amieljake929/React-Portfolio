@@ -15,6 +15,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
+import Chatbot from './components/ChatBot';
 
 function HomeOverview() {
   return (
@@ -123,6 +124,9 @@ function App() {
           )}
         </main>
       </div>
+
+      {/* Floating AI Chatbot Widget */}
+      {!isLoading && <Chatbot />}
     </>
   );
 }
