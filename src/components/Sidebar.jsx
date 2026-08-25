@@ -68,7 +68,7 @@ export default function Sidebar({ isLoading = false }) { // Add isLoading prop
       <div className="lg:hidden fixed top-0 left-0 w-full bg-white border-b border-gray-200 p-4 flex items-center justify-between z-50">
         <div>
           <h2 className="font-bold text-gray-900 text-base">Amiel Jake</h2>
-          <p className="text-[10px] text-gray-500 font-medium">Web Developer</p>
+          <p className="text-[10px] text-gray-500 font-medium">Web Designer & Developer</p>
         </div>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -104,11 +104,11 @@ export default function Sidebar({ isLoading = false }) { // Add isLoading prop
           <div className="flex flex-col">
             {/* Profile Header */}
             <motion.div variants={springItemVariants} className="text-center mt-6 lg:mt-10 mb-6 lg:mb-12 px-2">
-              <h2 className="font-bold text-gray-900 text-xl leading-snug tracking-tight">
+              <h2 className="mt-3 font-bold text-gray-900 text-xl leading-snug tracking-tight">
                 Amiel Jake Baril
               </h2>
               <p className="text-xs text-gray-500 font-medium mt-1.5 mb-6 lg:mb-0">
-                web designer & developer
+                Web Designer & Developer
               </p>
             </motion.div>
 
