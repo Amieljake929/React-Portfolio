@@ -15,7 +15,7 @@ export default function AIAssistant() {
       try { return JSON.parse(saved); } catch (e) { /* fallback */ }
     }
     return [
-      { role: 'assistant', content: 'Hi there! 👋 I am Amiel’s AI assistant. Ask me anything about his portfolio, skills, or projects!' }
+      { role: 'assistant', content: 'Hi there! 👋 I am Amiel’s AI assistant. Ask me anything about his portfolio, projects, skills, or even his background and personality!' }
     ];
   });
 
