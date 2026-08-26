@@ -1,18 +1,86 @@
-export const projects = [
+export const projectsData = [
   {
     id: 1,
-    title: "Personal Portfolio Website",
-    description: "A modern, responsive portfolio website built with React and Tailwind CSS.",
-    tags: ["React", "JavaScript", "Tailwind CSS"],
-    githubUrl: "https://github.com",
-    liveUrl: "#"
+    category: 'WEB SYSTEM',
+    title: 'School Management System III - Capstone Project',
+    githubUrl: 'https://github.com/Amieljake929/Enrollment-Management-System---Cluster-7.git',
+    liveDemo: '',
+    description: 'This project is an AI-enhanced School Management System designed to streamline the enrollment process for Senior High School and College students through an intuitive, centralized portal. Beyond digitalizing standard admission procedures, the platform integrates Machine Learning capabilities powered by Hugging Face APIs to deliver an intelligent AI Course Assessment and Recommendation engine. By analyzing academic profiles and interests, this feature actively assists uncertain students in discovering their ideal educational path, reducing career misalignment and empowering students to make confident, informed decisions about their academic future.',
+    techStack: ['Laravel Framework', 'PHP Backend', 'Node.js', 'Express', 'MySQL', 'HTML5','CSS3', 'JavaScript', 'RESTful APIs', 'JSON', 'Hostinger'],
+    features: [
+      'Dual-Level Digital Enrollment Portal – A unified platform that streamlines the application and admission process for both Senior High School and College applicants.',
+      'AI-Powered Course Assessment – Machine Learning integration via Hugging Face APIs that evaluates student profiles and suggests the most suitable academic paths for undecided students.',
+      'Streamlined School Administration – Digitizes manual workflows to accelerate document processing, track applicant status in real-time, and lessen administrative overhead.',
+    ],
   },
   {
     id: 2,
-    title: "Interactive Web App",
-    description: "A feature-rich dynamic application exploring component states and modern JS.",
-    tags: ["React", "JavaScript"],
-    githubUrl: "https://github.com",
-    liveUrl: "#"
-  }
+    category: 'WEB SYSTEM',
+    title: 'Barangay Management System - BMS',
+    githubUrl: 'https://github.com/Amieljake929/Barangay-Bagbag-System.git',
+    liveDemo: '',
+    description: 'The Barangay Management System (BMS) is a custom web-based digital platform developed for Barangay Bagbag as our primary client to modernize local governance, streamline administrative operations, and improve public service delivery. Accessible through any standard web browser, the system serves as a centralized portal that eliminates long waiting times and tedious physical paperwork by enabling residents to conveniently request official documents online. Simultaneously, the BMS equips Barangay Bagbag officials and staff with powerful administrative tools to manage resident records, process applications efficiently, and coordinate community affairs in real time.',
+    techStack: ['Plain PHP', 'HTML5', 'Tailwind CSS', 'MySQL', 'JavaScript', 'RESTful APIs', 'JSON', 'Hostinger'],
+    features: [
+      'Online Document Request & Processing: Seamless web submission and automated tracking for essential official records, including Barangay Clearances, Certificates of Indigency, Business Permits, Cedulas, and Blotter filings.',
+      'Community Incident Reporting: A secure digital channel that allows residents to report local incidents, public safety concerns, and general inquiries directly to barangay authorities for rapid response.',
+      'Events & Announcements Portal: A centralized digital newsboard that keeps the community informed with real-time updates on upcoming events, public health advisories, and official barangay projects.',
+    ],
+  },
+  {
+    id: 3,
+    category: 'WEB APP',
+    title: 'Kaffa - Coffee Shop Website',
+    githubUrl: 'https://github.com/Amieljake929/Kaffa.git',
+    liveDemo: '',
+    description: 'The Kaffa - Coffee Shop Website is an interactive, web-based platform designed to showcase Kaffa is a premium coffee selection and provide customers with a seamless digital dining experience. Built for speed and convenience, the platform allows coffee enthusiasts to explore the menu, customize their favorite brews and pastries, and place online orders effortlessly from any browser or device. By digitizing daily transactions, Kaffa streamlines order management for staff while delivering a fast, user-friendly ordering journey for every customer.',
+    techStack: ['HTML5', 'Framer Motion', 'Tailwind CSS', 'Javascript', 'JSON'],
+    features: [
+      'Interactive Digital Menu: An organized display of Kaffa signature coffees, beverages, and food items, complete with customization options for size, sweetness level, and add-ons.',
+      'Seamless Add-to-Cart System: A dynamic shopping cart that lets customers review items, modify quantities, and calculate order totals in real time before checking out.',
+      'Integrated Online Ordering: A streamlined order management pipeline that transmits customer orders directly to the store for faster preparation, fulfillment, and customer pickup or delivery.',
+    ],
+  },
+  {
+    id: 4,
+    category: 'WEBSITE',
+    title: 'Personal Portfolio Website',
+    githubUrl: 'https://github.com/Amieljake929/React-Portfolio.git',
+    liveDemo: '',
+    description: 'The Personal Portfolio Website is a minimalist digital showcase designed to present professional projects, skills, and design capabilities with clarity and elegance. Built using design inspiration and components from Kombo Framer and Bryl Lim, the website offers an engaging, clean, and interactive user experience across all devices. The platform emphasizes content over clutter, allowing visitors and potential clients to seamlessly navigate through featured works, view project details, and connect directly.',
+    techStack: ['React', 'Tailwind CSS', 'Framer Motion', 'Lenis Scroll', 'React Router', 'JavaScript', 'JSON', 'Vercel'],
+    features: [
+      'Minimalist UI/UX Design: A clean, distraction-free layout inspired by Kombo Framer and Bryl Lim that highlights design aesthetics, typography, and visual hierarchy.',
+      'Interactive Project Showcase: An organized portfolio gallery featuring detailed project pages, interactive previews, and case studies.',
+      'Responsive Layout & Direct Contact: A fully responsive web interface equipped with smooth transitions and an integrated contact form for client inquiries and collaborations.',
+    ],
+  },
+  {
+    id: 5,
+    category: 'WEB SYSTEM',
+    title: 'Local Tour Guide - Travel Website',
+    githubUrl: 'https://github.com/christianbacay042504-coder/coderistyarn2.git',
+    liveDemo: '',
+    description: 'A web platform assisting tourists in exploring local destinations, booking tour itineraries, and leaving venue feedback.',
+    techStack: ['Plain PHP', 'HTML5','Tailwind CSS', 'REST API'],
+    features: [
+      'Destination search and categorizations',
+      'Tour guide booking system',
+      'User ratings and review portal',
+    ],
+  },
+  {
+    id: 6,
+    category: 'WEB SYSTEM',
+    title: 'PRCQC - System for Philippine Red Cross - Quezon City Chapter',
+    githubUrl: 'https://github.com/Amieljake929',
+    liveDemo: '',
+    description: 'An administrative web system built for chapter operations, inventory tracking, and volunteer management.',
+    techStack: ['Laravel Framework', 'PHP Backend', 'Tailwind CSS', 'JSON'],
+    features: [
+      'Volunteer activity logging',
+      'Donation and inventory record keeping',
+      'Administrative analytics overview',
+    ],
+  },
 ];

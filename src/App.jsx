@@ -15,6 +15,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
+import AIAssistant from './components/AIAssistant'; // Imported AI Assistant component
 
 function HomeOverview() {
   return (
@@ -57,7 +58,7 @@ function App() {
       {isLoading && <IntroLoader onFinish={() => setIsLoading(false)} />}
 
       {/* Main Container */}
-      <div className="min-h-screen bg-white flex font-sans text-gray-900">
+      <div className="min-h-screen bg-white flex font-sans text-gray-900 relative">
         <Sidebar isLoading={isLoading} />
 
         <main className="ml-0 lg:ml-72 flex-1 px-4 sm:px-8 lg:px-12 pt-20 lg:pt-8 pb-6 w-full lg:w-[calc(100%-18rem)] overflow-x-hidden flex flex-col justify-between min-h-screen">
@@ -117,11 +118,14 @@ function App() {
                 </Routes>
               </div>
 
-              {/* Inilipat ang Footer sa loob ng !isLoading para sabay silang mag-fade in */}
+              {/* Footer */}
               <Footer />
             </PageTransition>
           )}
         </main>
+
+        {/* Floating AI Assistant Widget */}
+        <AIAssistant />
       </div>
     </>
   );
