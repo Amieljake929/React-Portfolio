@@ -79,12 +79,12 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
   return (
     <>
       {/* Floating Header Container */}
-      <div className="fixed top-10 left-0 right-0 z-50 flex flex-col items-center px-4 pointer-events-none">
+      <div className="fixed top-14 left-0 right-0 z-50 flex flex-col items-center px-4 pointer-events-none">
         <motion.div
           initial={{ y: -40, opacity: 0 }}
           animate={isLoading ? { y: -40, opacity: 0 } : { y: 0, opacity: 1 }}
           transition={entrySpring}
-          className="pointer-events-auto flex items-center bg-white/90 text-gray-900 px-4 h-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.12)] border border-gray-200/80 backdrop-blur-xl origin-top justify-between"
+          className="pointer-events-auto flex items-center bg-[#f2f2f2] text-gray-900 px-4 h-14 rounded-2xl shadow-[0_10px_35px_rgba(0,0,0,0.1)] border border-gray-300/80 backdrop-blur-xl origin-top justify-between"
           style={{
             width: isScrolled && !isOpen ? '155px' : '230px',
             transition: 'width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -143,12 +143,12 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
           </button>
 
           {/* Chatbot Button at Oras (Pinagigitnaan ng Vertical Line) */}
-          <div className="flex items-center gap-2.5 pl-2.5 border-l border-gray-200 shrink-0">
+          <div className="flex items-center gap-2.5 pl-2.5 border-l border-gray-300/80 shrink-0">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsChatOpen(!isChatOpen)}
-              className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200/80 text-gray-900 px-2 py-1.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer shrink-0"
+              className="flex items-center gap-1 bg-white hover:bg-gray-100 text-gray-900 px-2 py-1.5 rounded-xl text-[11px] font-medium shadow-xs border border-gray-200 transition-colors cursor-pointer shrink-0"
               title="Chat with AI Assistant"
             >
               <MessageSquare size={13} className="text-indigo-600" />
@@ -172,7 +172,7 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
                   animate={{ opacity: 1, scale: 1, width: 'auto' }}
                   exit={{ opacity: 0, scale: 0.8, width: 0 }}
                   transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="flex items-center text-gray-600 text-[11px] font-semibold tracking-wider shrink-0 overflow-hidden"
+                  className="flex items-center text-gray-700 text-[11px] font-semibold tracking-wider shrink-0 overflow-hidden"
                 >
                   <span>{time}</span>
                 </motion.div>
@@ -189,10 +189,10 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -15, scale: 0.9 }}
               transition={dropdownSpring}
-              className="pointer-events-auto mt-3 w-full max-w-sm bg-white/95 backdrop-blur-2xl border border-gray-200/85 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col justify-between max-h-[80vh] overflow-y-auto origin-top"
+              className="pointer-events-auto mt-3 w-full max-w-sm bg-[#f2f2f2] backdrop-blur-2xl border border-gray-300/85 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col justify-between max-h-[80vh] overflow-y-auto origin-top"
             >
               <div className="flex flex-col text-left">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 px-3">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 px-3">
                   Menu
                 </span>
                 <nav className="flex flex-col gap-0.5">
@@ -205,8 +205,8 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
                         onClick={() => setIsOpen(false)}
                         className={`px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
                           isActive
-                            ? 'text-gray-900 bg-gray-100 font-semibold shadow-xs'
-                            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                            ? 'text-gray-900 bg-white font-semibold shadow-xs border border-gray-300/70'
+                            : 'text-gray-700 hover:text-gray-900 hover:bg-[#e8e8e8]'
                         }`}
                       >
                         {item.name}
@@ -216,13 +216,13 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
                 </nav>
               </div>
 
-              <hr className="border-gray-100 my-3" />
+              <hr className="border-gray-300/70 my-3" />
 
               <div className="text-left">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 px-3 block">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 px-3 block">
                   Social media
                 </span>
-                <div className="flex items-center justify-around text-gray-600 pt-0.5">
+                <div className="flex items-center justify-around text-gray-700 pt-0.5">
                   {socialLinks.map((social) => {
                     const SocialIcon = social.icon;
                     return (
@@ -233,7 +233,7 @@ export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsCha
                         rel="noopener noreferrer"
                         aria-label={social.name}
                         whileTap={{ scale: 0.85 }}
-                        className="p-2 rounded-xl hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                        className="p-2 rounded-xl hover:text-gray-900 hover:bg-[#e8e8e8] transition-colors"
                       >
                         <SocialIcon size={18} />
                       </motion.a>
