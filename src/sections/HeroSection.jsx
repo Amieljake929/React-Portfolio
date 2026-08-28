@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
+import { FaFacebookF, FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 
 export default function HeroSection() {
-  // Container Variant: Controls staggered entrance timing of each element
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -13,7 +13,6 @@ export default function HeroSection() {
     },
   };
 
-  // Item Variant: Blur-to-Clear Fade-In + Spring Slide Up
   const itemVariants = {
     hidden: {
       opacity: 0,
@@ -33,68 +32,70 @@ export default function HeroSection() {
     },
   };
 
+  const socialLinks = [
+    { name: 'Facebook', icon: FaFacebookF, href: 'https://www.facebook.com/amieljakee' },
+    { name: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/amieljake/' },
+    { name: 'GitHub', icon: FaGithub, href: 'https://github.com/Amieljake929' },
+    { name: 'LinkedIn', icon: FaLinkedinIn, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
+  ];
+
   return (
     <motion.section
       id="home"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="py-20 sm:py-12 my-4 sm:my-0 w-full flex flex-col items-center sm:items-start text-center sm:text-left justify-center"
+      className="pt-12 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
     >
-      {/* Availability Badge */}
-      <motion.div
-        variants={itemVariants}
-        className="inline-flex items-center gap-2 px-4 py-1.5 sm:px-3 sm:py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-medium mb-7 sm:mb-8 shadow-xs"
-      >
-        <span className="w-2 h-2 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        Open for new opportunities!
+      {/* Profile Avatar */}
+      <motion.div variants={itemVariants} className="mb-5">
+        <img
+          src="/images/Jake.jpg"
+          alt="Amiel Jake Baril"
+          className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover shadow-sm border border-gray-200"
+        />
       </motion.div>
 
-      {/* Main Title */}
-      <motion.h1
-        variants={itemVariants}
-        className="text-[2.6rem] sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-[1.15] mb-6 sm:mb-6"
-      >
-        Hey there!<br />
-        I'm Amiel Jake...
-      </motion.h1>
+      {/* Name and Subtitle */}
+      <motion.div variants={itemVariants} className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-1">
+          Amiel Jake Baril
+        </h1>
+        <p className="text-sm sm:text-base text-gray-500 font-normal">
+          Web Designer & Developer
+        </p>
+      </motion.div>
 
       {/* Description */}
       <motion.p
         variants={itemVariants}
-        className="text-gray-500 max-w-md text-[1.05rem] sm:text-base leading-relaxed mb-9 sm:mb-8 mx-auto sm:mx-0"
+        className="text-gray-600 text-sm sm:text-base leading-relaxed mb-6 max-w-lg"
       >
-        Designing intuitive interfaces and building smooth, modern web experiences from concept to code.
+        I'm a frontend and full-stack web developer specializing in digital design, interactive user interfaces, and clean web experiences. I help build functional, clear, and memorable applications that stand out and scale.
       </motion.p>
 
-      {/* Action Buttons */}
-      <motion.div 
-        variants={itemVariants} 
-        className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-3 w-full sm:w-auto"
+      {/* Social Media Links */}
+      <motion.div
+        variants={itemVariants}
+        className="flex items-center justify-start gap-5 text-gray-700"
       >
-        {/* Primary CTA: Resume Button */}
-        <motion.a
-          whileHover={{ scale: 1.03, y: -2 }}
-          whileTap={{ scale: 0.97 }}
-          href="/Amiel_Jake_Resume.pdf"
-          download="Amiel_Jake_Resume.pdf"
-          className="inline-flex items-center justify-center gap-2 px-5.5 py-3 sm:px-5 sm:py-2.5 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-all shadow-sm"
-        >
-          <span>Get Resume</span>
-          <svg className="w-4 h-4 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-        </motion.a>
-
-        {/* Secondary CTA: About Me */}
-        <motion.a
-          whileHover={{ scale: 1.03, x: 2 }}
-          whileTap={{ scale: 0.97 }}
-          href="#about"
-          className="inline-flex items-center justify-center gap-2 px-5.5 py-3 sm:px-5 sm:py-2.5 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm"
-        >
-          More about Me <span>&rarr;</span>
-        </motion.a>
+        {socialLinks.map((social) => {
+          const IconComponent = social.icon;
+          return (
+            <motion.a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-1 text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              <IconComponent size={20} />
+            </motion.a>
+          );
+        })}
       </motion.div>
     </motion.section>
   );

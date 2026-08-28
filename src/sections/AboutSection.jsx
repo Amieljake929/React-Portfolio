@@ -3,7 +3,6 @@ import BlurFade from '../components/BlurFade';
 
 export default function AboutSection() {
   const experiences = [
-
     {
       title: 'On-the-job Training IT / Technical Support',
       company: 'Philippine Red Cross - QC Chapter',
@@ -28,10 +27,11 @@ export default function AboutSection() {
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-6 py-8 text-gray-900">
+    // Nilagyan ng pt-24 at pb-12 para may magandang agwat mula sa floating navbar sa itaas
+    <div className="w-full max-w-5xl mx-auto px-6 pt-24 pb-12 text-gray-900">
       {/* Top Section: Header & Image */}
       <BlurFade delay={0.1}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-16">
           <div className="flex flex-col items-start gap-4">
             <span className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full border border-emerald-100">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -39,19 +39,18 @@ export default function AboutSection() {
             </span>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 leading-tight">
               About Me: <br />
-              code, kape, breakdown, ulit.
             </h1>
             <p className="text-gray-500 leading-relaxed text-sm mt-2">
               As a Web Designer and Developer, I am focused on the synergy between visual storytelling and seamless usability. I specialize in building digital products that are not just beautiful but are robust, responsive, and crafted to deliver exceptional user experiences from end-to-end.
             </p>
           </div>
 
-          {/* Tinanggal ang grayscale at pinalitan ang bg-black ng bg-gray-100 */}
-          <div className="w-full h-[280px] md:h-[340px] bg-gray-100 rounded-2xl overflow-hidden shadow-sm relative">
+          {/* Image Container - h-[300px] sa mobile para saktong height, square sa desktop */}
+          <div className="w-full max-w-md mx-auto h-[300px] md:h-auto md:aspect-square bg-gray-100 rounded-2xl overflow-hidden shadow-sm relative border border-gray-200/60">
             <img
-              src="/images/Jakes.jpg"
+              src="/images/Jake.jpg"
               alt="Profile"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-[center_18%] md:object-top"
             />
           </div>
         </div>

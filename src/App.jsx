@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
-import './App.css'; // Direct import
-import Sidebar from './components/Sidebar';
+import './App.css';
+import FloatingNavbar from './components/FloatingNavbar';
 import HeroSection from './sections/HeroSection';
+import AboutSnippet from './sections/AboutSnippet';
+import ServicesSection from './sections/ServicesSection';
+import TestimonialsSection from './sections/TestimonialsSection';
+import FAQSection from './sections/FAQSection';
 import ProjectsSection from './sections/ProjectsSection';
 import StackSection from './sections/StackSection';
 import GithubSection from './sections/GithubSection';
@@ -15,17 +19,25 @@ import ProjectDetailPage from './pages/ProjectDetailPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
-import AIAssistant from './components/AIAssistant'; // Imported AI Assistant component
+import AIAssistant from './components/AIAssistant';
 
 function HomeOverview() {
   return (
     <>
       <HeroSection />
-      <hr className="my-4 border-gray-200" />
+      <hr className="my-8 border-gray-200/60" />
       <ProjectsSection />
-      <hr className="my-4 border-gray-200" />
+      <hr className="my-8 border-gray-200/60" />
+      <AboutSnippet />
+      <hr className="my-8 border-gray-200/60" />
+      <ServicesSection />
+      <hr className="my-12 border-gray-200/60" />
+      <TestimonialsSection />
+      <hr className="my-12 border-gray-200/60" />
+      <FAQSection />
+      <hr className="my-12 border-gray-200/60" />
       <StackSection />
-      <hr className="my-4 border-gray-200" />
+      <hr className="my-12 border-gray-200/60" />
       <GithubSection />
     </>
   );
@@ -54,14 +66,12 @@ function App() {
 
   return (
     <>
-      {/* Intro Loader Screen Overlay */}
       {isLoading && <IntroLoader onFinish={() => setIsLoading(false)} />}
 
-      {/* Main Container */}
-      <div className="min-h-screen bg-white flex font-sans text-gray-900 relative">
-        <Sidebar isLoading={isLoading} />
+      <div className="min-h-screen bg-white font-sans text-gray-900 relative flex flex-col items-center overflow-x-hidden">
+        <FloatingNavbar isLoading={isLoading} />
 
-        <main className="ml-0 lg:ml-72 flex-1 px-4 sm:px-8 lg:px-12 pt-20 lg:pt-8 pb-6 w-full lg:w-[calc(100%-18rem)] overflow-x-hidden flex flex-col justify-between min-h-screen">
+        <main className="w-full max-w-2xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
           {!isLoading && (
             <PageTransition delay={0}>
               <div className="flex flex-col gap-2">
@@ -118,13 +128,11 @@ function App() {
                 </Routes>
               </div>
 
-              {/* Footer */}
               <Footer />
             </PageTransition>
           )}
         </main>
 
-        {/* Floating AI Assistant Widget */}
         <AIAssistant />
       </div>
     </>
