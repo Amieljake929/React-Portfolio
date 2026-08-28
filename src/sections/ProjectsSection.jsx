@@ -135,7 +135,7 @@ export default function ProjectsSection({ isPage = false }) {
     >
       <div className="w-full max-w-5xl mb-2 flex items-center justify-between px-4">
         <motion.h2 variants={itemVariants} className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-          Projects
+          Selected Projects
         </motion.h2>
         <div className="flex items-center gap-2">
           <button

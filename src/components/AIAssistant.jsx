@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, User } from 'lucide-react';
+import { X, Send, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function AIAssistant() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function AIAssistant({ isOpen, setIsOpen }) {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
   
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('portfolio_ai_chat');
@@ -55,20 +53,6 @@ export default function AIAssistant() {
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isOpen) return;
-      if (window.scrollY > 350) {
-        setIsMinimized(true);
-      } else {
-        setIsMinimized(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isOpen]);
-
   const sendMessage = async (textToSend) => {
     const query = textToSend || input;
     if (!query.trim() || loading) return;
@@ -107,46 +91,7 @@ export default function AIAssistant() {
   return (
     <>
       <AnimatePresence>
-        {!isOpen ? (
-          /* Floating Chat Head Button */
-          <motion.div 
-            key="chat-button-container"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
-            className="fixed right-4 sm:right-8 z-50 font-sans bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] sm:bottom-12"
-          >
-            <motion.button
-              key="chat-button"
-              layout
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => setIsOpen(true)}
-              className="bg-black text-white rounded-full shadow-2xl flex items-center justify-center cursor-pointer border border-gray-800 transition-all group overflow-hidden"
-            >
-              <motion.div 
-                layout 
-                className={`flex items-center ${isMinimized ? 'p-3.5 sm:p-4' : 'px-4 sm:px-5 py-3 sm:py-3.5 gap-2.5 sm:gap-3'}`}
-              >
-                <MessageSquare className="w-5 h-5 text-white shrink-0" />
-                <AnimatePresence>
-                  {!isMinimized && (
-                    <motion.span
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: 'auto' }}
-                      exit={{ opacity: 0, width: 0 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="text-xs sm:text-sm font-medium tracking-wide whitespace-nowrap overflow-hidden"
-                    >
-                      Chat with Amiel
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </motion.button>
-          </motion.div>
-        ) : (
+        {isOpen && (
           <React.Fragment key="chat-modal-group">
             {/* Dark Overlay Background (Mobile Only) */}
             <motion.div 
@@ -159,8 +104,8 @@ export default function AIAssistant() {
               className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 sm:hidden"
             />
 
-            {/* Centered Modal Container (Inangat ang bottom spacing sa desktop via sm:bottom-12 at sm:right-8) */}
-            <div className="fixed inset-0 z-50 font-sans flex items-center justify-center p-4 sm:p-0 sm:inset-auto sm:bottom-12 sm:right-8 pointer-events-none">
+            {/* Centered Modal Container */}
+            <div className="fixed inset-0 z-50 font-sans flex items-center justify-center p-4 sm:p-0 sm:inset-auto sm:top-28 sm:right-8 pointer-events-none">
               <motion.div
                 key="chat-window"
                 initial={{ opacity: 0, scale: 0.92, y: 20 }}
@@ -175,7 +120,7 @@ export default function AIAssistant() {
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full overflow-hidden bg-indigo-600 flex items-center justify-center shrink-0 border border-gray-200 shadow-xs relative">
                       <img 
-                        src="/images/Jakes.jpg" 
+                        src="/images/Jake.jpg" 
                         alt="Amiel AI" 
                         onError={(e) => { e.target.style.display = 'none'; }}
                         className="w-full h-full object-cover"
@@ -189,7 +134,6 @@ export default function AIAssistant() {
                     </div>
                   </div>
 
-                  {/* Refined & Animated Close Button */}
                   <motion.button
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}

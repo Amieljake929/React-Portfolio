@@ -17,7 +17,7 @@ export default function AboutSnippet() {
       {/* Small Image / Avatar preview like the reference image */}
       <motion.div className="mb-4">
         <img
-          src="/images/Jake.jpg"
+          src="/images/baguio.jpg"
           alt="Amiel Jake Baril"
           className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shadow-sm border border-gray-200"
         />

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, MessageSquare } from 'lucide-react';
 import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function FloatingNavbar({ isLoading = false }) {
+export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsChatOpen }) {
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -60,7 +60,6 @@ export default function FloatingNavbar({ isLoading = false }) {
     { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
   ];
 
-  // Spring configuration na may bounce para sa pag-open ng menu dropdown
   const dropdownSpring = {
     type: 'spring',
     stiffness: 400,
@@ -69,7 +68,6 @@ export default function FloatingNavbar({ isLoading = false }) {
     delay: 0.05
   };
 
-  // Spring configuration na may bounce para sa entry transition pagkatapos ng intro
   const entrySpring = {
     type: 'spring',
     stiffness: 350,
@@ -80,23 +78,22 @@ export default function FloatingNavbar({ isLoading = false }) {
 
   return (
     <>
-      {/* Floating Header Container - Naka-align center sa gitna ng screen */}
+      {/* Floating Header Container */}
       <div className="fixed top-10 left-0 right-0 z-50 flex flex-col items-center px-4 pointer-events-none">
         <motion.div
           initial={{ y: -40, opacity: 0 }}
           animate={isLoading ? { y: -40, opacity: 0 } : { y: 0, opacity: 1 }}
           transition={entrySpring}
-          className="pointer-events-auto flex items-center bg-white/90 text-gray-900 px-4 h-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.12)] border border-gray-200/80 backdrop-blur-xl origin-top"
+          className="pointer-events-auto flex items-center bg-white/90 text-gray-900 px-4 h-14 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.12)] border border-gray-200/80 backdrop-blur-xl origin-top justify-between"
           style={{
-            width: isScrolled && !isOpen ? '148px' : '260px',
-            justifyContent: isScrolled && !isOpen ? 'center' : 'space-between',
-            transition: 'width 0.35s cubic-bezier(0.4, 0, 0.2, 1), justify-content 0.35s ease',
+            width: isScrolled && !isOpen ? '155px' : '230px',
+            transition: 'width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
-          {/* Menu / Close Button & Smooth Text Animation */}
+          {/* Menu / Close Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 text-gray-900 focus:outline-none cursor-pointer group shrink-0"
+            className="flex items-center gap-1.5 text-gray-900 focus:outline-none cursor-pointer group shrink-0"
             aria-label="Toggle Navigation"
           >
             <motion.div
@@ -104,10 +101,9 @@ export default function FloatingNavbar({ isLoading = false }) {
               transition={{ duration: 0.2 }}
               className="shrink-0"
             >
-              {isOpen ? <X size={18} className="text-gray-900" /> : <Menu size={18} className="text-gray-900" />}
+              {isOpen ? <X size={16} className="text-gray-900" /> : <Menu size={16} className="text-gray-900" />}
             </motion.div>
             
-            {/* Conditional Text na may smooth fade at width transition */}
             <AnimatePresence mode="wait">
               {isOpen ? (
                 <motion.span
@@ -146,23 +142,46 @@ export default function FloatingNavbar({ isLoading = false }) {
             </AnimatePresence>
           </button>
 
-          {/* Live Clock Display - Smooth na nawawala at bumabalik */}
-          <AnimatePresence>
-            {(!isScrolled || isOpen) && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, width: 0 }}
-                animate={{ opacity: 1, scale: 1, width: 'auto' }}
-                exit={{ opacity: 0, scale: 0.8, width: 0 }}
-                transition={{ duration: 0.25, ease: 'easeInOut' }}
-                className="flex items-center text-gray-600 text-[11px] font-semibold pl-2.5 border-l border-gray-200 tracking-wider shrink-0 overflow-hidden"
-              >
-                <span>{time}</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Chatbot Button at Oras (Pinagigitnaan ng Vertical Line) */}
+          <div className="flex items-center gap-2.5 pl-2.5 border-l border-gray-200 shrink-0">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsChatOpen(!isChatOpen)}
+              className="flex items-center gap-1 bg-gray-100 hover:bg-gray-200/80 text-gray-900 px-2 py-1.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer shrink-0"
+              title="Chat with AI Assistant"
+            >
+              <MessageSquare size={13} className="text-indigo-600" />
+              {/* Kapag nag-scroll, mawawala ang salitang AI pero nandon pa rin ang icon button */}
+              {!isScrolled && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: 'auto' }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="text-[10px] font-semibold overflow-hidden whitespace-nowrap"
+                >
+                  AI
+                </motion.span>
+              )}
+            </motion.button>
+
+            <AnimatePresence>
+              {(!isScrolled || isOpen) && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, width: 0 }}
+                  animate={{ opacity: 1, scale: 1, width: 'auto' }}
+                  exit={{ opacity: 0, scale: 0.8, width: 0 }}
+                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                  className="flex items-center text-gray-600 text-[11px] font-semibold tracking-wider shrink-0 overflow-hidden"
+                >
+                  <span>{time}</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
-        {/* Dropdown Card na may Bounce Effect */}
+        {/* Dropdown Card */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -172,7 +191,6 @@ export default function FloatingNavbar({ isLoading = false }) {
               transition={dropdownSpring}
               className="pointer-events-auto mt-3 w-full max-w-sm bg-white/95 backdrop-blur-2xl border border-gray-200/85 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col justify-between max-h-[80vh] overflow-y-auto origin-top"
             >
-              {/* Menu Section */}
               <div className="flex flex-col text-left">
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 px-3">
                   Menu
@@ -198,10 +216,8 @@ export default function FloatingNavbar({ isLoading = false }) {
                 </nav>
               </div>
 
-              {/* Divider */}
               <hr className="border-gray-100 my-3" />
 
-              {/* Social Media Footer inside Dropdown */}
               <div className="text-left">
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 px-3 block">
                   Social media
@@ -230,7 +246,6 @@ export default function FloatingNavbar({ isLoading = false }) {
         </AnimatePresence>
       </div>
 
-      {/* Animated Backdrop Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
