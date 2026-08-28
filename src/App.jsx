@@ -32,11 +32,11 @@ function HomeOverview() {
       <hr className="my-8 border-gray-200/60" />
       <ServicesSection />
       <hr className="my-12 border-gray-200/60" />
+      <StackSection />
+      <hr className="my-12 border-gray-200/60" />
       <TestimonialsSection />
       <hr className="my-12 border-gray-200/60" />
       <FAQSection />
-      <hr className="my-12 border-gray-200/60" />
-      <StackSection />
       <hr className="my-12 border-gray-200/60" />
       <GithubSection />
     </>
@@ -45,6 +45,7 @@ function HomeOverview() {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false); // State para sa pagbubukas at pagsasara ng AI chat modal
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -69,7 +70,12 @@ function App() {
       {isLoading && <IntroLoader onFinish={() => setIsLoading(false)} />}
 
       <div className="min-h-screen bg-white font-sans text-gray-900 relative flex flex-col items-center overflow-x-hidden">
-        <FloatingNavbar isLoading={isLoading} />
+        {/* Ipinasa ang isChatOpen at setIsChatOpen props sa FloatingNavbar */}
+        <FloatingNavbar 
+          isLoading={isLoading} 
+          isChatOpen={isChatOpen} 
+          setIsChatOpen={setIsChatOpen} 
+        />
 
         <main className="w-full max-w-2xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
           {!isLoading && (
@@ -133,7 +139,11 @@ function App() {
           )}
         </main>
 
-        <AIAssistant />
+        {/* Ipinasa rin ang isOpen at setIsOpen props sa AIAssistant */}
+        <AIAssistant 
+          isOpen={isChatOpen} 
+          setIsOpen={setIsChatOpen} 
+        />
       </div>
     </>
   );

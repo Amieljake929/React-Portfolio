@@ -4,24 +4,24 @@ import { motion } from 'framer-motion';
 const TESTIMONIALS = [
   {
     id: 1,
-    name: 'Daniel Foster',
-    role: 'Product Designer',
+    name: 'Christian Irish Bacay',
+    role: 'Web Designer & Developer',
     content: 'Working with Amiel was smooth overall. The project turned out great, though communication could have been a bit quicker at times.',
-    avatar: '/images/Jake.jpg',
+    avatar: '/images/Ian.png',
   },
   {
     id: 2,
-    name: 'Aiden Carter',
-    role: 'Creative Director',
+    name: 'Jean Marc Aguilar',
+    role: 'Full Stack Web Developer',
     content: 'The design process was incredibly collaborative and efficient. Every idea was carefully considered and translated into visuals that felt both modern and practical. What impressed me most was the balance between creativity and functionality — the end product not only looked polished but also worked seamlessly across all platforms. It felt like the vision was fully understood and brought to life with care and precision.',
-    avatar: '/images/Jake.jpg',
+    avatar: '/images/Jm.png',
   },
   {
     id: 3,
-    name: 'Sophia Martinez',
-    role: 'Frontend Engineer',
-    content: 'Clean code and seamless animations! The portfolio implementation exceeded expectations and the attention to detail is top-notch.',
-    avatar: '/images/Jake.jpg',
+    name: 'Joel Fuentes',
+    role: 'PRCQC (DMS) - Supervisor',
+    content: 'Having Amiel Jake Baril as an OJT with us at the Philippine Red Cross - Quezon City Chapter has been an absolute privilege. Aside from showcasing his creativity by designing our daily Facebook pubmats and event graphics, Amiel also excelled in troubleshooting hardware and software issues, ensuring our workstations ran smoothly. His technical competence, reliability, and strong work ethic make him an invaluable asset to any team.',
+    avatar: '/images/Joel.png',
   },
 ];
 
