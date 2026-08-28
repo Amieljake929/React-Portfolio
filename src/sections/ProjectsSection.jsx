@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 
 const ALL_PROJECTS = [
@@ -7,6 +7,7 @@ const ALL_PROJECTS = [
     id: 1,
     category: 'WEB SYSTEM',
     title: 'School Management System III - Capstone Project',
+    description: 'An advanced enrollment and academic management portal equipped with an integrated AI-driven course assessment assistant, powered by Hugging Face machine learning models to help students navigate their degree paths.',
     image: '/projects/project1.png',
     githubUrl: 'https://github.com/Amieljake929/Enrollment-Management-System---Cluster-7.git',
   },
@@ -14,6 +15,7 @@ const ALL_PROJECTS = [
     id: 2,
     category: 'WEB SYSTEM',
     title: 'Barangay Management System - BMS',
+    description: 'A dedicated digital governance platform built for Barangay Bagbag Sauyo, streamlining resident document requests, official reporting workflows, and community announcements.',
     image: '/projects/project2.png',
     githubUrl: 'https://github.com/Amieljake929/Barangay-Bagbag-System.git',
   },
@@ -21,6 +23,7 @@ const ALL_PROJECTS = [
     id: 3,
     category: 'WEB APP',
     title: 'Kaffa - Coffee Shop Website',
+    description: 'A modern, responsive e-commerce web platform featuring an interactive product catalog, seamless add-to-cart management, and a smooth online ordering pipeline.',
     image: '/projects/project4.png',
     githubUrl: 'https://github.com/Amieljake929/Kaffa.git',
   },
@@ -28,6 +31,7 @@ const ALL_PROJECTS = [
     id: 4,
     category: 'WEBSITE',
     title: 'Personal Portfolio Website',
+    description: 'A minimalist developer portfolio crafted with React and Tailwind CSS, featuring smooth scroll physics, custom typography, interactive elements, and an integrated AI assistant.',
     image: '/projects/project5.png',
     githubUrl: 'https://github.com/Amieljake929/React-Portfolio.git',
   },
@@ -35,6 +39,7 @@ const ALL_PROJECTS = [
     id: 5,
     category: 'WEB SYSTEM',
     title: 'Local Tour Guide - Travel Website',
+    description: 'An immersive travel exploration platform designed to help tourists discover hidden local destinations, curated itineraries, and seamless booking insights.',
     image: '/projects/project6.jpg',
     githubUrl: 'https://github.com/christianbacay042504-coder/coderistyarn2.git',
   },
@@ -42,155 +47,200 @@ const ALL_PROJECTS = [
     id: 6,
     category: 'WEB SYSTEM',
     title: 'PRCQC - System for Philippine Red Cross - Quezon City Chapter',
+    description: 'An efficient web administrative platform designed for the Philippine Red Cross Quezon City Chapter to streamline data tracking, records keeping, and community service operations.',
     image: '/projects/project7.png',
     githubUrl: 'https://github.com/Amieljake929/PRCQC.git',
   },
 ];
 
 export default function ProjectsSection({ isPage = false }) {
-  const initialProjects = isPage ? ALL_PROJECTS : ALL_PROJECTS.slice(0, 3);
-  const [projects, setProjects] = useState(initialProjects);
-
-  const containerRef = useRef(null);
+  const projectsToDisplay = isPage ? ALL_PROJECTS : ALL_PROJECTS.slice(0, 3);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 25, filter: 'blur(8px)' },
+    hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
     visible: {
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
-      transition: {
-        type: 'spring',
-        stiffness: 120,
-        damping: 14,
-      },
+      transition: { type: 'spring', stiffness: 120, damping: 14 },
     },
   };
 
-  const handleSwap = (fromIndex, toIndex) => {
-    if (fromIndex === toIndex || toIndex < 0 || toIndex >= projects.length) return;
-    const updated = [...projects];
-    const temp = updated[fromIndex];
-    updated[fromIndex] = updated[toIndex];
-    updated[toIndex] = temp;
-    setProjects(updated);
+  if (isPage) {
+    return (
+      <motion.section
+        id="projects"
+        className="py-2 w-full flex flex-col items-center"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-50px' }}
+      >
+        <div className="w-full max-w-xl flex flex-col gap-12">
+          {ALL_PROJECTS.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} isActive={true} />
+          ))}
+        </div>
+      </motion.section>
+    );
+  }
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % projectsToDisplay.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + projectsToDisplay.length) % projectsToDisplay.length);
+  };
+
+  // Malinis at ligtas na touch handlers para hindi masira ang scroll ng page
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const distance = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      handleNext();
+    } else if (distance < -minSwipeDistance) {
+      handlePrev();
+    }
   };
 
   return (
     <motion.section
       id="projects"
-      className="py-4 w-full"
+      className="py-1 w-full flex flex-col items-center overflow-visible"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      {!isPage && (
-        <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center sm:text-left">
-          Recent Projects
+      <div className="w-full max-w-5xl mb-2 flex items-center justify-between px-4">
+        <motion.h2 variants={itemVariants} className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+          Projects
         </motion.h2>
-      )}
-
-      <div 
-        ref={containerRef}
-        className="flex flex-wrap justify-center gap-x-4 gap-y-8 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-10 w-full relative"
-      >
-        {projects.map((project, index) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            index={index}
-            totalItems={projects.length}
-            itemVariants={itemVariants}
-            onSwap={handleSwap}
-          />
-        ))}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrev}
+            className="p-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            aria-label="Previous project"
+          >
+            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={handleNext}
+            className="p-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            aria-label="Next project"
+          >
+            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {!isPage && (
-        <motion.div variants={itemVariants} className="mt-10 sm:mt-8 flex justify-center sm:justify-start">
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all cursor-pointer"
-          >
-            All Projects <span>&rarr;</span>
-          </Link>
-        </motion.div>
-      )}
+      {/* 3D Coverflow Carousel Container na may native touch events */}
+      <div 
+        className="w-full max-w-6xl relative h-[380px] sm:h-[410px] flex items-center justify-center px-12 sm:px-24 my-0 touch-pan-y"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {projectsToDisplay.map((project, index) => {
+          const total = projectsToDisplay.length;
+          let offset = (index - activeIndex + total) % total;
+          if (offset > total / 2) {
+            offset -= total;
+          }
+
+          const absOffset = Math.abs(offset);
+          const isActive = offset === 0;
+
+          let xPercentage = offset * 55;
+          let scale = isActive ? 1 : 0.72;
+          let zIndex = 30 - absOffset * 10;
+          let opacity = absOffset > 1 ? 0.15 : isActive ? 1 : 0.45;
+          let rotateY = offset * -10;
+
+          return (
+            <motion.div
+              key={project.id}
+              initial={false}
+              animate={{
+                x: `${xPercentage}%`,
+                scale,
+                zIndex,
+                opacity,
+                rotateY,
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              style={{
+                pointerEvents: absOffset > 1 ? 'none' : 'auto',
+                position: 'absolute',
+              }}
+              className="w-[260px] sm:w-[320px] cursor-pointer"
+              onClick={() => setActiveIndex(index)}
+            >
+              <ProjectCard project={project} isActive={isActive} />
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <motion.div variants={itemVariants} className="mt-1 w-full flex justify-center">
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors py-1"
+        >
+          See all projects <span>&rarr;</span>
+        </Link>
+      </motion.div>
     </motion.section>
   );
 }
 
-function ProjectCard({ project, index, totalItems, itemVariants, onSwap }) {
-  const [isDragging, setIsDragging] = useState(false);
+function ProjectCard({ project, isActive }) {
   const navigate = useNavigate();
 
-  const handleDragEnd = (event, info) => {
-    setIsDragging(false);
-    const { offset } = info;
-    const threshold = 80;
-
-    if (Math.abs(offset.x) > Math.abs(offset.y)) {
-      if (offset.x > threshold && index < totalItems - 1) {
-        onSwap(index, index + 1);
-      } else if (offset.x < -threshold && index > 0) {
-        onSwap(index, index - 1);
-      }
-    } else {
-      if (offset.y > threshold && index < totalItems - 1) {
-        onSwap(index, index + 1);
-      } else if (offset.y < -threshold && index > 0) {
-        onSwap(index, index - 1);
-      }
-    }
-  };
-
   return (
-    <motion.div
-      layout
-      variants={itemVariants}
-      className={`group flex flex-col items-center text-center w-[calc(50%-10px)] lg:w-full ${
-        totalItems === 3 && index === 2 ? 'sm:w-[calc(50%-10px)] lg:w-full' : ''
-      }`}
+    <div
+      onClick={(e) => {
+        if (isActive) {
+          navigate(`/projects/${project.id}`);
+        }
+      }}
+      className={`group flex flex-col text-left transition-all duration-300 ${isActive ? 'cursor-pointer' : 'cursor-pointer select-none'}`}
     >
-      {/* Floating Laptop Container */}
-      <div className="w-full aspect-[4/3.2] sm:aspect-[4/3] flex items-center justify-center p-1 sm:p-2 mb-2 sm:mb-4 relative">
-        <motion.div
-          drag
-          dragSnapToOrigin
-          dragElastic={0.2}
-          onDragStart={() => setIsDragging(true)}
-          onDragEnd={handleDragEnd}
-          whileDrag={{ scale: 1.05, zIndex: 50 }}
-          className="w-full relative z-10 transition-shadow duration-500 ease-out flex flex-col items-center cursor-grab active:cursor-grabbing"
-        >
-          <div className={`absolute -top-3 right-0 sm:-top-4 sm:right-1 z-30 pointer-events-none transition-opacity duration-200 ${isDragging ? 'opacity-0' : 'opacity-100'}`}>
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-gray-900/80 backdrop-blur-md text-white rounded-full text-[8px] sm:text-[10px] font-medium shadow-sm border border-white/20">
-              <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
-              </svg>
-              Drag me
-            </span>
-          </div>
-
-          <div className="w-full bg-[#0a0a0b] border-[1.5px] sm:border-[2.5px] border-[#38383a] rounded-t-lg sm:rounded-t-xl p-[2px] sm:p-[3px] relative shadow-[0_10px_30px_rgba(0,0,0,0.3)] lg:shadow-[0_20px_50px_rgba(0,0,0,0.3)] group-hover:shadow-[0_30px_60px_rgba(0,0,0,0.45)] transition-shadow duration-500">
+      <div className="w-full aspect-[4/3] flex items-center justify-center p-1 mb-1 relative">
+        <div className="w-full relative z-10 flex flex-col items-center transform transition-transform duration-500 ease-out">
+          
+          <div className="w-full bg-[#0a0a0b] border-[2px] sm:border-[2.5px] border-[#38383a] rounded-t-lg sm:rounded-t-xl p-[2px] sm:p-[3px] relative shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-6 sm:w-8 h-1.5 sm:h-2 bg-[#0a0a0b] border-b border-x border-[#2b2b2e] rounded-b-sm sm:rounded-b-md z-30 flex justify-center items-center">
               <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-[#111] border border-gray-700"></div>
             </div>
 
             <div className="w-full aspect-[16/10] bg-black rounded-t-sm sm:rounded-t-md overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 z-20 pointer-events-none"></div>
-
               <img
                 src={project.image}
                 alt={project.title}
@@ -199,66 +249,40 @@ function ProjectCard({ project, index, totalItems, itemVariants, onSwap }) {
             </div>
           </div>
 
-          <div className="w-[105%] h-1.5 sm:h-2.5 bg-gradient-to-r from-[#2c2c2e] via-[#4a4a4d] to-[#2c2c2e] rounded-b-sm sm:rounded-b-md relative shadow-md flex justify-center border-t border-gray-700/50">
+          <div className="w-[105%] h-1.5 sm:h-2 bg-gradient-to-r from-[#2c2c2e] via-[#4a4a4d] to-[#2c2c2e] rounded-b-sm sm:rounded-b-md relative shadow-md flex justify-center border-t border-gray-700/50">
             <div className="w-6 sm:w-10 h-0.5 sm:h-1 bg-[#1a1a1c] rounded-b-sm border-t border-gray-600"></div>
           </div>
 
-          <div className="w-[92%] h-2 sm:h-4 bg-black/40 rounded-[100%] blur-sm sm:blur-md mt-0.5 sm:mt-1 transition-all duration-500 group-hover:w-[98%] group-hover:bg-black/50 group-hover:blur-lg group-hover:mt-2"></div>
-        </motion.div>
+          <div className="w-[92%] h-2 sm:h-3 bg-black/15 rounded-[100%] blur-sm mt-1 transition-all duration-500"></div>
+        </div>
       </div>
 
-      {/* Details Container */}
-      <motion.div
-        animate={{
-          filter: isDragging ? 'blur(6px)' : 'blur(0px)',
-          opacity: isDragging ? 0.3 : 1,
-        }}
-        transition={{ duration: 0.2 }}
-        className="w-full flex flex-col items-center select-none"
-      >
-        <span className="text-[9px] sm:text-[11px] font-bold text-gray-400 tracking-wider uppercase mb-0.5 sm:mb-1">
-          {project.category}
-        </span>
-
-        <div className="w-full min-h-[2.25rem] sm:min-h-[2.5rem] mb-2 sm:mb-3 flex items-start justify-center">
-          <h3 className="text-[11px] sm:text-sm font-semibold text-gray-900 leading-tight line-clamp-2 whitespace-normal">
-            {project.title}
-          </h3>
-        </div>
-
-        {/* Buttons Group */}
-        <div className="mt-auto flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 w-full">
-          {/* View Details Button (Added cursor-pointer) */}
-          <button
-            onClick={() => !isDragging && navigate(`/projects/${project.id}`)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 border border-gray-300 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-medium bg-white text-gray-800 hover:bg-gray-100 hover:text-gray-900 transition-all shadow-sm cursor-pointer"
+      <div className="flex flex-col items-start w-full px-1 min-h-[55px]">
+        {isActive ? (
+          <motion.div 
+            initial={{ opacity: 0, y: 8 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.25 }}
+            className="w-full flex flex-col items-start"
           >
-            <span>View Details</span>
-            <span>&rarr;</span>
-          </button>
-
-          {/* Repository Button */}
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => isDragging && e.preventDefault()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 border border-gray-900 rounded-md sm:rounded-lg text-[10px] sm:text-xs font-medium bg-gray-900 text-white hover:bg-gray-700 transition-all cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="12"
-              height="14"
-              fill="currentColor"
-              viewBox="0 0 16 16"
-              className="w-3 h-3 transition-transform duration-300 group-hover:scale-110"
-            >
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-            </svg>
-            Code
-          </a>
-        </div>
-      </motion.div>
-    </motion.div>
+            <div className="w-full flex items-center justify-between mb-1">
+              <h3 className="text-sm sm:text-base font-bold text-gray-900 transition-colors line-clamp-1">
+                {project.title}
+              </h3>
+              <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+            <p className="text-xs sm:text-xs text-gray-600 leading-relaxed font-normal line-clamp-2">
+              {project.description}
+            </p>
+          </motion.div>
+        ) : (
+          <div className="h-[45px]"></div>
+        )}
+      </div>
+    </div>
   );
 }

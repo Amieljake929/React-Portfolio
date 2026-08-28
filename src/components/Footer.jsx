@@ -15,14 +15,14 @@ export default function Footer() {
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            Kombo Website
+            selfwork framer
           </a>{' '}
           &{' '}
           <a
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            Bryl Lim
+            kombo website
           </a>
         </p>
 
