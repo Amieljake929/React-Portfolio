@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Layers } from 'lucide-react';
 
 const SERVICES = [
   {
@@ -43,11 +44,15 @@ export default function ServicesSection() {
       transition={{ duration: 0.5 }}
       className="w-full flex flex-col items-start text-left py-2"
     >
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight mb-4">
-        Services
-      </h2>
+      <div className="flex flex-col items-start gap-2 mb-4">
+        <Layers className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
+        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+          Services
+        </h2>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full items-start">
+      {/* Ginamit ang grid-cols-2 para maging dalawa ang column kahit sa mobile */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full items-start">
         {SERVICES.map((service) => {
           const isOpen = openId === service.id;
 
@@ -55,12 +60,12 @@ export default function ServicesSection() {
             <div
               key={service.id}
               onClick={() => toggleService(service.id)}
-              className="bg-white border border-gray-200/80 rounded-2xl p-5 sm:p-6 shadow-sm hover:border-gray-300 transition-all duration-300 cursor-pointer relative flex flex-col justify-between self-start"
+              className="bg-white border border-gray-200/85 rounded-2xl p-4 sm:p-6 shadow-sm hover:border-gray-300 transition-all duration-300 cursor-pointer relative flex flex-col justify-between self-start"
             >
               {/* Arrow sa kanang tuktok */}
-              <div className="absolute top-5 right-5 w-7 h-7 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-700 transition-transform duration-300">
+              <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-700 transition-transform duration-300">
                 <svg
-                  className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -71,20 +76,20 @@ export default function ServicesSection() {
               </div>
 
               {/* Nilalaman ng Card: Image at Title */}
-              <div className="flex flex-col items-start pr-10">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-gray-200 shrink-0 mb-4">
+              <div className="flex flex-col items-start pr-8 sm:pr-10">
+                <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shrink-0 mb-3 sm:mb-4">
                   <img
                     src={service.image}
                     alt={service.title}
                     className="w-full h-full object-cover grayscale brightness-95 hover:grayscale-0 transition-all duration-300 block"
                   />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
+                <h3 className="text-sm sm:text-lg font-normal text-gray-900 mb-1 leading-snug">
                   {service.title}
                 </h3>
               </div>
 
-              {/* Description Animation na may Bounce effect */}
+              {/* Description Animation */}
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
@@ -92,16 +97,15 @@ export default function ServicesSection() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    // Dito inilagay ang spring animation para sa bounce
                     transition={{
                       type: 'spring',
-                      stiffness: 300, // Lakas ng bounce
-                      damping: 20,    // Bilis ng paghupa ng bounce
-                      mass: 1         // Bigat ng animation
+                      stiffness: 300,
+                      damping: 20,
+                      mass: 1,
                     }}
                     className="overflow-hidden"
                   >
-                    <p className="text-sm text-gray-600 leading-relaxed pt-2">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed pt-2">
                       {service.description}
                     </p>
                   </motion.div>

@@ -1,111 +1,142 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { Cpu } from 'lucide-react';
 
 export default function StackSection() {
-  const stackItems = [
-    {
-      name: 'Framer',
-      category: 'Web Design',
-      icon: 'https://cdn.simpleicons.org/framer/0055FF',
-    },
-    {
-      name: 'Figma',
-      category: 'Collaborative Design',
-      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-    },
-    {
-      name: 'React',
-          description: 'Component-based UI development.',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-    },
-    {
-      name: 'JavaScript',
-          description: 'Dynamic frontend functionality.',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-    },
-    {
-      name: 'ESLint',
-          description: 'Pluggable JavaScript linter.',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg',
-    },
-    {
-      name: 'Laravel',
-          description: 'Web application PHP framework.',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg',
-    },
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [isAllColored, setIsAllColored] = useState(false);
+
+  const allStacks = [
+    // Design & Prototyping
+    { name: 'Framer', icon: 'https://cdn.simpleicons.org/framer/0055FF' },
+    { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' },
+    // Frontend
+    { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
+    { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
+    { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
+    { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
+    { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+    { name: 'Vite', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vite/vite-original.svg' },
+    { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg' },
+    { name: 'ESLint', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg' },
+    // Backend & Database
+    { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
+    { name: 'Laravel', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg' },
+    { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+    { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
+    { name: 'REST API', icon: 'https://cdn.simpleicons.org/fastapi/009688' },
+    // AI & Tools
+    { name: 'OpenAI', icon: 'https://api.iconify.design/logos:openai-icon.svg' },
+    { name: 'Hugging Face', icon: 'https://api.iconify.design/logos:hugging-face-icon.svg' },
+    { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
+    { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
+    { name: 'VS Code', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
+    { name: 'Vercel', icon: 'https://cdn.simpleicons.org/vercel/000000' },
   ];
+
+  const handleBadgeClick = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.05 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 25, filter: 'blur(8px)' },
+    hidden: { opacity: 0, y: 15, filter: 'blur(4px)' },
     visible: {
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
-      transition: {
-        type: 'spring',
-        stiffness: 120,
-        damping: 14,
-      },
+      transition: { type: 'spring', stiffness: 120, damping: 14 },
     },
   };
 
   return (
     <motion.section
       id="stack"
-      className="py-8 w-full"
+      className="py-6 w-full flex flex-col items-start text-left"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      {/* Title */}
-      <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center sm:text-left">
-        Stack
-      </motion.h2>
+      {/* Header Container: Heading sa kaliwa, Clean iPhone Switch sa kanan (Walang box/border) */}
+      <motion.div variants={itemVariants} className="w-full flex items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col items-start gap-2">
+          <Cpu className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
+          <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+            Stack
+          </h2>
+        </div>
 
-      {/* Grid Container */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 w-full">
-        {stackItems.map((item, index) => (
-          <motion.div
-            key={index}
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-2 sm:gap-3.5 p-2.5 sm:p-4 bg-[#f8f8f8] hover:bg-[#f1f1f1] border border-transparent hover:border-gray-200 rounded-xl sm:rounded-2xl transition-all duration-300 cursor-pointer group"
+        {/* Walang background at border ang container na ito */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-600 font-medium tracking-tight select-none">
+            Color All
+          </span>
+          <button
+            onClick={() => setIsAllColored(!isAllColored)}
+            className={`w-11 h-6 flex items-center rounded-full p-0.5 transition-colors duration-300 cursor-pointer ${
+              isAllColored ? 'bg-[#34C759]' : 'bg-gray-300'
+            }`}
+            aria-label="Toggle Color All"
           >
-            <div className="w-8 h-8 sm:w-11 sm:h-11 bg-white rounded-lg sm:rounded-xl flex items-center justify-center p-1.5 sm:p-2 shadow-sm border border-gray-100 group-hover:scale-105 transition-transform duration-300 shrink-0">
-              <img
-                src={item.icon}
-                alt={item.name}
-                className="w-full h-full object-contain"
-              />
-            </div>
+            <motion.div
+              className="bg-white w-5 h-5 rounded-full shadow-md"
+              animate={{ x: isAllColored ? 20 : 0 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+            />
+          </button>
+        </div>
+      </motion.div>
 
-            <div className="flex flex-col min-w-0 w-full">
-              <h3 className="text-xs sm:text-sm font-bold text-gray-900 leading-tight truncate">
+      {/* Pill/Badge Grid Container */}
+      <motion.div variants={itemVariants} className="flex flex-wrap gap-2 w-full">
+        {allStacks.map((item, index) => {
+          const isSelected = activeIndex === index || isAllColored;
+
+          return (
+            <motion.div
+              key={index}
+              onClick={() => handleBadgeClick(index)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`inline-flex items-center gap-2 px-3 py-1.5 border rounded-full transition-all duration-200 cursor-pointer shadow-2xs group select-none ${
+                isSelected 
+                  ? 'bg-gray-100/90 border-gray-300 shadow-xs' 
+                  : 'bg-[#f8f8f8] hover:bg-[#f1f1f1] border-gray-200/80 hover:border-gray-300'
+              }`}
+            >
+              <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                <img
+                  src={item.icon}
+                  alt={item.name}
+                  className={`w-full h-full object-contain transition-all duration-300 ${
+                    isSelected
+                      ? 'grayscale-0 opacity-100 scale-110'
+                      : 'grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100'
+                  }`}
+                />
+              </div>
+              <span className="text-xs font-medium text-gray-800 tracking-tight">
                 {item.name}
-              </h3>
-              <p className="text-[10px] sm:text-xs text-gray-500 font-medium mt-0.5 truncate">
-                {item.category}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+              </span>
+            </motion.div>
+          );
+        })}
+      </motion.div>
 
       {/* Button navigating to separate route */}
-      <motion.div variants={itemVariants} className="mt-6 sm:mt-8 flex justify-center sm:justify-start">
+      <motion.div variants={itemVariants} className="mt-6">
         <Link
           to="/stack"
-          className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all"
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
         >
           All Stack <span>&rarr;</span>
         </Link>

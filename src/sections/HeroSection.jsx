@@ -173,7 +173,7 @@ export default function HeroSection() {
               </button>
 
               <div className="mb-6 pr-8">
-                <h3 className="text-2xl font-bold text-gray-900 tracking-tight mb-2">
+                <h3 className="text-2xl font-normal text-gray-900 tracking-tight mb-2">
                   Let's Connect!
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
@@ -183,7 +183,7 @@ export default function HeroSection() {
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
-                  <h4 className="text-base font-bold text-gray-900 mb-3">
+                  <h4 className="text-base font-normal text-gray-900 mb-3">
                     Get in Touch
                   </h4>
                   {/* Pinalitan ang grid-cols-1 sm:grid-cols-2 ng grid-cols-2 para laging magkatabi kahit sa mobile */}

@@ -136,7 +136,8 @@ export default function ProjectsSection({ isPage = false }) {
       {/* Pinatibay ang flex container para magkatabi ang text info at ang arrows kahit sa mobile view */}
       <div className="w-full max-w-5xl mb-0 flex flex-row items-end sm:items-center justify-between px-4 gap-4">
         <motion.div variants={itemVariants} className="flex flex-col items-start gap-2">
-          <Briefcase className="w-7 h-7 text-gray-500" />
+          {/* Binigyan ng strokeWidth={1.5} para pumayat ang icon */}
+          <Briefcase className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
           <h2 className="text-2xl font-normal text-gray-900 tracking-tight sm:text-3xl">
             Selected Projects
           </h2>
