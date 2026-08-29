@@ -22,7 +22,7 @@ export default function Footer() {
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            kombo website
+            flux framer
           </a>
         </p>
 

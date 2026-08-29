@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { MessageSquareQuote } from 'lucide-react';
 
 const TESTIMONIALS = [
   {
@@ -31,19 +32,17 @@ export default function TestimonialsSection() {
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const startXRef = useRef(0);
-  const scrollLeftRef = useRef(0);
   const posRef = useRef(0);
 
   useEffect(() => {
     let animationFrameId;
-    const speed = 1.2; // Bilis ng paggalaw
+    const speed = 1.2;
 
     const step = () => {
       if (!isPaused && !isDragging && trackRef.current) {
         posRef.current -= speed;
         const trackWidth = trackRef.current.scrollWidth / 2;
 
-        // Kapag umabot na sa kalahati, ibalik sa 0 nang walang putol para sa infinite loop
         if (Math.abs(posRef.current) >= trackWidth) {
           posRef.current = 0;
         }
@@ -57,7 +56,6 @@ export default function TestimonialsSection() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, isDragging]);
 
-  // Mouse / Touch drag handlers para masmooth ang pag-grab at pag-slide pabalik-balik
   const handleMouseDown = (e) => {
     setIsDragging(true);
     startXRef.current = e.pageX - posRef.current;
@@ -90,14 +88,23 @@ export default function TestimonialsSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full flex flex-col items-start text-left py-2 overflow-hidden"
+      className="w-full flex flex-col items-start text-left py-6 overflow-hidden"
     >
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight mb-4">
-        Testimonials
-      </h2>
+      {/* Heading na may Icon */}
+      <div className="flex flex-col items-start gap-2 mb-6">
+        <MessageSquareQuote className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
+        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+          Testimonials
+        </h2>
+      </div>
 
+      {/* Container na may Mask Fade Effect sa kaliwa at kanang gilid */}
       <div
         className="w-full overflow-hidden relative cursor-grab active:cursor-grabbing py-2 select-none"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+        }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => {
           setIsPaused(false);
@@ -113,11 +120,10 @@ export default function TestimonialsSection() {
           className="flex gap-4 w-max items-start"
           style={{ willChange: 'transform' }}
         >
-          {/* Doblehin ang listahan para sa seamless infinite loop */}
           {[...TESTIMONIALS, ...TESTIMONIALS].map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="w-[300px] sm:w-[350px] bg-white border border-gray-200/80 rounded-2xl p-5 shadow-sm shrink-0 flex flex-col justify-between h-auto"
+              className="w-[300px] sm:w-[350px] bg-white border border-gray-200/80 rounded-2xl p-5 shadow-2xs shrink-0 flex flex-col justify-between h-auto"
             >
               <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-6">
                 "{item.content}"
@@ -132,7 +138,7 @@ export default function TestimonialsSection() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-gray-900">
+                  <h4 className="text-xs sm:text-sm font-normal text-gray-900">
                     {item.name}
                   </h4>
                   <p className="text-[11px] sm:text-xs text-gray-500">

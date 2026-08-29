@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { HelpCircle } from 'lucide-react';
 
 const FAQS = [
   {
@@ -14,8 +15,8 @@ const FAQS = [
   },
   {
     id: 3,
-    question: 'Do you work with international clients?',
-    answer: 'Yes, I collaborate with clients worldwide remotely across different time zones.',
+    question: 'Are you open to full-time entry-level opportunities?',
+    answer: 'Yes, I am actively looking for full-time entry-level roles or junior positions where I can contribute, learn, and grow with a dynamic team.',
   },
   {
     id: 4,
@@ -44,11 +45,15 @@ export default function FAQSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full flex flex-col items-start text-left py-2"
+      className="w-full flex flex-col items-start text-left py-6"
     >
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight mb-4">
-        Frequently Asked Questions
-      </h2>
+      {/* Heading na may kasamang Icon */}
+      <div className="flex flex-col items-start gap-2 mb-6">
+        <HelpCircle className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
+        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+          Frequently Asked Questions
+        </h2>
+      </div>
 
       <div className="flex flex-col gap-3 w-full">
         {FAQS.map((faq) => {
@@ -58,11 +63,11 @@ export default function FAQSection() {
             <div
               key={faq.id}
               onClick={() => toggleFAQ(faq.id)}
-              className="bg-[#f9fafb] border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-sm hover:border-gray-300 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              className="bg-[#f9fafb] border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs hover:border-gray-300 transition-all duration-300 cursor-pointer flex flex-col justify-between"
             >
               {/* Question Header */}
               <div className="flex items-center justify-between w-full">
-                <h3 className="text-sm sm:text-base font-medium text-gray-900 pr-4">
+                <h3 className="text-sm sm:text-base font-normal text-gray-900 pr-4">
                   {faq.question}
                 </h3>
                 <div className="text-gray-800 text-lg font-light shrink-0 select-none">
