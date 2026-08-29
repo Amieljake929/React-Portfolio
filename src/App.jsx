@@ -45,7 +45,7 @@ function HomeOverview() {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isChatOpen, setIsChatOpen] = useState(false); // State para sa pagbubukas at pagsasara ng AI chat modal
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -70,14 +70,14 @@ function App() {
       {isLoading && <IntroLoader onFinish={() => setIsLoading(false)} />}
 
       <div className="min-h-screen bg-white font-sans text-gray-900 relative flex flex-col items-center overflow-x-hidden">
-        {/* Ipinasa ang isChatOpen at setIsChatOpen props sa FloatingNavbar */}
         <FloatingNavbar 
           isLoading={isLoading} 
           isChatOpen={isChatOpen} 
           setIsChatOpen={setIsChatOpen} 
         />
 
-        <main className="w-full max-w-2xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
+        {/* Set to max-w-3xl for a balanced, slightly narrower width */}
+        <main className="w-full max-w-3xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
           {!isLoading && (
             <PageTransition delay={0}>
               <div className="flex flex-col gap-2">
@@ -139,7 +139,6 @@ function App() {
           )}
         </main>
 
-        {/* Ipinasa rin ang isOpen at setIsOpen props sa AIAssistant */}
         <AIAssistant 
           isOpen={isChatOpen} 
           setIsOpen={setIsChatOpen} 

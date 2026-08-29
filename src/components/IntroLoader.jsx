@@ -7,7 +7,6 @@ const IntroLoader = ({ onFinish }) => {
   const letters = Array.from(text);
 
   useEffect(() => {
-    // Sapat na oras para mag-stay at mag-scroll nang malinaw sa gitna bago i-trigger ang exit
     const timer = setTimeout(() => {
       setIsVisible(false);
     }, 1600);
@@ -15,36 +14,34 @@ const IntroLoader = ({ onFinish }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Stagger Controller
   const containerVariants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.04, // Mabilis na pagpasok ng bawat letra
+        staggerChildren: 0.04,
         delayChildren: 0.05,
       },
     },
     exit: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.03, // Isa-isang aakyat pataas sa exit
+        staggerChildren: 0.03,
         staggerDirection: 1,
       },
     },
   };
 
-  // Letter Motion Variants
   const letterVariants = {
     hidden: {
       opacity: 0,
-      y: '100vh', // Galing sa dulo ng baba
-      filter: 'blur(20px)', // Bago pumasok ay naka-blur
+      y: '100vh',
+      filter: 'blur(20px)',
     },
     visible: {
       opacity: 1,
-      y: -20, // Dahan-dahang aakyat pataas habang nasa gitna
-      filter: 'blur(0px)', // Malinaw habang nasa gitna
+      y: -20,
+      filter: 'blur(0px)',
       transition: {
         duration: 1.2,
         ease: [0.16, 1, 0.3, 1],
@@ -52,11 +49,11 @@ const IntroLoader = ({ onFinish }) => {
     },
     exit: {
       opacity: 0,
-      y: '-100vh', // Aakyat diretso sa pinakataas ng screen
-      filter: 'blur(20px)', // Sabay na magbublur HABANG umaakyat pataas
+      y: '-100vh',
+      filter: 'blur(20px)',
       transition: {
         duration: 0.8,
-        ease: [0.7, 0, 0.84, 0], // Iisa ang ease at duration para 100% synchronized
+        ease: [0.7, 0, 0.84, 0],
       },
     },
   };
@@ -87,6 +84,7 @@ const IntroLoader = ({ onFinish }) => {
                 key={index}
                 variants={letterVariants}
                 className="loader-letter"
+                style={{ fontWeight: 400 }}
               >
                 {letter === ' ' ? '\u00A0' : letter}
               </motion.span>

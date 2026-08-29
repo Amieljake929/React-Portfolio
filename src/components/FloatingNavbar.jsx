@@ -1,263 +1,43 @@
-import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, MessageSquare } from 'lucide-react';
-import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-export default function FloatingNavbar({ isLoading = false, isChatOpen, setIsChatOpen }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [time, setTime] = useState('');
-  const [isScrolled, setIsScrolled] = useState(false);
+export default function FloatingNavbar({ isLoading = false }) {
   const location = useLocation();
-
-  // Live clock matching the reference style
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Track scroll position para sa pagliit at paglaki ng navbar
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Prevent background scrolling when mobile menu dropdown is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
 
   const menuItems = [
     { name: 'Home', path: '/' },
-    { name: 'Works', path: '/projects' },
+    { name: 'Projects', path: '/projects' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
 
-  const socialLinks = [
-    { name: 'Facebook', icon: FaFacebook, href: 'https://www.facebook.com/amieljakee' },
-    { name: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/amieljake/' },
-    { name: 'GitHub', icon: FaGithub, href: 'https://github.com/Amieljake929' },
-    { name: 'LinkedIn', icon: FaLinkedin, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
-  ];
-
-  const dropdownSpring = {
-    type: 'spring',
-    stiffness: 400,
-    damping: 22,
-    mass: 1,
-    delay: 0.05
-  };
-
-  const entrySpring = {
-    type: 'spring',
-    stiffness: 350,
-    damping: 15,
-    mass: 1,
-    delay: 1.2
-  };
-
   return (
-    <>
-      {/* Floating Header Container */}
-      <div className="fixed top-14 left-0 right-0 z-50 flex flex-col items-center px-4 pointer-events-none">
-        <motion.div
-          initial={{ y: -40, opacity: 0 }}
-          animate={isLoading ? { y: -40, opacity: 0 } : { y: 0, opacity: 1 }}
-          transition={entrySpring}
-          className="pointer-events-auto flex items-center bg-[#f2f2f2] text-gray-900 px-4 h-14 rounded-2xl shadow-[0_10px_35px_rgba(0,0,0,0.1)] border border-gray-300/80 backdrop-blur-xl origin-top justify-between"
-          style={{
-            width: isScrolled && !isOpen ? '155px' : '230px',
-            transition: 'width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        >
-          {/* Menu / Close Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-1.5 text-gray-900 focus:outline-none cursor-pointer group shrink-0"
-            aria-label="Toggle Navigation"
-          >
-            <motion.div
-              animate={{ rotate: isOpen ? 90 : 0 }}
-              transition={{ duration: 0.2 }}
-              className="shrink-0"
-            >
-              {isOpen ? <X size={16} className="text-gray-900" /> : <Menu size={16} className="text-gray-900" />}
-            </motion.div>
-            
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.span
-                  key="close"
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-xs font-semibold tracking-wide text-gray-900 overflow-hidden whitespace-nowrap"
-                >
-                  Close
-                </motion.span>
-              ) : isScrolled ? (
-                <motion.span
-                  key="name"
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="text-xs font-semibold tracking-wide text-gray-900 overflow-hidden whitespace-nowrap"
-                >
-                  Amiel Jake
-                </motion.span>
-              ) : (
-                <motion.span
-                  key="menu"
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="text-xs font-semibold tracking-wide text-gray-900 overflow-hidden whitespace-nowrap"
-                >
-                  Menu
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
-
-          {/* Chatbot Button at Oras (Pinagigitnaan ng Vertical Line) */}
-          <div className="flex items-center gap-2.5 pl-2.5 border-l border-gray-300/80 shrink-0">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsChatOpen(!isChatOpen)}
-              className="flex items-center gap-1 bg-white hover:bg-gray-100 text-gray-900 px-2 py-1.5 rounded-xl text-[11px] font-medium shadow-xs border border-gray-200 transition-colors cursor-pointer shrink-0"
-              title="Chat with AI Assistant"
-            >
-              <MessageSquare size={13} className="text-indigo-600" />
-              {/* Kapag nag-scroll, mawawala ang salitang AI pero nandon pa rin ang icon button */}
-              {!isScrolled && (
-                <motion.span
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  className="text-[10px] font-semibold overflow-hidden whitespace-nowrap"
-                >
-                  AI
-                </motion.span>
-              )}
-            </motion.button>
-
-            <AnimatePresence>
-              {(!isScrolled || isOpen) && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8, width: 0 }}
-                  animate={{ opacity: 1, scale: 1, width: 'auto' }}
-                  exit={{ opacity: 0, scale: 0.8, width: 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="flex items-center text-gray-700 text-[11px] font-semibold tracking-wider shrink-0 overflow-hidden"
-                >
-                  <span>{time}</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </motion.div>
-
-        {/* Dropdown Card */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -25, scale: 0.85 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -15, scale: 0.9 }}
-              transition={dropdownSpring}
-              className="pointer-events-auto mt-3 w-full max-w-sm bg-[#f2f2f2] backdrop-blur-2xl border border-gray-300/85 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col justify-between max-h-[80vh] overflow-y-auto origin-top"
-            >
-              <div className="flex flex-col text-left">
-                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 px-3">
-                  Menu
-                </span>
-                <nav className="flex flex-col gap-0.5">
-                  {menuItems.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                      <NavLink
-                        key={item.name}
-                        to={item.path}
-                        onClick={() => setIsOpen(false)}
-                        className={`px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
-                          isActive
-                            ? 'text-gray-900 bg-white font-semibold shadow-xs border border-gray-300/70'
-                            : 'text-gray-700 hover:text-gray-900 hover:bg-[#e8e8e8]'
-                        }`}
-                      >
-                        {item.name}
-                      </NavLink>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              <hr className="border-gray-300/70 my-3" />
-
-              <div className="text-left">
-                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5 px-3 block">
-                  Social media
-                </span>
-                <div className="flex items-center justify-around text-gray-700 pt-0.5">
-                  {socialLinks.map((social) => {
-                    const SocialIcon = social.icon;
-                    return (
-                      <motion.a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.name}
-                        whileTap={{ scale: 0.85 }}
-                        className="p-2 rounded-xl hover:text-gray-900 hover:bg-[#e8e8e8] transition-colors"
-                      >
-                        <SocialIcon size={18} />
-                      </motion.a>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <motion.div
+      initial={{ y: -30, opacity: 0 }}
+      animate={isLoading ? { y: -30, opacity: 0 } : { y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="w-full flex justify-center sticky top-0 z-50 mb-[-84px]"
+    >
+      <div className="bg-[#F6F6F6] rounded-b-[36px] pt-12 pb-10 px-16 sm:px-24 shadow-xs flex items-center justify-center">
+        <nav className="flex items-center justify-center gap-10 sm:gap-14">
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={`text-xs sm:text-sm font-medium transition-colors duration-200 ${
+                  isActive
+                    ? 'text-gray-900 font-semibold'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {item.name}
+              </NavLink>
+            );
+          })}
+        </nav>
       </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[3px]"
-          />
-        )}
-      </AnimatePresence>
-    </>
+    </motion.div>
   );
 }
