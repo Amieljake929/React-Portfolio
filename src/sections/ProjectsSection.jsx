@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
+import { Briefcase } from 'lucide-react';
 
 const ALL_PROJECTS = [
   {
@@ -104,7 +105,6 @@ export default function ProjectsSection({ isPage = false }) {
     setActiveIndex((prev) => (prev - 1 + projectsToDisplay.length) % projectsToDisplay.length);
   };
 
-  // Malinis at ligtas na touch handlers para hindi masira ang scroll ng page
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -133,11 +133,20 @@ export default function ProjectsSection({ isPage = false }) {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      <div className="w-full max-w-5xl mb-2 flex items-center justify-between px-4">
-        <motion.h2 variants={itemVariants} className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
-          Selected Projects
-        </motion.h2>
-        <div className="flex items-center gap-2">
+      {/* Pinatibay ang flex container para magkatabi ang text info at ang arrows kahit sa mobile view */}
+      <div className="w-full max-w-5xl mb-0 flex flex-row items-end sm:items-center justify-between px-4 gap-4">
+        <motion.div variants={itemVariants} className="flex flex-col items-start gap-2">
+          <Briefcase className="w-7 h-7 text-gray-500" />
+          <h2 className="text-2xl font-normal text-gray-900 tracking-tight sm:text-3xl">
+            Selected Projects
+          </h2>
+          <p className="text-xs sm:text-base text-gray-500 font-normal">
+            Some of the recent websites I've worked on.
+          </p>
+        </motion.div>
+        
+        {/* Navigation Buttons laging nasa kanan ng header row */}
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handlePrev}
             className="p-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
@@ -159,7 +168,6 @@ export default function ProjectsSection({ isPage = false }) {
         </div>
       </div>
 
-      {/* 3D Coverflow Carousel Container na may native touch events */}
       <div 
         className="w-full max-w-6xl relative h-[380px] sm:h-[410px] flex items-center justify-center px-12 sm:px-24 my-0 touch-pan-y"
         onTouchStart={handleTouchStart}
@@ -207,7 +215,7 @@ export default function ProjectsSection({ isPage = false }) {
         })}
       </div>
 
-      <motion.div variants={itemVariants} className="mt-1 w-full flex justify-center">
+      <motion.div variants={itemVariants} className="mt-4 w-full flex justify-center">
         <Link
           to="/projects"
           className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors py-1"
@@ -266,7 +274,7 @@ function ProjectCard({ project, isActive }) {
             className="w-full flex flex-col items-start"
           >
             <div className="w-full flex items-center justify-between mb-1">
-              <h3 className="text-sm sm:text-base font-bold text-gray-900 transition-colors line-clamp-1">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-900 transition-colors line-clamp-1">
                 {project.title}
               </h3>
               <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0">
