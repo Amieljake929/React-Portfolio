@@ -186,7 +186,7 @@ export default function StackPage() {
     >
       {/* Header */}
       <motion.div variants={itemVariants} className="mb-6 sm:mb-10 lg:mb-14 text-left max-w-xl">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-900 tracking-tight">
           Tech Stack & Tools
         </h1>
         <p className="text-xs sm:text-sm lg:text-base text-gray-500 mt-2 lg:mt-3 leading-relaxed">
@@ -198,7 +198,7 @@ export default function StackPage() {
       <div className="flex flex-col gap-8 lg:gap-12 w-full">
         {fullStackCategories.map((group, groupIdx) => (
           <motion.div key={groupIdx} variants={itemVariants} className="flex flex-col items-start gap-3 lg:gap-4 w-full">
-            <h2 className="text-xs sm:text-sm font-bold text-gray-400 tracking-wider uppercase border-b border-gray-100 pb-1.5 lg:pb-2.5 w-full text-left">
+            <h2 className="text-xs sm:text-sm font-normal text-gray-400 tracking-wider uppercase border-b border-gray-100 pb-1.5 lg:pb-2.5 w-full text-left">
               {group.category}
             </h2>
 
@@ -216,7 +216,7 @@ export default function StackPage() {
 
                   {/* Compact Text Details */}
                   <div className="flex flex-col min-w-0 w-full">
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-bold text-gray-900 truncate">
+                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-normal text-gray-900 truncate">
                       {item.name}
                     </h3>
                     <p className="text-[8.5px] sm:text-[11px] lg:text-xs text-gray-500 mt-0.5 line-clamp-2 leading-tight">

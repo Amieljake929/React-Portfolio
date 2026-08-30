@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { FiArrowRight, FiX } from 'react-icons/fi';
@@ -6,6 +6,27 @@ import { FiArrowRight, FiX } from 'react-icons/fi';
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  // Keyboard shortcut para sa pagpindot ng 'C' o 'c' na magbubukas ng mailto link
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Huwag i-trigger kung ang user ay nagta-type sa loob ng input o textarea
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        return;
+      }
+
+      if (e.key === 'c' || e.key === 'C') {
+        e.preventDefault();
+        // Palitan ang email address na ito ng iyong personal email
+        window.location.href = 'mailto:amieljake929@gmail.com';
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -126,7 +147,7 @@ export default function HeroSection() {
           I am Amiel Jake Baril, an IT fresh graduate and web designer & developer specializing in full-stack web solutions. Dedicated to building responsive, high-performance digital experiences, I combine modern frontend interfaces with robust backend architectures using React and Laravel to turn creative concepts into functional applications that deliver seamless user interactions.
         </motion.p>
 
-        {/* Get in touch link: Shown only on mobile (flex sm:hidden) */}
+        {/* Get in touch link: Shown only on mobile (flex sm:hidden). Ito pa rin ang magbubukas ng modal kapag clinick sa mobile */}
         <motion.div
           variants={itemVariants}
           className="flex sm:hidden mb-6 w-full"
@@ -153,7 +174,7 @@ export default function HeroSection() {
         </motion.div>
       </motion.section>
 
-      {/* Modal Dialog */}
+      {/* Modal Dialog (Para sa Mobile "Get in touch" click) */}
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
@@ -186,7 +207,6 @@ export default function HeroSection() {
                   <h4 className="text-base font-normal text-gray-900 mb-3">
                     Get in Touch
                   </h4>
-                  {/* Pinalitan ang grid-cols-1 sm:grid-cols-2 ng grid-cols-2 para laging magkatabi kahit sa mobile */}
                   <div className="grid grid-cols-2 gap-3 mb-3">
                     <input
                       type="text"

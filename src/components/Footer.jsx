@@ -15,14 +15,14 @@ export default function Footer() {
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            selfwork framer
+            flux framer
           </a>{' '}
           &{' '}
           <a
             href="#"
             className="text-gray-900 font-semibold underline underline-offset-2 hover:text-black transition-colors"
           >
-            flux framer
+            bryl lim
           </a>
         </p>
 

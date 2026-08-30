@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 export default function FloatingNavbar({ isLoading = false }) {
   const location = useLocation();
 
-  const menuItems = [
+  const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Projects', path: '/projects' },
     { name: 'About', path: '/about' },
+    { name: 'Gear', path: '/gear' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -18,9 +19,9 @@ export default function FloatingNavbar({ isLoading = false }) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="w-full flex justify-center sticky top-0 z-50 mb-[-84px]"
     >
-      <div className="bg-[#F6F6F6] rounded-b-[36px] pt-12 pb-10 px-16 sm:px-24 shadow-xs flex items-center justify-center">
-        <nav className="flex items-center justify-center gap-10 sm:gap-14">
-          {menuItems.map((item) => {
+      <div className="bg-[#F6F6F6] rounded-b-[36px] pt-12 pb-10 px-13 sm:px-19 shadow-xs flex items-center justify-center">
+        <nav className="flex items-center justify-center gap-6 sm:gap-10 relative">
+          {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <NavLink
