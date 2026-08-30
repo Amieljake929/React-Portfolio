@@ -137,11 +137,21 @@ export default function ProjectsSection({ isPage = false }) {
       <div className="w-full max-w-5xl mb-0 flex flex-row items-end sm:items-center justify-between px-4 gap-4">
         <motion.div variants={itemVariants} className="flex flex-col items-start gap-2">
           {/* Binigyan ng strokeWidth={1.5} para pumayat ang icon */}
-          <Briefcase className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-          <h2 className="text-2xl font-normal text-gray-900 tracking-tight sm:text-3xl">
+          <Briefcase 
+            className="w-7 h-7" 
+            strokeWidth={1.5}
+            style={{ color: 'var(--text-secondary)' }}
+          />
+          <h2 
+            className="text-2xl font-normal tracking-tight sm:text-3xl"
+            style={{ color: 'var(--text-primary)' }}
+          >
             Selected Projects
           </h2>
-          <p className="text-xs sm:text-base text-gray-500 font-normal">
+          <p 
+            className="text-xs sm:text-base font-normal"
+            style={{ color: 'var(--text-secondary)' }}
+          >
             Some of the recent websites I've worked on.
           </p>
         </motion.div>
@@ -150,19 +160,45 @@ export default function ProjectsSection({ isPage = false }) {
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handlePrev}
-            className="p-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            className="p-2 rounded-full border transition-colors shadow-sm cursor-pointer"
+            style={{ 
+              backgroundColor: 'var(--bg-primary)',
+              borderColor: 'var(--border-color)',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--bg-primary)'}
             aria-label="Previous project"
           >
-            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              viewBox="0 0 24 24"
+              style={{ color: 'var(--text-primary)' }}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={handleNext}
-            className="p-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            className="p-2 rounded-full border transition-colors shadow-sm cursor-pointer"
+            style={{ 
+              backgroundColor: 'var(--bg-primary)',
+              borderColor: 'var(--border-color)',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--bg-primary)'}
             aria-label="Next project"
           >
-            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              viewBox="0 0 24 24"
+              style={{ color: 'var(--text-primary)' }}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -219,7 +255,10 @@ export default function ProjectsSection({ isPage = false }) {
       <motion.div variants={itemVariants} className="mt-4 w-full flex justify-center">
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors py-1"
+          className="inline-flex items-center gap-2 text-sm font-medium transition-colors py-1"
+          style={{ color: 'var(--text-primary)' }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-primary)'}
         >
           See all projects <span>&rarr;</span>
         </Link>
@@ -275,16 +314,36 @@ function ProjectCard({ project, isActive }) {
             className="w-full flex flex-col items-start"
           >
             <div className="w-full flex items-center justify-between mb-1">
-              <h3 className="text-sm sm:text-base font-normal text-gray-900 transition-colors line-clamp-1">
+              <h3 
+                className="text-sm sm:text-base font-normal transition-colors line-clamp-1"
+                style={{ color: 'var(--text-primary)' }}
+              >
                 {project.title}
               </h3>
-              <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0">
+              <div 
+                className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0"
+                style={{ 
+                  backgroundColor: 'var(--bg-secondary)',
+                  color: 'var(--text-primary)',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#000000';
+                  e.target.style.color = '#ffffff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--bg-secondary)';
+                  e.target.style.color = 'var(--text-primary)';
+                }}
+              >
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </div>
             </div>
-            <p className="text-xs sm:text-xs text-gray-600 leading-relaxed font-normal line-clamp-2">
+            <p 
+              className="text-xs sm:text-xs leading-relaxed font-normal line-clamp-2"
+              style={{ color: 'var(--text-secondary)' }}
+            >
               {project.description}
             </p>
           </motion.div>

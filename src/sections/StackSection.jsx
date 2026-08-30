@@ -66,29 +66,41 @@ export default function StackSection() {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      {/* Header Container: Heading sa kaliwa, Clean iPhone Switch sa kanan (Walang box/border) */}
+      {/* Header Container: Heading sa kaliwa, Clean iPhone Switch sa kanan */}
       <motion.div variants={itemVariants} className="w-full flex items-center justify-between gap-4 mb-6">
         <div className="flex flex-col items-start gap-2">
-          <Cpu className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-          <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+          <Cpu 
+            className="w-7 h-7" 
+            strokeWidth={1.5} 
+            style={{ color: 'var(--text-secondary)' }}
+          />
+          <h2 
+            className="text-xl sm:text-2xl font-normal tracking-tight"
+            style={{ color: 'var(--text-primary)' }}
+          >
             Stack
           </h2>
         </div>
 
-        {/* Walang background at border ang container na ito */}
+        {/* Toggle Switch */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-600 font-medium tracking-tight select-none">
+          <span 
+            className="text-xs font-medium tracking-tight select-none"
+            style={{ color: 'var(--text-secondary)' }}
+          >
             Color All
           </span>
           <button
             onClick={() => setIsAllColored(!isAllColored)}
-            className={`w-11 h-6 flex items-center rounded-full p-0.5 transition-colors duration-300 cursor-pointer ${
-              isAllColored ? 'bg-[#34C759]' : 'bg-gray-300'
-            }`}
+            className="w-11 h-6 flex items-center rounded-full p-0.5 transition-colors duration-300 cursor-pointer"
+            style={{ 
+              backgroundColor: isAllColored ? '#34C759' : 'var(--bg-secondary)' 
+            }}
             aria-label="Toggle Color All"
           >
             <motion.div
-              className="bg-white w-5 h-5 rounded-full shadow-md"
+              className="w-5 h-5 rounded-full shadow-md"
+              style={{ backgroundColor: 'var(--bg-primary)' }}
               animate={{ x: isAllColored ? 20 : 0 }}
               transition={{ type: 'spring', stiffness: 500, damping: 35 }}
             />
@@ -107,11 +119,22 @@ export default function StackSection() {
               onClick={() => handleBadgeClick(index)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 border rounded-full transition-all duration-200 cursor-pointer shadow-2xs group select-none ${
-                isSelected 
-                  ? 'bg-gray-100/90 border-gray-300 shadow-xs' 
-                  : 'bg-[#f8f8f8] hover:bg-[#f1f1f1] border-gray-200/80 hover:border-gray-300'
-              }`}
+              className="inline-flex items-center gap-2 px-3 py-1.5 border rounded-full transition-all duration-200 cursor-pointer shadow-2xs group select-none"
+              style={{
+                backgroundColor: isSelected ? 'var(--bg-primary)' : 'var(--bg-secondary)',
+                borderColor: isSelected ? 'var(--text-secondary)' : 'var(--border-color)',
+                color: 'var(--text-primary)'
+              }}
+              onMouseEnter={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = 'var(--text-secondary)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isSelected) {
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                }
+              }}
             >
               <div className="w-4 h-4 flex items-center justify-center shrink-0">
                 <img
@@ -124,7 +147,7 @@ export default function StackSection() {
                   }`}
                 />
               </div>
-              <span className="text-xs font-medium text-gray-800 tracking-tight">
+              <span className="text-xs font-medium tracking-tight">
                 {item.name}
               </span>
             </motion.div>
@@ -136,7 +159,10 @@ export default function StackSection() {
       <motion.div variants={itemVariants} className="mt-6">
         <Link
           to="/stack"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+          style={{ color: 'var(--text-primary)' }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-primary)'}
         >
           All Stack <span>&rarr;</span>
         </Link>
