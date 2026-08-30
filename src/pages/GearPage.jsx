@@ -7,13 +7,13 @@ export default function GearPage() {
       name: 'Huawei Matebook D15 i3',
       description: '10th Gen Intel Core i3.',
       image: '/gear/Huawei.png',
-      link: '#',
+      link: 'https://consumer.huawei.com/ph/laptops/',
     },
     {
       name: 'Macbook Neo',
       description: '2408-by-1506 resolution.',
       image: '/gear/Macbook.png',
-      link: '#',
+      link: 'https://www.apple.com/ph/macbook-neo/',
     },
     {
       name: 'Wireless Keyboard',
