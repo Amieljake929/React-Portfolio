@@ -15,7 +15,7 @@ export default function ContactSection() {
               Available for Work
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-4xl md:text-5xl font-normal tracking-tight text-gray-900">
               Let's Connect!
             </h1>
 
@@ -31,7 +31,7 @@ export default function ContactSection() {
             
             {/* Left Column - Contact Form */}
             <div className="lg:col-span-8 flex flex-col gap-6">
-              <h2 className="text-lg font-bold text-gray-900">Get in Touch</h2>
+              <h2 className="text-lg font-normal text-gray-900">Get in Touch</h2>
 
               <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -67,7 +67,7 @@ export default function ContactSection() {
               
               {/* Contact Group */}
               <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-bold text-gray-900">Contact</h2>
+                <h2 className="text-lg font-normal text-gray-900">Contact</h2>
                 <div className="flex flex-col gap-3 text-sm text-gray-600">
                   <a href="mailto:amieljake929@gmail.com" className="flex items-center gap-3 hover:text-gray-900 transition-colors">
                     <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +86,7 @@ export default function ContactSection() {
 
               {/* Social Group */}
               <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-bold text-gray-900">Social</h2>
+                <h2 className="text-lg font-normal text-gray-900">Social</h2>
                 <div className="flex flex-col gap-3 text-sm text-gray-600">
                   <a href="https://x.com/amieljake11" target="_blank" rel="noreferrer" className="flex items-center gap-3 hover:text-gray-900 transition-colors">
                     <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">

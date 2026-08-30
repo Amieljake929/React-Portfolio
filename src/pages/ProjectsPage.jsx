@@ -34,8 +34,8 @@ export default function ProjectsPage() {
       className="py-6 sm:py-8 w-full max-w-6xl mx-auto"
     >
       {/* Page Header */}
-      <motion.div variants={itemVariants} className="mb-8 text-left">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
+      <motion.div variants={itemVariants} className="mt-9 mb-8 text-left">
+        <h1 className="text-3xl sm:text-4xl font-normal text-gray-900 tracking-tight">
           Featured Projects
         </h1>
         <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl">

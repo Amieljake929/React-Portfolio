@@ -275,7 +275,7 @@ function ProjectCard({ project, isActive }) {
             className="w-full flex flex-col items-start"
           >
             <div className="w-full flex items-center justify-between mb-1">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-900 transition-colors line-clamp-1">
+              <h3 className="text-sm sm:text-base font-normal text-gray-900 transition-colors line-clamp-1">
                 {project.title}
               </h3>
               <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0">

@@ -164,7 +164,7 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <div className="py-20 text-center">
-        <h2 className="text-2xl font-bold text-gray-900">Project Not Found</h2>
+        <h2 className="text-2xl font-normal text-gray-900">Project Not Found</h2>
         <button
           onClick={() => navigate('/projects')}
           className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium cursor-pointer"
@@ -207,10 +207,10 @@ export default function ProjectDetailPage() {
 
       {/* Category & Title Header */}
       <div className="mb-6">
-        <span className="text-[11px] font-bold text-gray-400 tracking-wider uppercase block mb-1">
+        <span className="text-[11px] font-normal text-gray-400 tracking-wider uppercase block mb-1">
           {project.category}
         </span>
-        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
+        <h1 className="text-2xl sm:text-4xl font-normal text-gray-900 leading-tight">
           {project.title}
         </h1>
       </div>
@@ -224,12 +224,12 @@ export default function ProjectDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-2">Overview</h2>
+            <h2 className="text-lg font-normal text-gray-900 mb-2">Overview</h2>
             <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-gray-900 mb-2">Key Features</h2>
+            <h2 className="text-lg font-normal text-gray-900 mb-2">Key Features</h2>
             <ul className="list-disc list-inside text-sm text-gray-600 space-y-1.5">
               {project.features.map((feature, idx) => (
                 <li key={idx}>{feature}</li>
@@ -241,7 +241,7 @@ export default function ProjectDetailPage() {
         {/* Sidebar Info */}
         <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 h-fit space-y-6">
           <div>
-            <h3 className="text-xs font-bold uppercase text-gray-400 mb-2.5">Technologies</h3>
+            <h3 className="text-xs font-normal uppercase text-gray-400 mb-2.5">Technologies</h3>
             <div className="flex flex-wrap gap-1.5">
               {project.techStack.map((tech, idx) => (
                 <span

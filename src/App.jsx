@@ -16,6 +16,7 @@ import ContactSection from './sections/ContactSection';
 import StackPage from './pages/StackPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
+import GearPage from './pages/GearPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
@@ -104,6 +105,14 @@ function App() {
                     element={
                       <PageTransition delay={0.1}>
                         <StackPage />
+                      </PageTransition>
+                    }
+                  />
+                  <Route
+                    path="/gear"
+                    element={
+                      <PageTransition delay={0.1}>
+                        <GearPage />
                       </PageTransition>
                     }
                   />
