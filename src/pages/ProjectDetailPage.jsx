@@ -163,11 +163,17 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <div className="py-20 text-center">
-        <h2 className="text-2xl font-normal text-gray-900">Project Not Found</h2>
+      <div className="py-20 text-center" style={{ color: 'var(--text-primary)' }}>
+        <h2 className="text-2xl font-normal mb-4">Project Not Found</h2>
         <button
           onClick={() => navigate('/projects')}
-          className="mt-4 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium cursor-pointer"
+          className="mt-4 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-colors"
+          style={{ 
+            backgroundColor: 'var(--text-primary)', 
+            color: 'var(--bg-primary)' 
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--text-primary)'}
         >
           Back to Projects
         </button>
@@ -184,12 +190,28 @@ export default function ProjectDetailPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className="py-4 sm:py-6 w-full max-w-5xl mx-auto px-4 sm:px-6"
+      style={{ color: 'var(--text-primary)' }}
     >
       {/* Back Button */}
       <div className="mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 border border-gray-200 rounded-full text-xs font-medium text-gray-600 bg-white hover:bg-gray-50 hover:text-gray-900 hover:border-gray-300 transition-all cursor-pointer shadow-sm"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 border rounded-full text-xs font-medium transition-all cursor-pointer shadow-sm"
+          style={{ 
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-secondary)',
+            backgroundColor: 'var(--bg-primary)'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'var(--bg-secondary)';
+            e.target.style.color = 'var(--text-primary)';
+            e.target.style.borderColor = 'var(--text-secondary)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'var(--bg-primary)';
+            e.target.style.color = 'var(--text-secondary)';
+            e.target.style.borderColor = 'var(--border-color)';
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -207,10 +229,13 @@ export default function ProjectDetailPage() {
 
       {/* Category & Title Header */}
       <div className="mb-6">
-        <span className="text-[11px] font-normal text-gray-400 tracking-wider uppercase block mb-1">
+        <span 
+          className="text-[11px] font-normal tracking-wider uppercase block mb-1"
+          style={{ color: 'var(--text-secondary)' }}
+        >
           {project.category}
         </span>
-        <h1 className="text-2xl sm:text-4xl font-normal text-gray-900 leading-tight">
+        <h1 className="text-2xl sm:text-4xl font-normal leading-tight">
           {project.title}
         </h1>
       </div>
@@ -224,13 +249,15 @@ export default function ProjectDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-6">
           <div>
-            <h2 className="text-lg font-normal text-gray-900 mb-2">Overview</h2>
-            <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
+            <h2 className="text-lg font-normal mb-2">Overview</h2>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              {project.description}
+            </p>
           </div>
 
           <div>
-            <h2 className="text-lg font-normal text-gray-900 mb-2">Key Features</h2>
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1.5">
+            <h2 className="text-lg font-normal mb-2">Key Features</h2>
+            <ul className="list-disc list-inside text-sm space-y-1.5" style={{ color: 'var(--text-secondary)' }}>
               {project.features.map((feature, idx) => (
                 <li key={idx}>{feature}</li>
               ))}
@@ -239,14 +266,27 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Sidebar Info */}
-        <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 h-fit space-y-6">
+        <div 
+          className="p-6 rounded-xl border h-fit space-y-6"
+          style={{ 
+            backgroundColor: 'var(--bg-secondary)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
           <div>
-            <h3 className="text-xs font-normal uppercase text-gray-400 mb-2.5">Technologies</h3>
+            <h3 className="text-xs font-normal uppercase mb-2.5" style={{ color: 'var(--text-secondary)' }}>
+              Technologies
+            </h3>
             <div className="flex flex-wrap gap-1.5">
               {project.techStack.map((tech, idx) => (
                 <span
                   key={idx}
-                  className="px-2.5 py-1 bg-white border border-gray-200 rounded-md text-xs font-medium text-gray-700"
+                  className="px-2.5 py-1 border rounded-md text-xs font-medium transition-colors"
+                  style={{ 
+                    backgroundColor: 'var(--bg-primary)',
+                    borderColor: 'var(--border-color)',
+                    color: 'var(--text-primary)'
+                  }}
                 >
                   {tech}
                 </span>
@@ -254,12 +294,25 @@ export default function ProjectDetailPage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 pt-3 border-t border-gray-200">
+          <div 
+            className="flex flex-col gap-2 pt-3"
+            style={{ 
+              borderColor: 'var(--border-color)',
+              borderTopWidth: '1px',
+              borderTopStyle: 'solid'
+            }}
+          >
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full text-center px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-medium hover:bg-gray-700 transition-colors cursor-pointer"
+              className="w-full text-center px-4 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer"
+              style={{ 
+                backgroundColor: 'var(--text-primary)',
+                color: 'var(--bg-primary)'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--text-secondary)'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--text-primary)'}
             >
               View Repository
             </a>
@@ -268,7 +321,13 @@ export default function ProjectDetailPage() {
                 href={project.liveDemo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-xs font-medium hover:bg-gray-100 transition-colors cursor-pointer"
+                className="w-full text-center px-4 py-2 border rounded-lg text-xs font-medium transition-colors cursor-pointer"
+                style={{ 
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
               >
                 Live Demo
               </a>

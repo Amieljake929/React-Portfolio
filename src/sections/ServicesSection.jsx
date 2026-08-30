@@ -45,8 +45,15 @@ export default function ServicesSection() {
       className="w-full flex flex-col items-start text-left py-2"
     >
       <div className="flex flex-col items-start gap-2 mb-4">
-        <Layers className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+        <Layers 
+          className="w-7 h-7" 
+          strokeWidth={1.5} 
+          style={{ color: 'var(--text-secondary)' }}
+        />
+        <h2 
+          className="text-xl sm:text-2xl font-normal tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Services
         </h2>
       </div>
@@ -60,10 +67,31 @@ export default function ServicesSection() {
             <div
               key={service.id}
               onClick={() => toggleService(service.id)}
-              className="bg-white border border-gray-200/85 rounded-2xl p-4 sm:p-6 shadow-sm hover:border-gray-300 transition-all duration-300 cursor-pointer relative flex flex-col justify-between self-start"
+              className="rounded-2xl p-4 sm:p-6 shadow-sm transition-all duration-300 cursor-pointer relative flex flex-col justify-between self-start"
+              style={{ 
+                backgroundColor: 'var(--bg-primary)',
+                borderColor: 'var(--border-color)',
+                borderWidth: '1px',
+                borderStyle: 'solid'
+              }}
+              onMouseEnter={(e) => {
+                // Mag-iiba ang border color sa hover (mas prominent)
+                e.currentTarget.style.borderColor = 'var(--text-secondary)';
+              }}
+              onMouseLeave={(e) => {
+                // Babalik sa normal border color
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+              }}
             >
               {/* Arrow sa kanang tuktok */}
-              <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-700 transition-transform duration-300">
+              <div 
+                className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-transform duration-300"
+                style={{ 
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              >
                 <svg
                   className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                   fill="none"
@@ -77,14 +105,20 @@ export default function ServicesSection() {
 
               {/* Nilalaman ng Card: Image at Title */}
               <div className="flex flex-col items-start pr-8 sm:pr-10">
-                <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border border-gray-200 shrink-0 mb-3 sm:mb-4">
+                <div 
+                  className="w-12 h-12 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border shrink-0 mb-3 sm:mb-4"
+                  style={{ borderColor: 'var(--border-color)' }}
+                >
                   <img
                     src={service.image}
                     alt={service.title}
                     className="w-full h-full object-cover grayscale brightness-95 hover:grayscale-0 transition-all duration-300 block"
                   />
                 </div>
-                <h3 className="text-sm sm:text-lg font-normal text-gray-900 mb-1 leading-snug">
+                <h3 
+                  className="text-sm sm:text-lg font-normal mb-1 leading-snug"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   {service.title}
                 </h3>
               </div>
@@ -105,7 +139,10 @@ export default function ServicesSection() {
                     }}
                     className="overflow-hidden"
                   >
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed pt-2">
+                    <p 
+                      className="text-xs sm:text-sm leading-relaxed pt-2"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
                       {service.description}
                     </p>
                   </motion.div>

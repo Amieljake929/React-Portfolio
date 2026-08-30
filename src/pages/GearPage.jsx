@@ -97,7 +97,10 @@ export default function GearPage() {
 
   const renderSection = (title, items) => (
     <div className="mb-16">
-      <h2 className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-8">
+      <h2 
+        className="text-xs font-semibold tracking-widest uppercase mb-8"
+        style={{ color: 'var(--text-secondary)' }}
+      >
         {title}
       </h2>
       <div className="grid grid-cols-2 gap-6">
@@ -108,7 +111,17 @@ export default function GearPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: index * 0.05 }}
-            className="group bg-transparent rounded-xl border border-gray-200 p-6 md:p-8 flex flex-col justify-between hover:border-gray-300 transition-all duration-200 shadow-xs relative min-h-[260px] md:min-h-[320px]"
+            className="group rounded-xl border p-6 md:p-8 flex flex-col justify-between transition-all duration-200 shadow-xs relative min-h-[260px] md:min-h-[320px]"
+            style={{ 
+              backgroundColor: 'var(--bg-primary)',
+              borderColor: 'var(--border-color)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--text-secondary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+            }}
           >
             <div className="h-40 md:h-60 w-full flex items-center justify-center mb-4 md:mb-6 overflow-hidden rounded-lg">
               <img
@@ -122,14 +135,18 @@ export default function GearPage() {
             </div>
             <div className="flex-grow flex flex-col justify-end">
               <div className="flex items-start justify-between gap-2 mb-1">
-                <h3 className="text-xs md:text-sm font-normal text-gray-900 transition-colors leading-tight">
+                <h3 
+                  className="text-xs md:text-sm font-normal transition-colors leading-tight"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   {item.name}
                 </h3>
                 <svg
-                  className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0 mt-0.5"
+                  className="w-3.5 h-3.5 md:w-4 md:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0 mt-0.5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   <path
                     strokeLinecap="round"
@@ -139,7 +156,12 @@ export default function GearPage() {
                   />
                 </svg>
               </div>
-              <p className="text-[11px] md:text-xs text-gray-500 leading-snug">{item.description}</p>
+              <p 
+                className="text-[11px] md:text-xs leading-snug"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                {item.description}
+              </p>
             </div>
           </motion.a>
         ))}
@@ -148,7 +170,10 @@ export default function GearPage() {
   );
 
   return (
-    <div className="min-h-screen bg-white pt-16 pb-24 px-4 sm:px-8 lg:px-12">
+    <div 
+      className="min-h-screen pt-16 pb-24 px-4 sm:px-8 lg:px-12"
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -156,10 +181,16 @@ export default function GearPage() {
           transition={{ duration: 0.5 }}
           className="mb-16"
         >
-          <h1 className="text-4xl font-normal tracking-tight text-gray-900 mb-4">
+          <h1 
+            className="text-4xl font-normal tracking-tight mb-4"
+            style={{ color: 'var(--text-primary)' }}
+          >
             Gear
           </h1>
-          <p className="text-base text-gray-600 max-w-2xl leading-relaxed">
+          <p 
+            className="text-base max-w-2xl leading-relaxed"
+            style={{ color: 'var(--text-secondary)' }}
+          >
             The hardware and tools I use to build, create, and stay productive — my desk setup, everyday carry, and personal care essentials.
           </p>
         </motion.div>

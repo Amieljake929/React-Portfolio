@@ -183,13 +183,14 @@ export default function StackPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      style={{ color: 'var(--text-primary)' }}
     >
       {/* Header */}
       <motion.div variants={itemVariants} className="mb-6 sm:mb-10 lg:mb-14 text-left max-w-xl">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-normal text-gray-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-normal tracking-tight">
           Tech Stack & Tools
         </h1>
-        <p className="text-xs sm:text-sm lg:text-base text-gray-500 mt-2 lg:mt-3 leading-relaxed">
+        <p className="text-xs sm:text-sm lg:text-base mt-2 lg:mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           A full overview of the tools, technologies, and software used in building modern web applications.
         </p>
       </motion.div>
@@ -198,7 +199,14 @@ export default function StackPage() {
       <div className="flex flex-col gap-8 lg:gap-12 w-full">
         {fullStackCategories.map((group, groupIdx) => (
           <motion.div key={groupIdx} variants={itemVariants} className="flex flex-col items-start gap-3 lg:gap-4 w-full">
-            <h2 className="text-xs sm:text-sm font-normal text-gray-400 tracking-wider uppercase border-b border-gray-100 pb-1.5 lg:pb-2.5 w-full text-left">
+            <h2 
+              className="text-xs sm:text-sm font-normal tracking-wider uppercase pb-1.5 lg:pb-2.5 w-full text-left"
+              style={{ 
+                color: 'var(--text-secondary)',
+                borderBottom: '1px solid',
+                borderColor: 'var(--border-color)'
+              }}
+            >
               {group.category}
             </h2>
 
@@ -207,19 +215,35 @@ export default function StackPage() {
               {group.items.map((item, itemIdx) => (
                 <div
                   key={itemIdx}
-                  className="flex flex-row items-center text-left gap-1.5 sm:gap-3 lg:gap-3.5 p-1.5 sm:p-3 lg:p-4 bg-[#f8f8f8] hover:bg-[#f1f1f1] border border-transparent hover:border-gray-200 rounded-lg sm:rounded-xl lg:rounded-2xl transition-all duration-300"
+                  className="flex flex-row items-center text-left gap-1.5 sm:gap-3 lg:gap-3.5 p-1.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl lg:rounded-2xl transition-all duration-300 border"
+                  style={{ 
+                    backgroundColor: 'var(--bg-primary)',
+                    borderColor: 'var(--border-color)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--text-secondary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--border-color)';
+                  }}
                 >
                   {/* Icon Container */}
-                  <div className="w-5 h-5 sm:w-8 sm:h-8 lg:w-9 lg:h-9 bg-white rounded flex items-center justify-center p-0.5 sm:p-1.5 shadow-sm border border-gray-100 shrink-0">
+                  <div 
+                    className="w-5 h-5 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded flex items-center justify-center p-0.5 sm:p-1.5 shadow-sm border shrink-0"
+                    style={{ 
+                      backgroundColor: 'var(--bg-secondary)',
+                      borderColor: 'var(--border-color)'
+                    }}
+                  >
                     <img src={item.icon} alt={item.name} className="w-full h-full object-contain" />
                   </div>
 
                   {/* Compact Text Details */}
                   <div className="flex flex-col min-w-0 w-full">
-                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-normal text-gray-900 truncate">
+                    <h3 className="text-[10px] sm:text-xs lg:text-sm font-normal truncate" style={{ color: 'var(--text-primary)' }}>
                       {item.name}
                     </h3>
-                    <p className="text-[8.5px] sm:text-[11px] lg:text-xs text-gray-500 mt-0.5 line-clamp-2 leading-tight">
+                    <p className="text-[8.5px] sm:text-[11px] lg:text-xs mt-0.5 line-clamp-2 leading-tight" style={{ color: 'var(--text-secondary)' }}>
                       {item.description}
                     </p>
                   </div>

@@ -49,8 +49,15 @@ export default function FAQSection() {
     >
       {/* Heading na may kasamang Icon */}
       <div className="flex flex-col items-start gap-2 mb-6">
-        <HelpCircle className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+        <HelpCircle 
+          className="w-7 h-7" 
+          strokeWidth={1.5} 
+          style={{ color: 'var(--text-secondary)' }}
+        />
+        <h2 
+          className="text-xl sm:text-2xl font-normal tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Frequently Asked Questions
         </h2>
       </div>
@@ -63,14 +70,29 @@ export default function FAQSection() {
             <div
               key={faq.id}
               onClick={() => toggleFAQ(faq.id)}
-              className="bg-[#f9fafb] border border-gray-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs hover:border-gray-300 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              className="rounded-2xl p-4 sm:p-5 shadow-2xs transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              style={{
+                // Gumamit ng bg-secondary para magkaroon ng contrast mula sa main background (parang original na bg-[#f9fafb])
+                backgroundColor: 'var(--bg-secondary)',
+                borderColor: 'var(--border-color)',
+                borderWidth: '1px',
+                borderStyle: 'solid'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text-secondary)'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
             >
               {/* Question Header */}
               <div className="flex items-center justify-between w-full">
-                <h3 className="text-sm sm:text-base font-normal text-gray-900 pr-4">
+                <h3 
+                  className="text-sm sm:text-base font-normal pr-4"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   {faq.question}
                 </h3>
-                <div className="text-gray-800 text-lg font-light shrink-0 select-none">
+                <div 
+                  className="text-lg font-light shrink-0 select-none"
+                  style={{ color: 'var(--text-primary)' }}
+                >
                   <svg
                     className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}
                     fill="none"
@@ -95,8 +117,18 @@ export default function FAQSection() {
                     className="overflow-hidden"
                   >
                     {/* Inner wrapper para sa border at padding para maging smooth ang exit */}
-                    <div className="border-t border-gray-200/60 pt-3 mt-3">
-                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    <div 
+                      className="pt-3 mt-3"
+                      style={{ 
+                        borderColor: 'var(--border-color)',
+                        borderTopWidth: '1px',
+                        borderTopStyle: 'solid'
+                      }}
+                    >
+                      <p 
+                        className="text-xs sm:text-sm leading-relaxed"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
                         {faq.answer}
                       </p>
                     </div>

@@ -92,8 +92,15 @@ export default function TestimonialsSection() {
     >
       {/* Heading na may Icon */}
       <div className="flex flex-col items-start gap-2 mb-6">
-        <MessageSquareQuote className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+        <MessageSquareQuote 
+          className="w-7 h-7" 
+          strokeWidth={1.5} 
+          style={{ color: 'var(--text-secondary)' }}
+        />
+        <h2 
+          className="text-xl sm:text-2xl font-normal tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Testimonials
         </h2>
       </div>
@@ -123,14 +130,27 @@ export default function TestimonialsSection() {
           {[...TESTIMONIALS, ...TESTIMONIALS].map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="w-[300px] sm:w-[350px] bg-white border border-gray-200/80 rounded-2xl p-5 shadow-2xs shrink-0 flex flex-col justify-between h-auto"
+              className="w-[300px] sm:w-[350px] border rounded-2xl p-5 shadow-2xs shrink-0 flex flex-col justify-between h-auto transition-colors duration-300"
+              style={{ 
+                backgroundColor: 'var(--bg-primary)',
+                borderColor: 'var(--border-color)'
+              }}
             >
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mb-6">
+              <p 
+                className="text-xs sm:text-sm leading-relaxed mb-6"
+                style={{ color: 'var(--text-secondary)' }}
+              >
                 "{item.content}"
               </p>
 
               <div className="flex items-center gap-3 mt-auto pt-2">
-                <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                <div 
+                  className="w-10 h-10 rounded-full overflow-hidden border shrink-0"
+                  style={{ 
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderColor: 'var(--border-color)'
+                  }}
+                >
                   <img
                     src={item.avatar}
                     alt={item.name}
@@ -138,10 +158,16 @@ export default function TestimonialsSection() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-xs sm:text-sm font-normal text-gray-900">
+                  <h4 
+                    className="text-xs sm:text-sm font-normal"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {item.name}
                   </h4>
-                  <p className="text-[11px] sm:text-xs text-gray-500">
+                  <p 
+                    className="text-[11px] sm:text-xs"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {item.role}
                   </p>
                 </div>

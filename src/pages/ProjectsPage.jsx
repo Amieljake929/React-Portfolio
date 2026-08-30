@@ -35,10 +35,16 @@ export default function ProjectsPage() {
     >
       {/* Page Header */}
       <motion.div variants={itemVariants} className="mt-9 mb-8 text-left">
-        <h1 className="text-3xl sm:text-4xl font-normal text-gray-900 tracking-tight">
+        <h1 
+          className="text-3xl sm:text-4xl font-normal tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Featured Projects
         </h1>
-        <p className="text-gray-500 text-sm sm:text-base mt-2 max-w-2xl">
+        <p 
+          className="text-sm sm:text-base mt-2 max-w-2xl"
+          style={{ color: 'var(--text-secondary)' }}
+        >
           A showcase of full-stack web applications, custom platforms, and user interface design projects I've engineered.
         </p>
       </motion.div>

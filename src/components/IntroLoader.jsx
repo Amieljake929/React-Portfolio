@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const IntroLoader = ({ onFinish }) => {
+const IntroLoader = ({ onFinish, theme = 'light' }) => {
   const [isVisible, setIsVisible] = useState(true);
   const text = "Amiel Jake";
   const letters = Array.from(text);
+
+  // ✅ Explicit colors based on theme to prevent any flash of wrong colors
+  const bgColor = theme === 'dark' ? '#1a1a1a' : '#ffffff';
+  const textColor = theme === 'dark' ? '#ffffff' : '#111111';
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -67,10 +71,12 @@ const IntroLoader = ({ onFinish }) => {
       {isVisible && (
         <motion.div
           key="loader-wrapper"
-          className="intro-loader"
+          // ✅ Added Tailwind classes for perfect centering and z-index
+          className="fixed inset-0 z-[9999] flex items-center justify-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, delay: 0.6, ease: 'easeInOut' }}
+          style={{ backgroundColor: bgColor }}
         >
           <motion.div
             className="flex py-6 px-4"
@@ -83,8 +89,9 @@ const IntroLoader = ({ onFinish }) => {
               <motion.span
                 key={index}
                 variants={letterVariants}
-                className="loader-letter"
-                style={{ fontWeight: 400 }}
+                // ✅ Added responsive font sizing and tracking for premium look
+                className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight"
+                style={{ color: textColor }}
               >
                 {letter === ' ' ? '\u00A0' : letter}
               </motion.span>

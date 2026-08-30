@@ -52,8 +52,15 @@ export default function AboutSnippet() {
       className="w-full flex flex-col items-start text-left py-2"
     >
       <div className="flex flex-col items-start gap-2 mb-4">
-        <User className="w-7 h-7 text-gray-500" strokeWidth={1.5} />
-        <h2 className="text-xl sm:text-2xl font-normal text-gray-900 tracking-tight">
+        <User 
+          className="w-7 h-7" 
+          strokeWidth={1.5} 
+          style={{ color: 'var(--text-secondary)' }}
+        />
+        <h2 
+          className="text-xl sm:text-2xl font-normal tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           About Me
         </h2>
       </div>
@@ -62,7 +69,10 @@ export default function AboutSnippet() {
       <div className="w-full flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-8 max-w-3xl">
         
         {/* Paragraphs */}
-        <div className="flex flex-col gap-3 text-gray-600 text-sm sm:text-base leading-relaxed flex-1">
+        <div 
+          className="flex flex-col gap-3 text-sm sm:text-base leading-relaxed flex-1"
+          style={{ color: 'var(--text-secondary)' }}
+        >
           <p>
             I am a passionate Web Designer and Developer dedicated to bridging aesthetic design and technical performance. I build clean, user-centric web applications using modern frameworks.
           </p>
@@ -133,14 +143,16 @@ export default function AboutSnippet() {
                         : {}
                     }
                     whileTap={isTop && !isAnimating ? { scale: 0.98 } : {}}
-                    className={`absolute inset-0 rounded-2xl overflow-hidden border border-gray-200 shadow-md bg-white ${
-                      isTop && !isAnimating
-                        ? 'cursor-pointer ring-1 ring-gray-300'
-                        : 'pointer-events-none'
-                    }`}
+                    className="absolute inset-0 rounded-2xl overflow-hidden border shadow-md"
                     style={{
                       transformStyle: 'preserve-3d',
                       backfaceVisibility: 'hidden',
+                      backgroundColor: 'var(--bg-primary)',
+                      borderColor: 'var(--border-color)',
+                      // Simulate the ring effect for the top card
+                      boxShadow: (isTop && !isAnimating) 
+                        ? '0 0 0 2px var(--border-color), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' 
+                        : '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                     }}
                   >
                     <img
@@ -160,7 +172,10 @@ export default function AboutSnippet() {
           </div>
 
           {/* Note sa baba ng image */}
-          <div className="mt-3 flex items-center gap-1.5 text-xs text-gray-400 font-medium select-none">
+          <div 
+            className="mt-3 flex items-center gap-1.5 text-xs font-medium select-none"
+            style={{ color: 'var(--text-secondary)' }}
+          >
             <MousePointerClick className="w-3.5 h-3.5 animate-pulse" />
             <span>Click photo to shuffle card</span>
           </div>
@@ -171,7 +186,10 @@ export default function AboutSnippet() {
       <div className="mt-4">
         <Link
           to="/about"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+          style={{ color: 'var(--text-primary)' }}
+          onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.target.style.color = 'var(--text-primary)'}
         >
           More about me <span>&rarr;</span>
         </Link>
