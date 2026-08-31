@@ -1,23 +1,65 @@
+// src/components/HeroSection.jsx
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { FiArrowRight, FiX } from 'react-icons/fi';
+import { supabase } from '../supabase';
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [visitorCount, setVisitorCount] = useState(0);
+
+  // Secure Supabase Unique Visitor Tracking Logic using RPC Function
+  useEffect(() => {
+    async function trackVisitor() {
+      try {
+        const hasVisited = localStorage.getItem('has_visited_portfolio');
+
+        // 1. Kunin ang kasalukuyang count mula sa Supabase table 'visitors'
+        const { data, error } = await supabase
+          .from('visitors')
+          .select('count')
+          .eq('id', 1);
+
+        if (error) {
+          console.error('Error fetching visitor count:', error.message);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const currentCount = data[0].count;
+          setVisitorCount(currentCount);
+
+          // 2. Kung first-time visitor pa lang, tawagin ang secure SQL function via rpc()
+          if (!hasVisited) {
+            const { error: rpcError } = await supabase.rpc('increment_visitor_count');
+
+            if (!rpcError) {
+              setVisitorCount(currentCount + 1);
+              localStorage.setItem('has_visited_portfolio', 'true');
+            } else {
+              console.error('Error incrementing visitor count via RPC:', rpcError.message);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Unexpected error tracking visitor:', err);
+      }
+    }
+
+    trackVisitor();
+  }, []);
 
   // Keyboard shortcut para sa pagpindot ng 'C' o 'c' na magbubukas ng mailto link
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Huwag i-trigger kung ang user ay nagta-type sa loob ng input o textarea
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
         return;
       }
 
       if (e.key === 'c' || e.key === 'C') {
         e.preventDefault();
-        // Palitan ang email address na ito ng iyong personal email
         window.location.href = 'mailto:amieljake929@gmail.com';
       }
     };
@@ -66,7 +108,6 @@ export default function HeroSection() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     setIsModalOpen(false);
   };
 
@@ -107,7 +148,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Status Badge & Social Links: Hidden on mobile (hidden), shown on desktop (sm:flex) */}
+          {/* Status Badge & Social Links */}
           <div className="hidden sm:flex items-center gap-5">
             <div 
               className="flex items-center gap-2 text-xs font-medium"
@@ -133,9 +174,7 @@ export default function HeroSection() {
                     whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="p-1 transition-colors"
-                    style={{ 
-                      color: 'var(--text-secondary)',
-                    }}
+                    style={{ color: 'var(--text-secondary)' }}
                     onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
                     onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
                   >
@@ -172,7 +211,7 @@ export default function HeroSection() {
           I am Amiel Jake Baril, an IT fresh graduate and web designer & developer specializing in full-stack web solutions. Dedicated to building responsive, high-performance digital experiences, I combine modern frontend interfaces with robust backend architectures using React and Laravel to turn creative concepts into functional applications that deliver seamless user interactions.
         </motion.p>
 
-        {/* Get in touch link: Shown only on mobile (flex sm:hidden) */}
+        {/* Get in touch link: Shown only on mobile */}
         <motion.div
           variants={itemVariants}
           className="flex sm:hidden mb-4 w-full"
@@ -180,18 +219,14 @@ export default function HeroSection() {
           <button
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-2 text-sm font-normal transition-colors cursor-pointer group bg-transparent border-none p-0"
-            style={{ 
-              color: 'var(--text-primary)',
-            }}
-            onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
-            onMouseLeave={(e) => e.target.style.color = 'var(--text-primary)'}
+            style={{ color: 'var(--text-primary)' }}
           >
             <span>Get in touch</span>
             <FiArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
         </motion.div>
 
-        {/* Mobile Gesture Reminder: Shown only on mobile (flex sm:hidden) sa baba ng Get in touch */}
+        {/* Mobile Gesture Reminder */}
         <motion.div
           variants={itemVariants}
           className="flex sm:hidden flex-col gap-1.5 text-xs mb-6 w-full"
@@ -203,7 +238,7 @@ export default function HeroSection() {
         {/* Email & Theme Prompts / Keyboard Shortcuts: Hidden on mobile, shown on desktop */}
         <motion.div
           variants={itemVariants}
-          className="hidden sm:flex flex-col gap-2 text-xs sm:text-sm"
+          className="hidden sm:flex flex-col gap-2 text-xs sm:text-sm mb-6"
           style={{ color: 'var(--text-secondary)' }}
         >
           {/* Email Shortcut */}
@@ -257,6 +292,15 @@ export default function HeroSection() {
             </div>
           </div>
         </motion.div>
+
+        {/* Total Visitors Counter Display */}
+        <motion.div
+          variants={itemVariants}
+          className="text-xs sm:text-sm font-normal"
+          style={{ color: 'var(--text-secondary)' }}
+        >
+          Total Visitors: {visitorCount}
+        </motion.div>
       </motion.section>
 
       {/* Modal Dialog (Para sa Mobile "Get in touch" click) */}
@@ -279,14 +323,6 @@ export default function HeroSection() {
                 className="absolute top-5 right-5 p-2 rounded-full transition-colors cursor-pointer"
                 aria-label="Close modal"
                 style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = 'var(--text-primary)';
-                  e.target.style.backgroundColor = 'var(--bg-secondary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = 'var(--text-secondary)';
-                  e.target.style.backgroundColor = 'transparent';
-                }}
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -364,8 +400,6 @@ export default function HeroSection() {
                     backgroundColor: '#111827',
                     color: '#ffffff'
                   }}
-                  onMouseEnter={(e) => e.target.style.backgroundColor = '#000000'}
-                  onMouseLeave={(e) => e.target.style.backgroundColor = '#111827'}
                 >
                   Send Message
                 </button>

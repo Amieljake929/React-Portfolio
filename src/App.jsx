@@ -73,7 +73,6 @@ function App() {
     localStorage.setItem('theme', appliedTheme);
   }, [appliedTheme]);
 
-  // Helper para sa pagpapalit ng theme nang ligtas (may animation lock)
   const toggleTheme = () => {
     if (isAnimatingRef.current) return;
     const nextTheme = pendingTheme === 'dark' ? 'light' : 'dark';
@@ -89,7 +88,6 @@ function App() {
     }
   };
 
-  // Keyboard shortcut listener (Desktop: D and L)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -107,7 +105,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [pendingTheme]);
 
-  // Mobile Double Tap Event Listener
   useEffect(() => {
     const handleCustomThemeToggle = () => {
       toggleTheme();
@@ -117,13 +114,11 @@ function App() {
     return () => window.removeEventListener('trigger-theme-toggle', handleCustomThemeToggle);
   }, [pendingTheme]);
 
-  // Callback from ThemeTransition
   const handleThemeApplied = () => {
     setAppliedTheme(pendingTheme);
     isAnimatingRef.current = false;
   };
 
-  // Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.4,
@@ -144,10 +139,8 @@ function App() {
 
   return (
     <>
-      {/* ✅ UPDATED: Added theme={pendingTheme} prop to prevent color flash on load */}
       {isLoading && <IntroLoader theme={pendingTheme} onFinish={() => setIsLoading(false)} />}
 
-      {/* ThemeTransition wraps all content */}
       <ThemeTransition 
         theme={pendingTheme} 
         onThemeApplied={handleThemeApplied}
