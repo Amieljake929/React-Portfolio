@@ -2,13 +2,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { FiArrowRight, FiX } from 'react-icons/fi';
+import { FiArrowRight, FiX, FiEye, FiUser } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
 export default function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [visitorCount, setVisitorCount] = useState(0);
+  const [liveViewers, setLiveViewers] = useState([]);
 
   // Secure Supabase Unique Visitor Tracking Logic using RPC Function
   useEffect(() => {
@@ -49,6 +50,47 @@ export default function HeroSection() {
     }
 
     trackVisitor();
+  }, []);
+
+  // Supabase Realtime Presence Channel para sa Live Viewers & Avatars
+  useEffect(() => {
+    // Gumawa ng random user identifier at default avatar/color para sa kasalukuyang session
+    const randomId = Math.random().toString(36).substring(2, 9);
+    const currentUserMeta = {
+      id: randomId,
+      // Pwedeng maglagay ng random avatar o initials kung walang profile pic
+      online_at: new Date().toISOString(),
+    };
+
+    const room = supabase.channel('portfolio-live-viewers', {
+      config: {
+        presence: {
+          key: randomId,
+        },
+      },
+    });
+
+    room
+      .on('presence', { event: 'sync' }, () => {
+        const state = room.presenceState();
+        const viewersList = [];
+        Object.keys(state).forEach((key) => {
+          const presences = state[key];
+          if (presences && presences.length > 0) {
+            viewersList.push(presences[0]);
+          }
+        });
+        setLiveViewers(viewersList);
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await room.track(currentUserMeta);
+        }
+      });
+
+    return () => {
+      supabase.removeChannel(room);
+    };
   }, []);
 
   // Keyboard shortcut para sa pagpindot ng 'C' o 'c' na magbubukas ng mailto link
@@ -111,6 +153,11 @@ export default function HeroSection() {
     setIsModalOpen(false);
   };
 
+  const totalLive = liveViewers.length > 0 ? liveViewers.length : 1;
+  const maxDisplayedAvatars = 3;
+  const displayedViewers = liveViewers.slice(0, maxDisplayedAvatars);
+  const remainingCount = totalLive - displayedViewers.length;
+
   return (
     <>
       <motion.section
@@ -120,31 +167,74 @@ export default function HeroSection() {
         animate="visible"
         className="pt-12 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
       >
-        {/* Top Bar: Avatar, Name/Title, Status, Social Icons */}
+        {/* Top Bar: Avatar, Name/Title, Live Viewers (Mobile), Status, Social Icons */}
         <motion.div 
           variants={itemVariants} 
           className="mb-8 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
-          <div className="flex items-center gap-3.5">
-            <img
-              src="/images/Jake.jpg"
-              alt="Amiel Jake Baril"
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shadow-sm border flex-shrink-0"
-              style={{ borderColor: 'var(--border-color)' }}
-            />
-            <div>
-              <h1 
-                className="text-xl sm:text-2xl font-normal tracking-tight"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                Amiel Jake Baril
-              </h1>
-              <p 
-                className="text-xs sm:text-sm font-normal"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                Web Designer & Developer
-              </p>
+          <div className="flex items-center justify-between sm:justify-start gap-3.5 w-full sm:w-auto">
+            <div className="flex items-center gap-3.5">
+              <img
+                src="/images/Jake.jpg"
+                alt="Amiel Jake Baril"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shadow-sm border flex-shrink-0"
+                style={{ borderColor: 'var(--border-color)' }}
+              />
+              <div>
+                <h1 
+                  className="text-xl sm:text-2xl font-normal tracking-tight"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  Amiel Jake Baril
+                </h1>
+                <p 
+                  className="text-xs sm:text-sm font-normal"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Web Designer & Developer
+                </p>
+              </div>
+            </div>
+
+            {/* Mobile Viewers with Overlapping Stack & Pipe */}
+            <div 
+              className="flex sm:hidden items-center gap-2.5 text-xs font-normal"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              <span style={{ opacity: 0.4 }}>|</span>
+              <div className="flex flex-col items-start gap-1">
+                {/* Overlapping Avatar Stack */}
+                <div className="flex items-center -space-x-2">
+                  {displayedViewers.map((_, index) => (
+                    <div
+                      key={index}
+                      className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
+                      style={{ 
+                        backgroundColor: 'var(--bg-secondary)', 
+                        borderColor: 'var(--border-color)',
+                        color: 'var(--text-secondary)'
+                      }}
+                    >
+                      <FiUser className="w-3 h-3" />
+                    </div>
+                  ))}
+                  {remainingCount > 0 && (
+                    <div 
+                      className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
+                      style={{ 
+                        backgroundColor: 'var(--bg-secondary)', 
+                        borderColor: 'var(--border-color)',
+                        color: 'var(--text-primary)'
+                      }}
+                    >
+                      +{remainingCount}
+                    </div>
+                  )}
+                </div>
+                <span className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>{totalLive}</strong> people viewing now
+                </span>
+              </div>
             </div>
           </div>
 
@@ -293,13 +383,48 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Total Visitors Counter Display */}
+        {/* Total Visitors & Desktop Live Viewers with Stacked Avatars */}
         <motion.div
           variants={itemVariants}
-          className="text-xs sm:text-sm font-normal"
+          className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm font-normal"
           style={{ color: 'var(--text-secondary)' }}
         >
-          Total Visitors: {visitorCount}
+          <div>Total Visitors: {visitorCount}</div>
+          
+          {/* Live Viewers (Desktop): Makikita sa desktop na may kasamang overlapping avatar stack */}
+          <div className="hidden sm:flex sm:items-center gap-2.5">
+            <span style={{ opacity: 0.4 }}>&bull;</span>
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center -space-x-2">
+                {displayedViewers.map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
+                    style={{ 
+                      backgroundColor: 'var(--bg-secondary)', 
+                      borderColor: 'var(--border-color)',
+                      color: 'var(--text-secondary)'
+                    }}
+                  >
+                    <FiUser className="w-3 h-3" />
+                  </div>
+                ))}
+                {remainingCount > 0 && (
+                  <div 
+                    className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
+                    style={{ 
+                      backgroundColor: 'var(--bg-secondary)', 
+                      borderColor: 'var(--border-color)',
+                      color: 'var(--text-primary)'
+                    }}
+                  >
+                    +{remainingCount}
+                  </div>
+                )}
+              </div>
+              <span><strong style={{ color: 'var(--text-primary)' }}>{totalLive}</strong> people viewing now</span>
+            </div>
+          </div>
         </motion.div>
       </motion.section>
 
