@@ -1,6 +1,170 @@
+import { useState, useEffect } from 'react';
 import BlurFade from '../components/BlurFade';
 
 function GithubSection() {
+  const [contributions, setContributions] = useState([]);
+  const [totalContributions, setTotalContributions] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [hoveredDay, setHoveredDay] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+
+  useEffect(() => {
+    fetchGitHubContributions();
+  }, []);
+
+  const fetchGitHubContributions = async () => {
+    try {
+      const query = `
+        query($login: String!) {
+          user(login: $login) {
+            contributionsCollection {
+              totalCommitContributions
+              contributionCalendar {
+                totalContributions
+                weeks {
+                  contributionDays {
+                    contributionCount
+                    date
+                    contributionLevel
+                    weekday
+                  }
+                }
+                months {
+                  name
+                  firstDay
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      const response = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN || ''}`
+        },
+        body: JSON.stringify({
+          query,
+          variables: { login: 'Amieljake929' }
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.data) {
+        const calendar = data.data.user.contributionsCollection.contributionCalendar;
+        setContributions(calendar.weeks);
+        setTotalContributions(calendar.totalContributions);
+      } else {
+        fetchPublicContributions();
+      }
+    } catch (error) {
+      console.error('Error fetching contributions:', error);
+      fetchPublicContributions();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPublicContributions = async () => {
+    try {
+      const response = await fetch('https://github-contributions-api.jogruber.de/v4/Amieljake929');
+      const data = await response.json();
+      if (data && data.years) {
+        const currentYear = new Date().getFullYear();
+        const yearData = data.years[currentYear] || Object.values(data.years)[0];
+        setTotalContributions(yearData?.total || 0);
+        if (yearData?.contributions) {
+          const weeks = transformToWeeks(yearData.contributions);
+          setContributions(weeks);
+        }
+      }
+    } catch (error) {
+      console.error('Error with fallback:', error);
+    }
+  };
+
+  const transformToWeeks = (contributions) => {
+    const weeks = [];
+    let currentWeek = [];
+    
+    Object.entries(contributions).forEach(([date, count]) => {
+      const dayOfWeek = new Date(date).getDay();
+      currentWeek.push({
+        date,
+        contributionCount: count,
+        contributionLevel: getContributionLevel(count),
+        weekday: dayOfWeek
+      });
+      
+      if (currentWeek.length === 7) {
+        weeks.push({ contributionDays: currentWeek });
+        currentWeek = [];
+      }
+    });
+    
+    if (currentWeek.length > 0) {
+      while (currentWeek.length < 7) {
+        currentWeek.push({
+          date: '',
+          contributionCount: 0,
+          contributionLevel: 'NONE',
+          weekday: 0
+        });
+      }
+      weeks.push({ contributionDays: currentWeek });
+    }
+    
+    return weeks;
+  };
+
+  const getContributionLevel = (count) => {
+    if (count === 0) return 'NONE';
+    if (count <= 3) return 'FIRST_QUARTILE';
+    if (count <= 6) return 'SECOND_QUARTILE';
+    if (count <= 9) return 'THIRD_QUARTILE';
+    return 'FOURTH_QUARTILE';
+  };
+
+  const getMonthLabels = () => {
+    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  };
+
+  const handleMouseEnter = (day, event) => {
+    if (!day.date) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const containerRect = event.currentTarget.closest('.contribution-wrapper').getBoundingClientRect();
+    
+    setTooltipPos({
+      top: rect.top - containerRect.top - 40,
+      left: rect.left - containerRect.left + (rect.width / 2)
+    });
+    setHoveredDay(day);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredDay(null);
+  };
+
+  if (loading) {
+    return (
+      <BlurFade delay={0.1}>
+        <section className="py-6 flex flex-col gap-3 w-full">
+          <div className="flex items-center gap-2 px-1">
+            <div className="animate-pulse h-7 w-7 rounded bg-gray-700"></div>
+            <div className="flex flex-col gap-1">
+              <div className="animate-pulse h-6 w-32 bg-gray-700 rounded"></div>
+              <div className="animate-pulse h-4 w-48 bg-gray-700 rounded"></div>
+            </div>
+          </div>
+          <div className="animate-pulse h-48 bg-gray-800 rounded-lg"></div>
+        </section>
+      </BlurFade>
+    );
+  }
+
   return (
     <BlurFade delay={0.1}>
       <section className="py-6 flex flex-col gap-3 w-full">
@@ -36,7 +200,7 @@ function GithubSection() {
           </div>
         </div>
 
-        {/* Main Container - GitHub Card Style */}
+        {/* Main Container */}
         <div 
           className="rounded-lg p-5 sm:p-6 transition-all duration-300 flex flex-col gap-5 w-full"
           style={{ 
@@ -83,49 +247,127 @@ function GithubSection() {
             </a>
           </div>
 
-          {/* GitHub Graph Container */}
+          {/* GitHub Graph Wrapper (Hosts Tooltip securely relative to card box) */}
           <div 
-            className="rounded-md p-4 overflow-x-auto"
+            className="contribution-wrapper rounded-md p-4 relative overflow-hidden"
             style={{ 
               backgroundColor: 'var(--bg-secondary)',
               border: '1px solid var(--border-color)'
             }}
           >
-            <div className="min-w-[650px]">
-              <img
-                src="https://ghchart.rshah.org/39d353/Amieljake929"
-                alt="GitHub Contributions"
-                className="w-full h-auto"
-                style={{
-                  filter: 'contrast(1.15) saturate(1.1)',
-                }}
-              />
-            </div>
-          </div>
+            {/* Custom Thinner Horizontal Green Scrollbar Styles */}
+            <style>{`
+              .contribution-scroll-area::-webkit-scrollbar {
+                height: 5px;
+              }
+              .contribution-scroll-area::-webkit-scrollbar-track {
+                background: var(--bg-primary);
+                border-radius: 3px;
+              }
+              .contribution-scroll-area::-webkit-scrollbar-thumb {
+                background: #22c55e;
+                border-radius: 3px;
+              }
+              .contribution-scroll-area::-webkit-scrollbar-thumb:hover {
+                background: #16a34a;
+              }
+            `}</style>
 
-          {/* Footer Legend */}
-          <div className="flex items-center justify-between text-xs" style={{ color: 'var(--text-secondary)' }}>
-            <a
-              href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              Learn how we count contributions
-            </a>
-            
-            <div className="flex items-center gap-2">
-              <span>Less</span>
-              <div className="flex gap-1">
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: 'var(--gh-0)' }}></span>
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: 'var(--gh-1)' }}></span>
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: 'var(--gh-2)' }}></span>
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: 'var(--gh-3)' }}></span>
-                <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: 'var(--gh-4)' }}></span>
+            {/* Scrollable Calendar Area Only */}
+            <div className="contribution-scroll-area overflow-x-auto overflow-y-hidden pb-3">
+              <div className="min-w-[650px]">
+                {/* Month Labels */}
+                <div className="flex mb-2 ml-7">
+                  {getMonthLabels().map((month, index) => (
+                    <div 
+                      key={index} 
+                      className="flex-1 text-[10px] font-medium"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
+                      {month}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Contribution Grid */}
+                <div className="flex gap-[3px]">
+                  {/* Day Labels - Monday to Sunday Alignment */}
+                  <div className="flex flex-col gap-[3px] justify-between text-[10px] pr-2 select-none" style={{ color: 'var(--text-secondary)', height: '100%' }}>
+                    <span className="h-[10px] leading-[10px]">Mon</span>
+                    <span className="h-[10px] leading-[10px]"></span>
+                    <span className="h-[10px] leading-[10px]">Wed</span>
+                    <span className="h-[10px] leading-[10px]"></span>
+                    <span className="h-[10px] leading-[10px]">Fri</span>
+                    <span className="h-[10px] leading-[10px]"></span>
+                    <span className="h-[10px] leading-[10px]"></span>
+                  </div>
+
+                  {/* Squares Grid */}
+                  <div className="flex gap-[3px] flex-1">
+                    {contributions.slice(0, 52).map((week, weekIndex) => {
+                      let days = [...week.contributionDays];
+                      if (days.length === 7) {
+                        const sunday = days.shift();
+                        days.push(sunday);
+                      }
+                      return (
+                        <div key={weekIndex} className="flex flex-col gap-[3px] flex-1">
+                          {days.map((day, dayIndex) => (
+                            <div
+                              key={dayIndex}
+                              className="w-full aspect-square rounded-[3px] transition-all duration-150 hover:ring-1 hover:ring-emerald-400/50 cursor-pointer relative"
+                              style={{
+                                backgroundColor: `var(--gh-${day.contributionLevel === 'NONE' ? '0' : day.contributionLevel === 'FIRST_QUARTILE' ? '1' : day.contributionLevel === 'SECOND_QUARTILE' ? '2' : day.contributionLevel === 'THIRD_QUARTILE' ? '3' : '4'})`
+                              }}
+                              onMouseEnter={(e) => handleMouseEnter(day, e)}
+                              onMouseLeave={handleMouseLeave}
+                            />
+                          ))}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
-              <span>More</span>
             </div>
+
+            {/* Steady Non-Scrolling Footer Row (Total Contributions & Legend) */}
+            <div className="mt-3 pt-3 flex items-center justify-between text-xs font-medium border-t" style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
+              <div>
+                <span style={{ color: 'var(--text-primary)', fontSize: '14px', fontWeight: 600 }}>
+                  {totalContributions}
+                </span>
+                {' '}contributions in the last year
+              </div>
+
+              <div className="flex items-center gap-1.5 text-[10px]">
+                <span>Less</span>
+                <div className="flex gap-[3px]">
+                  <span className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: 'var(--gh-0)' }}></span>
+                  <span className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: 'var(--gh-1)' }}></span>
+                  <span className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: 'var(--gh-2)' }}></span>
+                  <span className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: 'var(--gh-3)' }}></span>
+                  <span className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: 'var(--gh-4)' }}></span>
+                </div>
+                <span>More</span>
+              </div>
+            </div>
+
+            {/* Tooltip Popup */}
+            {hoveredDay && hoveredDay.date && (
+              <div
+                className="absolute pointer-events-none z-50 px-2.5 py-1 text-[10px] font-medium rounded-md shadow-lg whitespace-nowrap"
+                style={{
+                  top: `${Math.max(0, tooltipPos.top)}px`,
+                  left: `${Math.max(10, Math.min(tooltipPos.left - 40, 600))}px`,
+                  backgroundColor: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-color)'
+                }}
+              >
+                <strong>{hoveredDay.contributionCount}</strong> contributions on {hoveredDay.date}
+              </div>
+            )}
           </div>
 
         </div>

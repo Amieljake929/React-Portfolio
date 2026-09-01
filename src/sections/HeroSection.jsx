@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { FiArrowRight, FiX, FiEye, FiUser } from 'react-icons/fi';
+import { FiArrowRight, FiX, FiUser } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
 export default function HeroSection() {
@@ -54,11 +54,9 @@ export default function HeroSection() {
 
   // Supabase Realtime Presence Channel para sa Live Viewers & Avatars
   useEffect(() => {
-    // Gumawa ng random user identifier at default avatar/color para sa kasalukuyang session
     const randomId = Math.random().toString(36).substring(2, 9);
     const currentUserMeta = {
       id: randomId,
-      // Pwedeng maglagay ng random avatar o initials kung walang profile pic
       online_at: new Date().toISOString(),
     };
 
@@ -167,7 +165,7 @@ export default function HeroSection() {
         animate="visible"
         className="pt-12 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
       >
-        {/* Top Bar: Avatar, Name/Title, Live Viewers (Mobile), Status, Social Icons */}
+        {/* Top Bar: Avatar, Name/Title, Status, Social Icons */}
         <motion.div 
           variants={itemVariants} 
           className="mb-8 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
@@ -193,47 +191,6 @@ export default function HeroSection() {
                 >
                   Web Designer & Developer
                 </p>
-              </div>
-            </div>
-
-            {/* Mobile Viewers with Overlapping Stack & Pipe */}
-            <div 
-              className="flex sm:hidden items-center gap-2.5 text-xs font-normal"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              <span style={{ opacity: 0.4 }}>|</span>
-              <div className="flex flex-col items-start gap-1">
-                {/* Overlapping Avatar Stack */}
-                <div className="flex items-center -space-x-2">
-                  {displayedViewers.map((_, index) => (
-                    <div
-                      key={index}
-                      className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
-                      style={{ 
-                        backgroundColor: 'var(--bg-secondary)', 
-                        borderColor: 'var(--border-color)',
-                        color: 'var(--text-secondary)'
-                      }}
-                    >
-                      <FiUser className="w-3 h-3" />
-                    </div>
-                  ))}
-                  {remainingCount > 0 && (
-                    <div 
-                      className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
-                      style={{ 
-                        backgroundColor: 'var(--bg-secondary)', 
-                        borderColor: 'var(--border-color)',
-                        color: 'var(--text-primary)'
-                      }}
-                    >
-                      +{remainingCount}
-                    </div>
-                  )}
-                </div>
-                <span className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>{totalLive}</strong> people viewing now
-                </span>
               </div>
             </div>
           </div>
@@ -304,7 +261,7 @@ export default function HeroSection() {
         {/* Get in touch link: Shown only on mobile */}
         <motion.div
           variants={itemVariants}
-          className="flex sm:hidden mb-4 w-full"
+          className="flex sm:hidden mb-2 w-full"
         >
           <button
             onClick={() => setIsModalOpen(true)}
@@ -319,10 +276,10 @@ export default function HeroSection() {
         {/* Mobile Gesture Reminder */}
         <motion.div
           variants={itemVariants}
-          className="flex sm:hidden flex-col gap-1.5 text-xs mb-6 w-full"
+          className="flex sm:hidden flex-col gap-1.5 text-xs mt-10 mb-1 w-full"
           style={{ color: 'var(--text-secondary)' }}
         >
-          <span>Double-tap anywhere to toggle theme</span>
+          <span>Double-tap anywhere to switch dark/light mode</span>
         </motion.div>
 
         {/* Email & Theme Prompts / Keyboard Shortcuts: Hidden on mobile, shown on desktop */}
@@ -383,47 +340,45 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Total Visitors & Desktop Live Viewers with Stacked Avatars */}
+        {/* Total Visitors & Live Viewers: Nilagyan ng mt-0 sm:mt-10 para sa desktop lang ang may margin-top, bold na rin ang visitor count */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm font-normal"
+          className="flex flex-row items-center flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-0 sm:mt-6 -mb-8"
           style={{ color: 'var(--text-secondary)' }}
         >
-          <div>Total Visitors: {visitorCount}</div>
+          <span>Total Visitors: <strong style={{ color: 'var(--text-primary)' }}>{visitorCount}</strong></span>
           
-          {/* Live Viewers (Desktop): Makikita sa desktop na may kasamang overlapping avatar stack */}
-          <div className="hidden sm:flex sm:items-center gap-2.5">
-            <span style={{ opacity: 0.4 }}>&bull;</span>
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center -space-x-2">
-                {displayedViewers.map((_, index) => (
-                  <div
-                    key={index}
-                    className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
-                    style={{ 
-                      backgroundColor: 'var(--bg-secondary)', 
-                      borderColor: 'var(--border-color)',
-                      color: 'var(--text-secondary)'
-                    }}
-                  >
-                    <FiUser className="w-3 h-3" />
-                  </div>
-                ))}
-                {remainingCount > 0 && (
-                  <div 
-                    className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
-                    style={{ 
-                      backgroundColor: 'var(--bg-secondary)', 
-                      borderColor: 'var(--border-color)',
-                      color: 'var(--text-primary)'
-                    }}
-                  >
-                    +{remainingCount}
-                  </div>
-                )}
-              </div>
-              <span><strong style={{ color: 'var(--text-primary)' }}>{totalLive}</strong> people viewing now</span>
+          <span style={{ opacity: 0.4 }}>&bull;</span>
+
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center -space-x-2">
+              {displayedViewers.map((_, index) => (
+                <div
+                  key={index}
+                  className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
+                  style={{ 
+                    backgroundColor: 'var(--bg-secondary)', 
+                    borderColor: 'var(--border-color)',
+                    color: 'var(--text-secondary)'
+                  }}
+                >
+                  <FiUser className="w-3 h-3" />
+                </div>
+              ))}
+              {remainingCount > 0 && (
+                <div 
+                  className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
+                  style={{ 
+                    backgroundColor: 'var(--bg-secondary)', 
+                    borderColor: 'var(--border-color)',
+                    color: 'var(--text-primary)'
+                  }}
+                >
+                  +{remainingCount}
+                </div>
+              )}
             </div>
+            <span><strong style={{ color: 'var(--text-primary)' }}>{totalLive}</strong> people viewing now</span>
           </div>
         </motion.div>
       </motion.section>
