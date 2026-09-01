@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { FiArrowRight, FiX, FiUser } from 'react-icons/fi';
+import { FiArrowRight, FiX } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
 export default function HeroSection() {
@@ -52,11 +52,15 @@ export default function HeroSection() {
     trackVisitor();
   }, []);
 
-  // Supabase Realtime Presence Channel para sa Live Viewers & Avatars
+  // Supabase Realtime Presence Channel para sa Live Viewers & Dicebear Avatars
   useEffect(() => {
     const randomId = Math.random().toString(36).substring(2, 9);
+    // Gumamit ng DiceBear API para sa bawat connected viewer base sa kanilang random id/seed
+    const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${randomId}`;
+    
     const currentUserMeta = {
       id: randomId,
+      avatar: avatarUrl,
       online_at: new Date().toISOString(),
     };
 
@@ -340,7 +344,7 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Total Visitors & Live Viewers: Nilagyan ng mt-0 sm:mt-10 para sa desktop lang ang may margin-top, bold na rin ang visitor count */}
+        {/* Total Visitors & Live Viewers with Dicebear Avatars */}
         <motion.div
           variants={itemVariants}
           className="flex flex-row items-center flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-0 sm:mt-6 -mb-8"
@@ -352,22 +356,25 @@ export default function HeroSection() {
 
           <div className="flex items-center gap-2.5">
             <div className="flex items-center -space-x-2">
-              {displayedViewers.map((_, index) => (
+              {displayedViewers.map((viewer, index) => (
                 <div
                   key={index}
-                  className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs text-[10px]"
+                  className="w-6 h-6 rounded-full flex items-center justify-center border shadow-2xs overflow-hidden relative"
                   style={{ 
                     backgroundColor: 'var(--bg-secondary)', 
-                    borderColor: 'var(--border-color)',
-                    color: 'var(--text-secondary)'
+                    borderColor: 'var(--border-color)'
                   }}
                 >
-                  <FiUser className="w-3 h-3" />
+                  <img
+                    src={viewer.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${viewer.id || index}`}
+                    alt="Live viewer avatar"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               ))}
               {remainingCount > 0 && (
                 <div 
-                  className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs"
+                  className="px-2 py-0.5 rounded-full text-[10px] font-medium border shadow-2xs flex items-center justify-center"
                   style={{ 
                     backgroundColor: 'var(--bg-secondary)', 
                     borderColor: 'var(--border-color)',

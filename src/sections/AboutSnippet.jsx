@@ -6,8 +6,9 @@ import { User, MousePointerClick } from 'lucide-react';
 export default function AboutSnippet() {
   const images = [
     '/images/ako.png', 
-    '/images/baguio.jpg',
     '/images/me.jpg', 
+    '/images/baguio.jpg',
+
   ];
 
   const [cards, setCards] = useState(() =>
