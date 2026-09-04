@@ -22,6 +22,7 @@ import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
 import AIAssistant from './components/AIAssistant';
 import ThemeTransition from './components/ThemeTransition';
+import AskAnythingModal from './components/AskAnythingModal'; // <--- Bagong import
 
 function HomeOverview() {
   return (
@@ -48,6 +49,7 @@ function HomeOverview() {
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false); // <--- State para sa Ask Anything Modal
   
   // Theme states
   const [pendingTheme, setPendingTheme] = useState(() => {
@@ -88,6 +90,7 @@ function App() {
     }
   };
 
+  // Keyboard shortcuts (D, L, at A para sa Ask Anything)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -98,12 +101,22 @@ function App() {
         setThemeExplicit('dark');
       } else if (e.key === 'l' || e.key === 'L') {
         setThemeExplicit('light');
+      } else if (e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        setIsAskModalOpen(true);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [pendingTheme]);
+
+  // Listener para sa custom event galing sa HeroSection para buksan ang Ask Anything modal
+  useEffect(() => {
+    const handleOpenAsk = () => setIsAskModalOpen(true);
+    window.addEventListener('open-ask-modal', handleOpenAsk);
+    return () => window.removeEventListener('open-ask-modal', handleOpenAsk);
+  }, []);
 
   useEffect(() => {
     const handleCustomThemeToggle = () => {
@@ -182,6 +195,12 @@ function App() {
           <AIAssistant 
             isOpen={isChatOpen} 
             setIsOpen={setIsChatOpen} 
+          />
+
+          {/* Global Ask Anything Modal */}
+          <AskAnythingModal 
+            isOpen={isAskModalOpen} 
+            onClose={() => setIsAskModalOpen(false)} 
           />
         </div>
       </ThemeTransition>
