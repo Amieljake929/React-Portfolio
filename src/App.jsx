@@ -1,3 +1,4 @@
+// src/App.jsx
 import { useEffect, useState, useRef } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Lenis from 'lenis';
@@ -22,7 +23,7 @@ import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
 import AIAssistant from './components/AIAssistant';
 import ThemeTransition from './components/ThemeTransition';
-import AskAnythingModal from './components/AskAnythingModal'; // <--- Bagong import
+import AskAnythingModal from './components/AskAnythingModal';
 
 function HomeOverview() {
   return (
@@ -49,8 +50,10 @@ function HomeOverview() {
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isAskModalOpen, setIsAskModalOpen] = useState(false); // <--- State para sa Ask Anything Modal
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   
+  const lenisRef = useRef(null);
+
   // Theme states
   const [pendingTheme, setPendingTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
@@ -63,10 +66,8 @@ function App() {
   
   const isAnimatingRef = useRef(false);
 
-  // Apply theme class to <html> element
   useEffect(() => {
     const html = document.documentElement;
-    
     if (appliedTheme === 'dark') {
       html.classList.add('dark');
     } else {
@@ -90,7 +91,17 @@ function App() {
     }
   };
 
-  // Keyboard shortcuts (D, L, at A para sa Ask Anything)
+  // I-stop o i-start ang Lenis smooth scroll depende kung bukas ang modal
+  useEffect(() => {
+    if (lenisRef.current) {
+      if (isAskModalOpen || isChatOpen) {
+        lenisRef.current.stop();
+      } else {
+        lenisRef.current.start();
+      }
+    }
+  }, [isAskModalOpen, isChatOpen]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -111,7 +122,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [pendingTheme]);
 
-  // Listener para sa custom event galing sa HeroSection para buksan ang Ask Anything modal
   useEffect(() => {
     const handleOpenAsk = () => setIsAskModalOpen(true);
     window.addEventListener('open-ask-modal', handleOpenAsk);
@@ -140,6 +150,8 @@ function App() {
       wheelMultiplier: 0.9,
     });
 
+    lenisRef.current = lenis;
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -147,7 +159,9 @@ function App() {
 
     requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   return (
@@ -197,7 +211,6 @@ function App() {
             setIsOpen={setIsChatOpen} 
           />
 
-          {/* Global Ask Anything Modal */}
           <AskAnythingModal 
             isOpen={isAskModalOpen} 
             onClose={() => setIsAskModalOpen(false)} 
