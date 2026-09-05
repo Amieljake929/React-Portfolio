@@ -1,38 +1,17 @@
 // src/components/AskAnythingModal.jsx
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FiCheck, 
-  FiLoader, 
-  FiArrowRight, 
-  FiArrowLeft, 
-  FiShield, 
-  FiGlobe, 
-  FiMapPin, 
-  FiSmartphone, 
-  FiWifi, 
-  FiClock, 
-  FiMonitor, 
-  FiCpu, 
-  FiLock 
-} from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 
 export default function AskAnythingModal({ isOpen, onClose }) {
   const [askQuery, setAskQuery] = useState('');
-  const [askStep, setAskStep] = useState('input'); // 'input' | 'processing' | 'result' | 'message'
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [askStep, setAskStep] = useState('input'); // 'input' | 'thinking' | 'analyzing' | 'sequence'
+  const [isMobile, setIsMobile] = useState(false);
   
-  // Realtime processing timer states
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const timerRef = useRef(null);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const sequenceTimerRef = useRef(null);
 
-  // Typing effect states para sa huling pahina
-  const [displayedLine1, setDisplayedLine1] = useState('');
-  const [displayedLine2, setDisplayedLine2] = useState('');
-  const fullLine1 = "Regarding your question";
-  const fullLine2 = "I'd rather not waste my tokens, so I'll just leave that to Google.";
-
-  // Dynamic States para sa Totoong Datos ng User (8 items)
   const [visitorInfo, setVisitorInfo] = useState({
     ip: 'Fetching...',
     location: 'Locating...',
@@ -41,56 +20,80 @@ export default function AskAnythingModal({ isOpen, onClose }) {
     timezone: 'Checking...',
     currentTime: 'Syncing time...',
     screen: 'Measuring...',
+    connection: '4G / Broadband Connection',
     browserAnalysis: 'Analyzing...'
   });
 
-  // Function para kunin ang totoong device, browser, IP, location, oras, atbp.
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       async function fetchRealVisitorData() {
         let ipVal = '127.0.0.1';
-        let cityVal = 'Unknown Location';
+        let cityVal = 'Manila, National Capital Region, Philippines';
         let orgVal = 'Direct ISP';
         let tzVal = 'Asia/Manila';
+        let connType = '4G Connection / Broadband';
 
         try {
           const res = await fetch('https://ipapi.co/json/');
           if (res.ok) {
             const data = await res.json();
             ipVal = data.ip || '127.0.0.1';
-            cityVal = data.city ? `${data.city}, ${data.country_name}` : (data.country_name || 'Philippines');
+            cityVal = data.city ? `${data.city}, ${data.region || 'National Capital Region'}, ${data.country_name || 'Philippines'}` : 'Manila, National Capital Region, Philippines';
             orgVal = data.org || data.asn || 'Broadband Network';
-            tzVal = data.timezone ? `${data.timezone} (GMT ${data.utc_offset || '+8:00'})` : 'Asia/Manila (+8:00)';
+            tzVal = data.timezone ? `${data.timezone}` : 'Asia/Manila';
           }
         } catch (err) {
           console.warn('Network info fetch failed, using fallback:', err);
         }
 
+        if (navigator.connection) {
+          const effectiveType = navigator.connection.effectiveType;
+          if (effectiveType) {
+            connType = `${effectiveType.toUpperCase()} connection`;
+          }
+        }
+
         const ua = navigator.userAgent;
         let deviceModel = 'Desktop / PC';
-        let browserName = 'Browser';
+        let browserVersionName = 'Unknown Browser';
 
-        if (ua.includes('Firefox')) browserName = 'Mozilla Firefox';
-        else if (ua.includes('SamsungBrowser')) browserName = 'Samsung Internet';
-        else if (ua.includes('Opera') || ua.includes('OPR')) browserName = 'Opera';
-        else if (ua.includes('Edge')) browserName = 'Microsoft Edge';
-        else if (ua.includes('Chrome')) browserName = 'Google Chrome';
-        else if (ua.includes('Safari')) browserName = 'Apple Safari';
+        if (/firefox|fxios/i.test(ua)) {
+          const match = ua.match(/(?:firefox|fxios)\/([0-9.]+)/i);
+          browserVersionName = match ? `Mozilla Firefox ${match[1]}` : 'Mozilla Firefox';
+        } else if (/edg/i.test(ua)) {
+          const match = ua.match(/edg\/([0-9.]+)/i);
+          browserVersionName = match ? `Microsoft Edge ${match[1]}` : 'Microsoft Edge';
+        } else if (/samsungbrowser/i.test(ua)) {
+          const match = ua.match(/samsungbrowser\/([0-9.]+)/i);
+          browserVersionName = match ? `Samsung Internet ${match[1]}` : 'Samsung Internet';
+        } else if (/opr|opera/i.test(ua)) {
+          const match = ua.match(/(?:opr|opera)\/([0-9.]+)/i);
+          browserVersionName = match ? `Opera ${match[1]}` : 'Opera';
+        } else if (/chrome|crios/i.test(ua)) {
+          const match = ua.match(/(?:chrome|crios)\/([0-9.]+)/i);
+          browserVersionName = match ? `Google Chrome ${match[1]}` : 'Google Chrome';
+        } else if (/safari/i.test(ua)) {
+          const match = ua.match(/version\/([0-9.]+).*safari/i);
+          browserVersionName = match ? `Apple Safari ${match[1]}` : 'Apple Safari';
+        }
 
-        if (/iPhone/i.test(ua)) {
-          deviceModel = 'iPhone Device';
-        } else if (/iPad/i.test(ua)) {
-          deviceModel = 'iPad Tablet';
-        } else if (/Android/i.test(ua)) {
+        if (/iPhone/i.test(ua)) deviceModel = 'iPhone Device';
+        else if (/iPad/i.test(ua)) deviceModel = 'iPad Tablet';
+        else if (/Android/i.test(ua)) {
           const match = ua.match(/\b(SM-[A-Z0-9]+|Pixel \d+[a-zA-Z ]*|Redmi|POCO|Vivo|Oppo)\b/i);
           deviceModel = match ? match[0] : 'Android Mobile';
-        } else if (/Macintosh|MacIntel/i.test(ua)) {
-          deviceModel = 'MacBook / Mac OS';
-        } else if (/Windows/i.test(ua)) {
-          deviceModel = 'Windows PC';
-        } else if (/Linux/i.test(ua)) {
-          deviceModel = 'Linux System';
-        }
+        } else if (/Macintosh|MacIntel/i.test(ua)) deviceModel = 'MacBook / Mac OS';
+        else if (/Windows/i.test(ua)) deviceModel = 'Windows PC';
+        else if (/Linux/i.test(ua)) deviceModel = 'Linux System';
 
         const now = new Date();
         const localTimeFormatted = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -104,7 +107,8 @@ export default function AskAnythingModal({ isOpen, onClose }) {
           timezone: tzVal,
           currentTime: localTimeFormatted,
           screen: screenRes,
-          browserAnalysis: `${browserName} / Secure Protocol`
+          connection: connType,
+          browserAnalysis: `${browserVersionName} / ${screenRes}`
         });
       }
 
@@ -112,116 +116,113 @@ export default function AskAnythingModal({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
-  // Magdagdag ng history entry kapag binubuksan ang modal para ma-catch ang back button sa mobile
   useEffect(() => {
     if (isOpen) {
       window.history.pushState({ modalOpen: true }, '');
-
       const handlePopState = () => {
+        // Prevent going back via browser history kung nasa sequence step pa at hindi pa tapos
+        if (askStep === 'sequence' && currentLineIndex < sequenceLines.length - 1) {
+          window.history.pushState({ modalOpen: true }, '');
+          return;
+        }
         handleCloseModal();
       };
-
       window.addEventListener('popstate', handlePopState);
-
-      return () => {
-        window.removeEventListener('popstate', handlePopState);
-      };
+      return () => window.removeEventListener('popstate', handlePopState);
     }
-  }, [isOpen]);
+  }, [isOpen, askStep, currentLineIndex]);
 
-  // Handle Escape key para mag-close
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
+        // Huwag hayaang i-close gamit ang Escape kung nasa sequence step pa at di pa tapos
+        if (askStep === 'sequence' && currentLineIndex < sequenceLines.length - 1) {
+          return;
+        }
         handleCloseModal();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, askStep, currentLineIndex]);
 
-  // Realtime stopwatch para sa pag-proseso
   useEffect(() => {
-    if (askStep === 'processing') {
-      setElapsedSeconds(0);
-      const startTime = Date.now();
-
-      timerRef.current = setInterval(() => {
-        const diff = Math.floor((Date.now() - startTime) / 1000);
-        setElapsedSeconds(diff);
-      }, 200);
-
-      const totalSteps = 8;
-      if (currentStepIndex < totalSteps - 1) {
-        const timer = setTimeout(() => {
-          setCurrentStepIndex((prev) => prev + 1);
-        }, 700);
-        return () => {
-          clearTimeout(timer);
-          clearInterval(timerRef.current);
-        };
-      } else {
-        const finalTimer = setTimeout(() => {
-          clearInterval(timerRef.current);
-          setAskStep('result');
-        }, 900);
-        return () => {
-          clearTimeout(finalTimer);
-          clearInterval(timerRef.current);
-        };
-      }
+    if (askStep === 'thinking') {
+      const timer = setTimeout(() => {
+        setAskStep('analyzing');
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [askStep, currentStepIndex]);
 
-  // Typing effect at 2-second delay para sa message stage
-  useEffect(() => {
-    if (askStep === 'message') {
-      setDisplayedLine1('');
-      setDisplayedLine2('');
-
-      let i1 = 0;
-      const timer1 = setInterval(() => {
-        if (i1 < fullLine1.length) {
-          setDisplayedLine1(fullLine1.substring(0, i1 + 1));
-          i1++;
-        } else {
-          clearInterval(timer1);
-        }
-      }, 30);
-
-      const delayTimer = setTimeout(() => {
-        let i2 = 0;
-        const timer2 = setInterval(() => {
-          if (i2 < fullLine2.length) {
-            setDisplayedLine2(fullLine2.substring(0, i2 + 1));
-            i2++;
-          } else {
-            clearInterval(timer2);
-          }
-        }, 20);
-        return () => clearInterval(timer2);
-      }, 2000);
-
-      return () => {
-        clearInterval(timer1);
-        clearTimeout(delayTimer);
-      };
+    if (askStep === 'analyzing') {
+      const timer = setTimeout(() => {
+        setAskStep('sequence');
+        setCurrentLineIndex(0);
+      }, 5000);
+      return () => clearTimeout(timer);
     }
   }, [askStep]);
+
+  const sequenceLines = [
+    "before we proceed",
+    "consider the digital footprint you are already leaving just by loading this page.",
+    `the registered address for this device is ${visitorInfo.location}`,
+    `your public ip address is "${visitorInfo.ip}"`,
+    `you are connected through "${visitorInfo.network}"`,
+    `your approximate coordinates are around lat/long based on ${visitorInfo.location}`,
+    `you are on a "${visitorInfo.device}" ${visitorInfo.screen}`,
+    `you are browsing with "${visitorInfo.browserAnalysis}"`,
+    `your timezone is ${visitorInfo.timezone} and it is around ${visitorInfo.currentTime} where you are`,
+    `you are on a "${visitorInfo.connection}"`,
+    "None of this requires your explicit consent.",
+    "Your browser silently broadcasts this data to every site you visit.",
+    "Always stay vigilant about the links you follow and the platforms you trust.",
+    "Regarding your actual query,",
+    "i don't want to waste tokens on that, search for it yourself :)"
+  ];
+
+  useEffect(() => {
+    if (askStep === 'sequence') {
+      if (currentLineIndex < sequenceLines.length - 1) {
+        let duration = 5000;
+        if (currentLineIndex === 0) {
+          duration = 2000;
+        } else if (currentLineIndex === 1) {
+          duration = 7000;
+        }
+
+        sequenceTimerRef.current = setTimeout(() => {
+          setCurrentLineIndex((prev) => prev + 1);
+        }, duration);
+
+        return () => clearTimeout(sequenceTimerRef.current);
+      }
+    }
+  }, [askStep, currentLineIndex, sequenceLines.length]);
 
   const handleAskSubmit = (e) => {
     if (e) e.preventDefault();
     if (!askQuery.trim()) return;
 
-    setAskStep('processing');
-    setCurrentStepIndex(0);
+    setSubmittedQuery(askQuery);
+    setAskStep('thinking');
+    setCurrentLineIndex(0);
+  };
+
+  const handleKeyDownInput = (e) => {
+    if (e.key === 'Enter' && !isMobile) {
+      e.preventDefault();
+      handleAskSubmit();
+    }
   };
 
   const handleCloseModal = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    // Kung nasa sequence step pa at hindi pa umabot sa huling linya, bawal i-close
+    if (askStep === 'sequence' && currentLineIndex < sequenceLines.length - 1) {
+      return;
+    }
+
+    if (sequenceTimerRef.current) clearTimeout(sequenceTimerRef.current);
     
     if (window.history.state && window.history.state.modalOpen) {
       window.history.back();
@@ -231,284 +232,195 @@ export default function AskAnythingModal({ isOpen, onClose }) {
     setTimeout(() => {
       setAskStep('input');
       setAskQuery('');
-      setElapsedSeconds(0);
-      setDisplayedLine1('');
-      setDisplayedLine2('');
-    }, 300);
+      setSubmittedQuery('');
+      setCurrentLineIndex(0);
+    }, 350);
   };
-
-  if (!isOpen) return null;
-
-  const processingStepsList = [
-    { label: 'IP address', detail: visitorInfo.ip, icon: FiGlobe },
-    { label: 'Location', detail: visitorInfo.location, icon: FiMapPin },
-    { label: 'Device & Model', detail: visitorInfo.device, icon: FiSmartphone },
-    { label: 'Network Provider', detail: visitorInfo.network, icon: FiWifi },
-    { label: 'Timezone', detail: visitorInfo.timezone, icon: FiClock },
-    { label: 'Current Time', detail: visitorInfo.currentTime, icon: FiCpu },
-    { label: 'Screen Resolution', detail: visitorInfo.screen, icon: FiMonitor },
-    { label: 'Analyzing...', detail: visitorInfo.browserAnalysis, icon: FiLock }
-  ];
 
   return (
     <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 sm:p-12 h-screen w-screen overflow-hidden"
-        style={{ 
-          backgroundColor: 'var(--bg-primary)',
-          color: 'var(--text-primary)'
-        }}
-      >
-        {/* STAGE 1: INPUT VIEW */}
-        {askStep === 'input' && (
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, filter: 'blur(4px)' }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="w-full max-w-xl flex flex-col items-center text-center"
-          >
-            <h3 
-              className="text-xl sm:text-2xl font-normal tracking-tight mb-8"
-              style={{ color: 'var(--text-primary)' }}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          onClick={handleCloseModal} // Magko-close lang kung hindi naka-lock sa sequence
+          className="fixed inset-0 z-50 flex flex-col justify-center h-screen w-screen overflow-hidden px-12 sm:px-24 md:px-36 lg:px-48"
+          style={{ 
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            background: 'color-mix(in srgb, var(--bg-primary) 82%, transparent)',
+            color: 'var(--text-primary)',
+            alignItems: 'flex-start'
+          }}
+        >
+          <style>{`
+            @keyframes shimmerText {
+              0% { background-position: -200% 0; }
+              100% { background-position: 200% 0; }
+            }
+            .shimmer-text {
+              background: linear-gradient(
+                90deg, 
+                var(--text-secondary) 0%, 
+                var(--text-secondary) 35%, 
+                var(--text-primary) 50%, 
+                var(--text-secondary) 65%, 
+                var(--text-secondary) 100%
+              );
+              background-size: 200% auto;
+              color: transparent;
+              -webkit-background-clip: text;
+              background-clip: text;
+              animation: shimmerText 2.2s linear infinite;
+              display: inline-block;
+              line-height: 1.5;
+              padding-bottom: 6px;
+            }
+          `}</style>
+
+          {/* INPUT VIEW */}
+          {askStep === 'input' && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, filter: 'blur(6px)' }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-3xl flex flex-col items-start text-left"
             >
-              Ask anything
-            </h3>
-
-            <form onSubmit={handleAskSubmit} className="w-full flex flex-col items-center">
-              <div className="w-full relative mb-6">
-                <input
-                  type="text"
-                  autoFocus
-                  placeholder="click here to type"
-                  value={askQuery}
-                  onChange={(e) => setAskQuery(e.target.value)}
-                  className="w-full px-4 py-4 text-center text-sm sm:text-base border-b bg-transparent focus:outline-none transition-all"
-                  style={{ 
-                    color: 'var(--text-primary)',
-                    borderColor: 'var(--border-color)',
-                  }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer shadow-sm"
-                style={{ 
-                  backgroundColor: 'var(--text-primary)', 
-                  color: 'var(--bg-primary)' 
-                }}
-              >
-                <span>Send</span>
-              </button>
-            </form>
-          </motion.div>
-        )}
-
-        {/* STAGE 2: PROCESSING VIEW */}
-        {askStep === 'processing' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 1.04, filter: 'blur(4px)' }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full max-w-4xl flex flex-col items-center justify-center py-8"
-          >
-            <div className="flex flex-col items-start w-full max-w-xs mx-auto">
-              <div className="flex items-center justify-between w-full mb-6">
-                <div className="flex items-center gap-2.5">
-                  <div className="relative flex items-center justify-center">
-                    <FiShield className="w-5 h-5 text-amber-500 animate-pulse" />
-                    <span className="absolute -inset-1 rounded-full bg-amber-500/20 animate-ping" />
-                  </div>
-                  <h4 className="text-xs sm:text-base font-medium tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                    Analyzing metadata.... ({elapsedSeconds}s)
-                  </h4>
-                </div>
-              </div>
-
-              <div className="relative pl-6 flex flex-col gap-3.5 sm:gap-4 w-full">
-                <motion.div 
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  style={{ originY: 0, backgroundColor: 'var(--border-color)' }}
-                  className="absolute left-2.5 top-2 bottom-2 w-[1.5px]" 
-                />
-
-                {processingStepsList.map((step, idx) => {
-                  const isCompleted = currentStepIndex >= idx;
-                  const isCurrent = currentStepIndex === idx;
-
-                  if (currentStepIndex < idx) return null;
-
-                  return (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -12, filter: 'blur(4px)' }}
-                      animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                      transition={{ duration: 0.35, ease: "easeOut" }}
-                      className="relative flex items-center gap-3 text-xs sm:text-sm"
-                    >
-                      <motion.div 
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className="absolute -left-6 w-4 h-4 rounded-full flex items-center justify-center border"
-                        style={{ 
-                          borderColor: 'var(--border-color)',
-                          backgroundColor: 'var(--bg-primary)'
-                        }}
-                      >
-                        {isCompleted ? (
-                          <FiCheck className="w-3 h-3 text-emerald-400 font-extrabold drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                        ) : isCurrent ? (
-                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,1)]" />
-                        ) : null}
-                      </motion.div>
-
-                      <span style={{ color: 'var(--text-secondary)' }}>
-                        {step.label}
-                      </span>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STAGE 3: RESULT VIEW (Mas malalaking icons, light gray, walang vertical line) */}
-        {askStep === 'result' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="w-full max-w-5xl flex flex-col lg:flex-row justify-between items-start gap-8 py-8 overflow-y-auto max-h-[85vh] px-4"
-          >
-            <div className="flex flex-col items-start w-full lg:max-w-xs shrink-0">
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className="p-1.5 rounded-full border" style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}>
-                  <FiCheck className="w-4 h-4 text-emerald-400 font-extrabold drop-shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                </div>
-                <h4 className="text-xs sm:text-base font-medium tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                  Thought for {Math.max(elapsedSeconds, 7)}s
-                </h4>
-              </div>
-
-              {/* Walang vertical line at mas malalaking light-gray icons */}
-              <div className="flex flex-col gap-4 w-full">
-                {processingStepsList.map((step, idx) => {
-                  const IconComponent = step.icon;
-                  return (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: idx * 0.05 }}
-                      className="flex items-center gap-3.5 text-xs sm:text-sm"
-                    >
-                      <IconComponent className="w-5 h-5 shrink-0" style={{ color: 'var(--text-secondary)' }} />
-                      <strong className="font-medium break-words" style={{ color: 'var(--text-primary)' }}>
-                        {step.detail}
-                      </strong>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="hidden lg:block w-[1px] self-stretch my-2 shrink-0" style={{ backgroundColor: 'var(--border-color)' }} />
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="flex-1 flex flex-col justify-center items-center h-full min-h-[300px] w-full pt-2 lg:px-8"
-            >
-              <div className="flex flex-col gap-3 max-w-lg w-full items-start text-left">
-                <h4 className="text-sm sm:text-base font-semibold tracking-wide uppercase text-amber-500 w-full text-center sm:text-left">
-                  ⚠️ Security Awareness Reminder
-                </h4>
-                <p className="text-sm sm:text-base leading-relaxed text-left" style={{ color: 'var(--text-secondary)' }}>
-                  Always be cautious when visiting unfamiliar websites or clicking random links sent via chat or social media. 
-                  Malicious platforms can easily read your public metadata (such as your IP address, device model, location, and network) 
-                  just like what we demonstrated here. Never input sensitive passwords or personal credentials unless you fully trust the site's authenticity.
-                </p>
-              </div>
-
-              <div className="mt-5 w-full flex justify-center sm:justify-end">
-                <button
-                  onClick={() => setAskStep('message')}
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-opacity cursor-pointer hover:opacity-60 bg-transparent border-none p-0"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  <span>Proceed</span>
-                  <FiArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* STAGE 4: MESSAGE VIEW */}
-        {askStep === 'message' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: 'blur(5px)' }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="w-full max-w-xl flex flex-col justify-start items-start text-left py-12 px-6"
-          >
-            <div className="flex flex-col gap-6 w-full items-start min-h-[140px]">
-              <p
-                className="text-xl sm:text-2xl font-normal min-h-[35px]"
+              <h3 
+                className="text-3xl sm:text-4xl md:text-5xl font-normal tracking-tight mb-6"
                 style={{ color: 'var(--text-primary)' }}
               >
-                {displayedLine1}
-                {displayedLine1.length < fullLine1.length && (
-                  <span className="inline-block w-2 h-5 ml-1 animate-pulse bg-current align-middle" />
-                )}
-              </p>
+                what do you want to ask?
+              </h3>
 
-              {displayedLine2.length > 0 && (
-                <p
-                  className="text-lg sm:text-xl font-normal leading-relaxed"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  {displayedLine2}
-                  {displayedLine2.length < fullLine2.length && (
-                    <span className="inline-block w-2 h-4 ml-1 animate-pulse bg-current align-middle" />
+              <form onSubmit={handleAskSubmit} className="w-full flex flex-col items-start">
+                <div className="w-full relative mb-4 flex items-center">
+                  <input
+                    type="text"
+                    autoFocus
+                    value={askQuery}
+                    onChange={(e) => setAskQuery(e.target.value)}
+                    onKeyDown={handleKeyDownInput}
+                    className="w-full py-2 text-left text-xl sm:text-2xl md:text-3xl bg-transparent border-none focus:outline-none transition-all pr-16"
+                    style={{ color: 'var(--text-primary)' }}
+                  />
+                  
+                  {isMobile && askQuery.trim() && (
+                    <div className="absolute right-0 flex items-center">
+                      <button
+                        type="submit"
+                        className="inline-flex items-center justify-center p-2 rounded-lg text-xs font-medium border transition-all cursor-pointer shadow-sm hover:opacity-80"
+                        style={{ 
+                          borderColor: 'var(--border-color)', 
+                          backgroundColor: 'var(--bg-secondary)',
+                          color: 'var(--text-primary)' 
+                        }}
+                      >
+                        <span className="text-sm">→</span>
+                      </button>
+                    </div>
                   )}
-                </p>
-              )}
-            </div>
+                </div>
+              </form>
+            </motion.div>
+          )}
 
-            {displayedLine2.length > 0 && (
+          {/* THINKING & ANALYZING VIEW */}
+          {(askStep === 'thinking' || askStep === 'analyzing') && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 1.04, filter: 'blur(4px)' }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-3xl flex flex-col items-start justify-center py-6 gap-5 text-left"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="mt-8 w-full flex justify-start"
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="px-4 py-2.5 rounded-xl border shadow-sm max-w-full break-words text-lg sm:text-xl md:text-2xl font-normal"
+                style={{ 
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
               >
-                <button
-                  onClick={handleCloseModal}
-                  className="inline-flex items-center gap-2 text-sm font-medium transition-opacity cursor-pointer hover:opacity-60 bg-transparent border-none p-0"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  <FiArrowLeft className="w-4 h-4" />
-                  <span>Back to home</span>
-                </button>
+                {submittedQuery}
               </motion.div>
-            )}
-          </motion.div>
-        )}
-      </motion.div>
+
+              <motion.div
+                key={askStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="flex items-center gap-4 text-2xl sm:text-3xl md:text-4xl font-normal mt-1 overflow-visible"
+              >
+                <div className="grid grid-cols-2 gap-1.5 w-5 h-5 shrink-0 opacity-80 animate-spin">
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                </div>
+                <span className="shimmer-text tracking-tight font-normal">
+                  {askStep === 'thinking' ? 'thinking...' : 'analyzing...'}
+                </span>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {/* SEQUENCE VIEW */}
+          {askStep === 'sequence' && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-3xl flex flex-col justify-start items-start text-left py-12"
+            >
+              <div className="flex flex-col gap-6 w-full items-start min-h-[160px]">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={currentLineIndex}
+                    initial={{ opacity: 0, y: 15, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -15, filter: 'blur(4px)' }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="text-xl sm:text-2xl md:text-3xl font-normal leading-relaxed capitalize"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    {sequenceLines[currentLineIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+
+              {currentLineIndex === sequenceLines.length - 1 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
+                  className="mt-12 w-full flex justify-start"
+                >
+                  <button
+                    onClick={handleCloseModal}
+                    className="inline-flex items-center gap-2 text-sm font-medium transition-opacity cursor-pointer hover:opacity-60 bg-transparent border-none p-0"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    <FiArrowLeft className="w-4 h-4" />
+                    <span>Back to home</span>
+                  </button>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }
