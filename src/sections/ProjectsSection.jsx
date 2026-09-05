@@ -54,7 +54,7 @@ const ALL_PROJECTS = [
   },
 ];
 
-export default function ProjectsSection({ isPage = false }) {
+export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
   const projectsToDisplay = isPage ? ALL_PROJECTS : ALL_PROJECTS.slice(0, 3);
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef(0);
@@ -88,11 +88,24 @@ export default function ProjectsSection({ isPage = false }) {
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
       >
-        <div className="w-full max-w-xl flex flex-col gap-12">
-          {ALL_PROJECTS.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} isActive={true} />
-          ))}
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={viewMode}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className={`w-full ${
+              viewMode === 'grid' 
+                ? 'grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6' 
+                : 'max-w-xl flex flex-col gap-12 mx-auto'
+            }`}
+          >
+            {ALL_PROJECTS.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} isActive={true} isGrid={viewMode === 'grid'} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </motion.section>
     );
   }
@@ -133,10 +146,8 @@ export default function ProjectsSection({ isPage = false }) {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      {/* Pinatibay ang flex container para magkatabi ang text info at ang arrows kahit sa mobile view */}
       <div className="w-full max-w-5xl mb-0 flex flex-row items-end sm:items-center justify-between px-4 gap-4">
         <motion.div variants={itemVariants} className="flex flex-col items-start gap-2">
-          {/* Binigyan ng strokeWidth={1.5} para pumayat ang icon */}
           <Briefcase 
             className="w-7 h-7" 
             strokeWidth={1.5}
@@ -156,7 +167,6 @@ export default function ProjectsSection({ isPage = false }) {
           </p>
         </motion.div>
         
-        {/* Navigation Buttons laging nasa kanan ng header row */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handlePrev}
@@ -267,7 +277,7 @@ export default function ProjectsSection({ isPage = false }) {
   );
 }
 
-function ProjectCard({ project, isActive }) {
+function ProjectCard({ project, isActive, isGrid = false }) {
   const navigate = useNavigate();
 
   return (
@@ -315,7 +325,7 @@ function ProjectCard({ project, isActive }) {
           >
             <div className="w-full flex items-center justify-between mb-1">
               <h3 
-                className="text-sm sm:text-base font-normal transition-colors line-clamp-1"
+                className={`font-normal transition-colors line-clamp-1 ${isGrid ? 'text-xs sm:text-sm' : 'text-sm sm:text-base'}`}
                 style={{ color: 'var(--text-primary)' }}
               >
                 {project.title}
@@ -341,7 +351,7 @@ function ProjectCard({ project, isActive }) {
               </div>
             </div>
             <p 
-              className="text-xs sm:text-xs leading-relaxed font-normal line-clamp-2"
+              className="text-[11px] sm:text-xs leading-relaxed font-normal line-clamp-2"
               style={{ color: 'var(--text-secondary)' }}
             >
               {project.description}
