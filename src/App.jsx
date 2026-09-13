@@ -18,6 +18,7 @@ import StackPage from './pages/StackPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 import GearPage from './pages/GearPage';
+import SeminarsPage from './pages/SeminarsPage';
 import Footer from './components/Footer';
 import PageTransition from './components/PageTransition';
 import IntroLoader from './components/IntroLoader';
@@ -43,6 +44,8 @@ function HomeOverview() {
       <FAQSection />
       <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
       <GithubSection />
+      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <SeminarsPage />
     </>
   );
 }
@@ -173,7 +176,7 @@ function App() {
         onThemeApplied={handleThemeApplied}
       >
         <div 
-          className="min-h-screen font-sans relative flex flex-col items-center overflow-x-hidden"
+          className="min-h-screen font-sans relative flex flex-col items-start overflow-x-hidden"
           style={{ 
             backgroundColor: 'var(--bg-primary)', 
             color: 'var(--text-primary)' 
@@ -195,6 +198,7 @@ function App() {
                     <Route path="/projects/:id" element={<PageTransition delay={0.1}><ProjectDetailPage /></PageTransition>} />
                     <Route path="/stack" element={<PageTransition delay={0.1}><StackPage /></PageTransition>} />
                     <Route path="/gear" element={<PageTransition delay={0.1}><GearPage /></PageTransition>} />
+                    <Route path="/seminars" element={<PageTransition delay={0.1}><SeminarsPage /></PageTransition>} />
                     <Route path="/about" element={<PageTransition delay={0.1}><AboutSection /></PageTransition>} />
                     <Route path="/contact" element={<PageTransition delay={0.1}><ContactSection /></PageTransition>} />
                     <Route path="/licensing" element={<PageTransition delay={0.1}><div className="py-10 text-2xl font-bold">Licensing Page</div></PageTransition>} />

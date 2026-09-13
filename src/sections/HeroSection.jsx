@@ -1,8 +1,8 @@
-// src/components/HeroSection.jsx
+// src/sections/HeroSection.jsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
 export default function HeroSection() {
@@ -145,6 +145,33 @@ export default function HeroSection() {
     { name: 'LinkedIn', icon: FaLinkedinIn, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
   ];
 
+  const statsItems = [
+    {
+      number: "06+",
+      label: "Full-Stack Projects",
+      href: "#projects",
+      external: false,
+    },
+    {
+      number: "10+",
+      label: "Core Technologies",
+      href: "#stack",
+      external: false,
+    },
+    {
+      number: "270+",
+      label: "Github Contributions",
+      href: "https://github.com/Amieljake929",
+      external: true,
+    },
+    {
+      number: "03",
+      label: "Seminars attended",
+      href: "#seminars",
+      external: false,
+    },
+  ];
+
   const totalLive = liveViewers.length > 0 ? liveViewers.length : 1;
   const maxDisplayedAvatars = 3;
   const displayedViewers = liveViewers.slice(0, maxDisplayedAvatars);
@@ -252,12 +279,46 @@ export default function HeroSection() {
           I am Amiel Jake Baril, an IT fresh graduate and web designer & developer specializing in full-stack web solutions. Dedicated to building responsive, high-performance digital experiences, I combine modern frontend interfaces with robust backend architectures using React and Laravel to turn creative concepts into functional applications that deliver seamless user interactions.
         </motion.p>
 
-        {/* 1. Total Visitors & Live Viewers (Nasa Itaas) */}
-<motion.div
-  variants={itemVariants}
-  className="flex flex-row items-center flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-4 sm:mt-0 mb-2"
-  style={{ color: 'var(--text-secondary)' }}
->
+        {/* Quick Stats Compact Row Layout with Arrow Up Right Next to Numbers */}
+        <motion.div
+          variants={itemVariants}
+          className="w-full max-w-full sm:max-w-3xl flex flex-row items-center border-t my-2 py-4"
+          style={{ borderColor: 'var(--border-color)' }}
+        >
+          {statsItems.map((stat, index) => {
+            const isLast = index === statsItems.length - 1;
+            return (
+              <a
+                key={stat.label}
+                href={stat.href}
+                target={stat.external ? "_blank" : "_self"}
+                rel={stat.external ? "noopener noreferrer" : undefined}
+                className={`flex flex-col justify-center px-2 sm:px-6 ${!isLast ? 'border-r' : 'pr-0'} ${index === 0 ? 'pl-0' : ''} flex-1 min-w-0 h-14 sm:h-16 group transition-colors cursor-pointer text-decoration-none`}
+                style={{ borderColor: 'var(--border-color)' }}
+              >
+                <div className="flex items-center gap-1.5 w-full">
+                  <span className="text-base sm:text-2xl font-normal tracking-tight truncate leading-none" style={{ color: 'var(--text-primary)' }}>
+                    {stat.number}
+                  </span>
+                  <FiArrowUpRight 
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0"
+                    style={{ color: 'var(--text-primary)' }}
+                  />
+                </div>
+                <span className="text-[8px] sm:text-sm mt-1 truncate" style={{ color: 'var(--text-secondary)' }}>
+                  {stat.label}
+                </span>
+              </a>
+            );
+          })}
+        </motion.div>
+
+        {/* 1. Total Visitors & Live Viewers */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-row items-center flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-7 sm:mt-10 mb-2"
+          style={{ color: 'var(--text-secondary)' }}
+        >
           <span>Total Visitors: <strong style={{ color: 'var(--text-primary)' }}>{visitorCount}</strong></span>
           
           <span style={{ opacity: 0.4 }}>&bull;</span>
@@ -297,7 +358,7 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* 2. Ask Anything Text Button para sa Mobile view (Triggers the global Ask Anything Modal) */}
+        {/* 2. Ask Anything Text Button para sa Mobile view */}
         <motion.div
           variants={itemVariants}
           className="flex sm:hidden mb-1 w-full"
@@ -314,13 +375,12 @@ export default function HeroSection() {
           </button>
         </motion.div>
 
-        {/* Keyboard Shortcuts / Press Buttons (Nasa Ibaba) */}
+        {/* Keyboard Shortcuts */}
         <motion.div
           variants={itemVariants}
           className="hidden sm:flex flex-col gap-2 text-xs sm:text-sm -mb-7 mt-4"
           style={{ color: 'var(--text-secondary)' }}
         >
-          {/* Email Shortcut */}
           <div className="flex items-center gap-1.5">
             <span>Press</span>
             <kbd 
@@ -337,7 +397,6 @@ export default function HeroSection() {
             <span>anytime to send me an email</span>
           </div>
 
-          {/* Theme & Ask Anything Shortcuts */}
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
               <span>Press</span>
