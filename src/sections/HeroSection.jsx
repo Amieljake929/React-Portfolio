@@ -203,13 +203,13 @@ export default function HeroSection() {
           {/* Right Column: Name, Title, Description, and Socials */}
           <div className="text-left w-full flex flex-col justify-start">
             <h1 
-              className="text-4xl sm:text-4xl font-normal tracking-tight whitespace-nowrap"
+              className="text-4xl sm:text-4xl font-normal tracking-tight whitespace-nowrap mt-4 sm:mt-0"
               style={{ color: 'var(--text-primary)' }}
             >
               Amiel Jake Baril
             </h1>
             <p 
-              className="text-1x1 sm:text-1x1 font-normal mt-0.5 sm:mt-0 sm:mb-3 mb-8"
+              className="text-1x1 sm:text-1x1 font-normal mt-0.5 sm:mt-0 sm:mb-3 mb-5"
               style={{ color: 'var(--text-secondary)' }}
             >
               Web Designer & Developer
@@ -224,7 +224,7 @@ export default function HeroSection() {
             </p>
 
             {/* Text-only social links with arrows */}
-            <div className="flex items-center gap-4 flex-wrap w-full mb-8 sm:mb-0">
+            <div className="flex items-center gap-4 flex-wrap w-full mb-5 sm:mb-0">
               {mobileSocials.map((social) => (
                 <a
                   key={social.name}
