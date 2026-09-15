@@ -44,8 +44,6 @@ function HomeOverview() {
       <FAQSection />
       <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
       <GithubSection />
-      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
-      <SeminarsPage />
     </>
   );
 }
@@ -169,6 +167,17 @@ function App() {
 
   return (
     <>
+      {/* Inline styles for the fixed, non-scrollable blended dotted grid background */}
+      <style>{`
+        .fixed-dotted-bg {
+          background-image: radial-gradient(circle, var(--text-secondary) 1px, transparent 1px);
+          background-size: 24px 24px;
+          opacity: 0.22;
+          mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
+          -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
+        }
+      `}</style>
+
       {isLoading && <IntroLoader theme={pendingTheme} onFinish={() => setIsLoading(false)} />}
 
       <ThemeTransition 
@@ -182,43 +191,49 @@ function App() {
             color: 'var(--text-primary)' 
           }}
         >
-          <FloatingNavbar 
-            isLoading={isLoading} 
-            isChatOpen={isChatOpen} 
-            setIsChatOpen={setIsChatOpen} 
-          />
+          {/* Fixed Non-Scrollable Dotted Background Overlay */}
+          <div className="fixed inset-0 pointer-events-none fixed-dotted-bg z-0" />
 
-          <main className="w-full max-w-3xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
-            {!isLoading && (
-              <PageTransition delay={0}>
-                <div className="flex flex-col gap-2">
-                  <Routes>
-                    <Route path="/" element={<HomeOverview />} />
-                    <Route path="/projects" element={<PageTransition delay={0.1}><ProjectsPage /></PageTransition>} />
-                    <Route path="/projects/:id" element={<PageTransition delay={0.1}><ProjectDetailPage /></PageTransition>} />
-                    <Route path="/stack" element={<PageTransition delay={0.1}><StackPage /></PageTransition>} />
-                    <Route path="/gear" element={<PageTransition delay={0.1}><GearPage /></PageTransition>} />
-                    <Route path="/seminars" element={<PageTransition delay={0.1}><SeminarsPage /></PageTransition>} />
-                    <Route path="/about" element={<PageTransition delay={0.1}><AboutSection /></PageTransition>} />
-                    <Route path="/contact" element={<PageTransition delay={0.1}><ContactSection /></PageTransition>} />
-                    <Route path="/licensing" element={<PageTransition delay={0.1}><div className="py-10 text-2xl font-bold">Licensing Page</div></PageTransition>} />
-                  </Routes>
-                </div>
+          {/* Main content wrapper placed above the background */}
+          <div className="relative z-10 w-full flex flex-col items-center">
+            <FloatingNavbar 
+              isLoading={isLoading} 
+              isChatOpen={isChatOpen} 
+              setIsChatOpen={setIsChatOpen} 
+            />
 
-                <Footer />
-              </PageTransition>
-            )}
-          </main>
+            <main className="w-full max-w-3xl px-6 pt-32 pb-12 flex flex-col justify-between min-h-screen mx-auto box-border">
+              {!isLoading && (
+                <PageTransition delay={0}>
+                  <div className="flex flex-col gap-2">
+                    <Routes>
+                      <Route path="/" element={<HomeOverview />} />
+                      <Route path="/projects" element={<PageTransition delay={0.1}><ProjectsPage /></PageTransition>} />
+                      <Route path="/projects/:id" element={<PageTransition delay={0.1}><ProjectDetailPage /></PageTransition>} />
+                      <Route path="/stack" element={<PageTransition delay={0.1}><StackPage /></PageTransition>} />
+                      <Route path="/gear" element={<PageTransition delay={0.1}><GearPage /></PageTransition>} />
+                      <Route path="/seminars" element={<PageTransition delay={0.1}><SeminarsPage /></PageTransition>} />
+                      <Route path="/about" element={<PageTransition delay={0.1}><AboutSection /></PageTransition>} />
+                      <Route path="/contact" element={<PageTransition delay={0.1}><ContactSection /></PageTransition>} />
+                      <Route path="/licensing" element={<PageTransition delay={0.1}><div className="py-10 text-2xl font-bold">Licensing Page</div></PageTransition>} />
+                    </Routes>
+                  </div>
 
-          <AIAssistant 
-            isOpen={isChatOpen} 
-            setIsOpen={setIsChatOpen} 
-          />
+                  <Footer />
+                </PageTransition>
+              )}
+            </main>
 
-          <AskAnythingModal 
-            isOpen={isAskModalOpen} 
-            onClose={() => setIsAskModalOpen(false)} 
-          />
+            <AIAssistant 
+              isOpen={isChatOpen} 
+              setIsOpen={setIsChatOpen} 
+            />
+
+            <AskAnythingModal 
+              isOpen={isAskModalOpen} 
+              onClose={() => setIsAskModalOpen(false)} 
+            />
+          </div>
         </div>
       </ThemeTransition>
     </>
