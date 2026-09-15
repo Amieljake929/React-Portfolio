@@ -1,7 +1,6 @@
 // src/sections/HeroSection.jsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaInstagram, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
@@ -139,10 +138,11 @@ export default function HeroSection() {
     },
   };
 
-  const socialLinks = [
-    { name: 'Instagram', icon: FaInstagram, href: 'https://www.instagram.com/amieljake/' },
-    { name: 'GitHub', icon: FaGithub, href: 'https://github.com/Amieljake929' },
-    { name: 'LinkedIn', icon: FaLinkedinIn, href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
+  // Text-only social links list
+  const mobileSocials = [
+    { name: 'Instagram', href: 'https://www.instagram.com/amieljake/' },
+    { name: 'GitHub', href: 'https://github.com/Amieljake929' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/amiel-jake-baril-316366412/' },
   ];
 
   const statsItems = [
@@ -184,120 +184,88 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-12 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
+        className="pt-8 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
       >
-        {/* Top Bar: Avatar, Name/Title, Status, Social Icons */}
+        {/* Main Hero Container: Image on Left, Content Block on Right (Desktop) */}
         <motion.div 
           variants={itemVariants} 
-          className="mb-8 w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className="mb-6 w-full flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8"
         >
-          <div className="flex items-center justify-between sm:justify-start gap-3.5 w-full sm:w-auto">
-            <div className="flex items-center gap-3.5">
-              <img
-                src="/images/Jake.jpg"
-                alt="Amiel Jake Baril"
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shadow-sm border flex-shrink-0"
-                style={{ borderColor: 'var(--border-color)' }}
-              />
-              <div>
-                <h1 
-                  className="text-xl sm:text-2xl font-normal tracking-tight"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  Amiel Jake Baril
-                </h1>
-                <p 
-                  className="text-xs sm:text-sm font-normal"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  Web Designer & Developer
-                </p>
-              </div>
-            </div>
+          {/* Left Column: Image */}
+          <div className="w-full sm:w-auto flex justify-center sm:justify-start flex-shrink-0">
+            <img
+              src="/images/amiel-gradpic.png"
+              alt="Amiel Jake Baril"
+              className="w-92 h-92 sm:w-77 sm:h-77 object-cover"
+            />
           </div>
 
-          {/* Status Badge & Social Links */}
-          <div className="hidden sm:flex items-center gap-5">
-            <div 
-              className="flex items-center gap-2 text-xs font-medium"
+          {/* Right Column: Name, Title, Description, and Socials */}
+          <div className="text-left w-full flex flex-col justify-start">
+            <h1 
+              className="text-4xl sm:text-4xl font-normal tracking-tight whitespace-nowrap"
               style={{ color: 'var(--text-primary)' }}
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Open to opportunities</span>
-            </div>
-
-            <div 
-              className="flex items-center gap-3"
+              Amiel Jake Baril
+            </h1>
+            <p 
+              className="text-1x1 sm:text-1x1 font-normal mt-0.5 sm:mt-0 sm:mb-3 mb-8"
               style={{ color: 'var(--text-secondary)' }}
             >
-              {socialLinks.map((social) => {
-                const IconComponent = social.icon;
-                return (
-                  <motion.a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.name}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-1 transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
-                    onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
-                    onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
-                  >
-                    <IconComponent size={18} />
-                  </motion.a>
-                );
-              })}
+              Web Designer & Developer
+            </p>
+
+            {/* Description (Justified) */}
+            <p
+              className="text-2x1 sm:text-[13px] leading-relaxed sm:mb-4 mb-10 text-justify sm:text-justify"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power my backends with Laravel, PHP, and XAMPP. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
+            </p>
+
+            {/* Text-only social links with arrows */}
+            <div className="flex items-center gap-4 flex-wrap w-full mb-8 sm:mb-0">
+              {mobileSocials.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-normal transition-colors group"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  <span>{social.name}</span>
+                  <FiArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </a>
+              ))}
             </div>
           </div>
         </motion.div>
 
-        {/* Main Headings */}
-        <motion.div variants={itemVariants} className="mb-6">
-          <h2 
-            className="text-2xl sm:text-3xl font-normal tracking-tight mb-1"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            Building Modern Web Application.
-          </h2>
-          <p 
-            className="text-xl sm:text-2xl font-normal tracking-tight"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            Delivering Clean Code & User-Centric Design.
-          </p>
-        </motion.div>
-
-        {/* Description */}
-        <motion.p
-          variants={itemVariants}
-          className="text-sm sm:text-base leading-relaxed mb-6 max-w-2xl"
-          style={{ color: 'var(--text-secondary)' }}
-        >
-          I am Amiel Jake Baril, an IT fresh graduate and web designer & developer specializing in full-stack web solutions. Dedicated to building responsive, high-performance digital experiences, I combine modern frontend interfaces with robust backend architectures using React and Laravel to turn creative concepts into functional applications that deliver seamless user interactions.
-        </motion.p>
-
-        {/* Quick Stats Compact Row Layout with Arrow Up Right Next to Numbers */}
+        {/* Quick Stats: Cleaned up borders on desktop */}
         <motion.div
           variants={itemVariants}
-          className="w-full max-w-full sm:max-w-3xl flex flex-row items-center border-t my-2 py-4"
+          className="w-full max-w-full sm:max-w-3xl grid grid-cols-2 sm:flex sm:flex-row items-center sm:border-t border-t border-b mt-2 sm:my-2 py-0"
           style={{ borderColor: 'var(--border-color)' }}
         >
           {statsItems.map((stat, index) => {
             const isLast = index === statsItems.length - 1;
+            const mobileBorderClasses = 
+              index === 0 ? "border-r border-b pt-11 pb-9 pr-3" :
+              index === 1 ? "border-b pt-11 pb-9 pl-3" :
+              index === 2 ? "border-r pt-11 pb-9 pr-3" : "pt-11 pb-9 pl-3";
+
             return (
               <a
                 key={stat.label}
                 href={stat.href}
                 target={stat.external ? "_blank" : "_self"}
                 rel={stat.external ? "noopener noreferrer" : undefined}
-                className={`flex flex-col justify-center px-2 sm:px-6 ${!isLast ? 'border-r' : 'pr-0'} ${index === 0 ? 'pl-0' : ''} flex-1 min-w-0 h-14 sm:h-16 group transition-colors cursor-pointer text-decoration-none`}
+                className={`flex flex-col justify-center my-0 ${mobileBorderClasses} sm:border-b-0 sm:py-6 sm:px-6 ${!isLast ? 'sm:border-r' : 'sm:border-r-0 sm:pr-0'} ${index === 0 ? 'sm:pl-0' : ''} flex-1 min-w-0 h-auto sm:h-24 group transition-colors cursor-pointer text-decoration-none text-left`}
                 style={{ borderColor: 'var(--border-color)' }}
               >
-                <div className="flex items-center gap-1.5 w-full">
-                  <span className="text-base sm:text-2xl font-normal tracking-tight truncate leading-none" style={{ color: 'var(--text-primary)' }}>
+                <div className="flex items-center justify-start gap-1.5 w-full">
+                  <span className="text-2xl sm:text-2xl font-normal tracking-tight truncate leading-none" style={{ color: 'var(--text-primary)' }}>
                     {stat.number}
                   </span>
                   <FiArrowUpRight 
@@ -305,7 +273,7 @@ export default function HeroSection() {
                     style={{ color: 'var(--text-primary)' }}
                   />
                 </div>
-                <span className="text-[8px] sm:text-sm mt-1 truncate" style={{ color: 'var(--text-secondary)' }}>
+                <span className="text-[10px] sm:text-sm mt-1.5 truncate text-left" style={{ color: 'var(--text-secondary)' }}>
                   {stat.label}
                 </span>
               </a>
@@ -313,10 +281,10 @@ export default function HeroSection() {
           })}
         </motion.div>
 
-        {/* 1. Total Visitors & Live Viewers */}
+        {/* Total Visitors & Live Viewers */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-row items-center flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-7 sm:mt-10 mb-2"
+          className="flex flex-row items-center justify-start flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-20 sm:mt-10 mb-2 text-left"
           style={{ color: 'var(--text-secondary)' }}
         >
           <span>Total Visitors: <strong style={{ color: 'var(--text-primary)' }}>{visitorCount}</strong></span>
@@ -358,16 +326,16 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* 2. Ask Anything Text Button para sa Mobile view */}
+        {/* Ask Anything Text Button for Mobile view */}
         <motion.div
           variants={itemVariants}
-          className="flex sm:hidden mb-1 w-full"
+          className="flex sm:hidden mt-3 mb-1 w-full justify-start"
         >
           <button
             onClick={() => {
               window.dispatchEvent(new Event('open-ask-modal'));
             }}
-            className="inline-flex items-center gap-2 text-xs font-normal transition-colors cursor-pointer group bg-transparent border-none p-0"
+            className="inline-flex items-center gap-2 text-xs font-normal transition-colors cursor-pointer group bg-transparent border-none p-0 text-left"
             style={{ color: 'var(--text-secondary)' }}
           >
             <span>Ask anything</span>
@@ -378,7 +346,7 @@ export default function HeroSection() {
         {/* Keyboard Shortcuts */}
         <motion.div
           variants={itemVariants}
-          className="hidden sm:flex flex-col gap-2 text-xs sm:text-sm -mb-7 mt-4"
+          className="hidden sm:flex flex-col gap-2 text-xs sm:text-sm -mb-7 mt-4 sm:mt-8"
           style={{ color: 'var(--text-secondary)' }}
         >
           <div className="flex items-center gap-1.5">
