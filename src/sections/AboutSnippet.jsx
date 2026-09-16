@@ -53,16 +53,12 @@ export default function AboutSnippet() {
       className="w-full flex flex-col items-start text-left py-2"
     >
       <div className="flex flex-col items-start gap-2 mb-4">
-        <User 
-          className="w-7 h-7" 
-          strokeWidth={1.5} 
-          style={{ color: 'var(--text-secondary)' }}
-        />
+       
         <h2 
           className="text-xl sm:text-2xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}
         >
-          About Me
+          About my self.
         </h2>
       </div>
 
@@ -71,7 +67,7 @@ export default function AboutSnippet() {
         
         {/* Paragraphs */}
         <div 
-          className="flex flex-col gap-3 text-sm sm:text-base leading-relaxed flex-1"
+          className="flex flex-col gap-3 text-sm sm:text-base leading-relaxed flex-1 text-justify"
           style={{ color: 'var(--text-secondary)' }}
         >
           <p>

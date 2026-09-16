@@ -1,3 +1,4 @@
+// src/components/FloatingNavbar.jsx
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -20,10 +21,13 @@ export default function FloatingNavbar({ isLoading = false }) {
       className="w-full flex justify-center sticky top-0 z-50 mb-[-84px]"
     >
       <div 
-        className="rounded-b-[36px] pt-10 pb-10 px-13 sm:px-19 shadow-xs flex items-center justify-center"
+        className="rounded-b-[36px] pt-10 pb-10 px-13 sm:px-19 shadow-xs flex items-center justify-center relative overflow-hidden"
         style={{ backgroundColor: 'var(--bg-secondary)' }}
       >
-        <nav className="flex items-center justify-center gap-6 sm:gap-10 relative">
+        {/* Subtle dark tint overlay to make the background a little bit darker */}
+        <div className="absolute inset-0 bg-black/3 dark:bg-black/5 pointer-events-none" />
+
+        <nav className="flex items-center justify-center gap-6 sm:gap-10 relative z-10">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (

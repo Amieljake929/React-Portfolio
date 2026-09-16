@@ -49,11 +49,7 @@ export default function FAQSection() {
     >
       {/* Heading na may kasamang Icon */}
       <div className="flex flex-col items-start gap-2 mb-6">
-        <HelpCircle 
-          className="w-7 h-7" 
-          strokeWidth={1.5} 
-          style={{ color: 'var(--text-secondary)' }}
-        />
+        
         <h2 
           className="text-xl sm:text-2xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}

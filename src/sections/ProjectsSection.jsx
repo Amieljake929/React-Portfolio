@@ -148,11 +148,7 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
     >
       <div className="w-full max-w-5xl mb-0 flex flex-row items-end sm:items-center justify-between px-4 gap-4">
         <motion.div variants={itemVariants} className="flex flex-col items-start gap-2">
-          <Briefcase 
-            className="w-7 h-7" 
-            strokeWidth={1.5}
-            style={{ color: 'var(--text-secondary)' }}
-          />
+    
           <h2 
             className="text-2xl font-normal tracking-tight sm:text-3xl"
             style={{ color: 'var(--text-primary)' }}

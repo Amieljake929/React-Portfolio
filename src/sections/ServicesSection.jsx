@@ -45,11 +45,7 @@ export default function ServicesSection() {
       className="w-full flex flex-col items-start text-left py-2"
     >
       <div className="flex flex-col items-start gap-2 mb-4">
-        <Layers 
-          className="w-7 h-7" 
-          strokeWidth={1.5} 
-          style={{ color: 'var(--text-secondary)' }}
-        />
+      
         <h2 
           className="text-xl sm:text-2xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}

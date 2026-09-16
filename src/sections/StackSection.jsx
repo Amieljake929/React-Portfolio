@@ -69,11 +69,7 @@ export default function StackSection() {
       {/* Header Container: Heading sa kaliwa, Clean iPhone Switch sa kanan */}
       <motion.div variants={itemVariants} className="w-full flex items-center justify-between gap-4 mb-6">
         <div className="flex flex-col items-start gap-2">
-          <Cpu 
-            className="w-7 h-7" 
-            strokeWidth={1.5} 
-            style={{ color: 'var(--text-secondary)' }}
-          />
+        
           <h2 
             className="text-xl sm:text-2xl font-normal tracking-tight"
             style={{ color: 'var(--text-primary)' }}
