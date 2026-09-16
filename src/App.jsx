@@ -31,9 +31,9 @@ function HomeOverview() {
     <>
       <HeroSection />
       <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
-      <ProjectsSection />
-      <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
       <AboutSnippet />
+      <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <ProjectsSection />
       <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
       <ServicesSection />
       <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />

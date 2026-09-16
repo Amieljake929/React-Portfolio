@@ -1,12 +1,39 @@
 // src/sections/HeroSection.jsx
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiArrowRight, FiArrowUpRight, FiPhoneCall } from 'react-icons/fi';
 import { supabase } from '../supabase';
 
 export default function HeroSection() {
   const [visitorCount, setVisitorCount] = useState(0);
   const [liveViewers, setLiveViewers] = useState([]);
+  
+  // State para sa pag-switch ng hero image
+  const [currentImage, setCurrentImage] = useState('/images/hero-image.jpg');
+
+  // State para sa pag-switch ng title text (kada 2 segundo)
+  const titles = ['Web Designer & Developer', 'Full Stack Developer'];
+  const [titleIndex, setTitleIndex] = useState(0);
+
+  // Auto-switch image kada 5 segundo
+  useEffect(() => {
+    const imageInterval = setInterval(() => {
+      setCurrentImage((prev) => 
+        prev === '/images/hero-image.jpg' ? '/images/hero-image2.png' : '/images/hero-image.jpg'
+      );
+    }, 5000);
+
+    return () => clearInterval(imageInterval);
+  }, []);
+
+  // Auto-switch title text kada 2 segundo na may scroll-up effect
+  useEffect(() => {
+    const titleInterval = setInterval(() => {
+      setTitleIndex((prev) => (prev + 1) % titles.length);
+    }, 5000);
+
+    return () => clearInterval(titleInterval);
+  }, []);
 
   // Secure Supabase Unique Visitor Tracking Logic using RPC Function
   useEffect(() => {
@@ -138,7 +165,6 @@ export default function HeroSection() {
     },
   };
 
-  // Text-only social links list
   const mobileSocials = [
     { name: 'Instagram', href: 'https://www.instagram.com/amieljake/' },
     { name: 'GitHub', href: 'https://github.com/Amieljake929' },
@@ -184,61 +210,100 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-8 pb-8 sm:pt-16 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center"
+        className="pt-15 pb-8 sm:pt-12 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center relative"
       >
-        {/* Main Hero Container: Image on Left, Content Block on Right (Desktop) */}
+        {/* Top Profile Header Row with Availability Badge */}
         <motion.div 
           variants={itemVariants} 
-          className="mb-6 w-full flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8"
+          className="mb-8 w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
         >
-          {/* Left Column: Image */}
-          <div className="w-full sm:w-auto flex justify-center sm:justify-start flex-shrink-0">
-            <img
-              src="/images/amiel-gradpic.png"
-              alt="Amiel Jake Baril"
-              className="w-92 h-92 sm:w-77 sm:h-77 object-cover"
-            />
+          <div className="flex items-center gap-4">
+            {/* Circular Profile Image with Auto-Switch, Hover & Click */}
+            <div 
+              className="w-35 h-35 sm:w-35 sm:h-35 rounded-full overflow-hidden flex-shrink-0 border cursor-pointer select-none relative" 
+              style={{ borderColor: 'var(--border-color)' }}
+              onMouseEnter={() => setCurrentImage('/images/hero-image2.png')}
+              onMouseLeave={() => setCurrentImage('/images/hero-image.jpg')}
+              onClick={() => {
+                setCurrentImage((prev) => 
+                  prev === '/images/hero-image.jpg' ? '/images/hero-image2.png' : '/images/hero-image.jpg'
+                );
+              }}
+              title="Click or hover to toggle image"
+            >
+              {/* Unang Larawan (hero-image.jpg) */}
+              <img
+                src="/images/hero-image.jpg"
+                alt="1000011"
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-in-out ${
+                  currentImage === '/images/hero-image.jpg' ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+
+              {/* Pangalawang Larawan (hero-image2.png) */}
+              <img
+                src="/images/hero-image2.png"
+                alt="1000011"
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-in-out ${
+                  currentImage === '/images/hero-image2.png' ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            </div>
+            
+            {/* Name & Title with Scroll-Up Animation */}
+            <div>
+              <h1 
+                className="text-[25px] sm:text-4xl font-normal tracking-tight m-0"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                Amiel Jake Baril
+              </h1>
+              
+              {/* Scroll-up container para sa subtitle */}
+              <div className="h-6 sm:h-7 overflow-hidden relative mt-0.5">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={titleIndex}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: 'easeInOut' }}
+                    className="text-[13px] sm:text-[15px] font-normal m-0 absolute left-0 top-0"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
+                    {titles[titleIndex]}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
 
-          {/* Right Column: Name, Title, Description, and Socials */}
-          <div className="text-left w-full flex flex-col justify-start">
-            <h1 
-              className="text-4xl sm:text-4xl font-normal tracking-tight whitespace-nowrap mt-4 sm:mt-0"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              Amiel Jake Baril
-            </h1>
-            <p 
-              className="text-1x1 sm:text-1x1 font-normal mt-0.5 sm:mt-0 sm:mb-3 mb-5"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              Web Designer & Developer
-            </p>
+        </motion.div>
 
-            {/* Description (Justified) */}
-            <p
-              className="text-2x1 sm:text-[13px] leading-relaxed sm:mb-4 mb-10 text-justify sm:text-justify"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power my backends with Laravel, PHP, and XAMPP. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
-            </p>
+        {/* Main Hero Headline & Description */}
+        <motion.div variants={itemVariants} className="w-full max-w-3xl mb-8">
+          <p
+            className="text-sm sm:text-base leading-relaxed text-justify sm:text-left mb-6"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power backends with Laravel, PHP, and XAMPP. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
+          </p>
 
-            {/* Text-only social links with arrows */}
-            <div className="flex items-center gap-4 flex-wrap w-full mb-5 sm:mb-0">
-              {mobileSocials.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-normal transition-colors group"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  <span>{social.name}</span>
-                  <FiArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                </a>
-              ))}
-            </div>
+          {/* Text-only Social Links */}
+          <div className="flex items-center gap-4 flex-wrap w-full mt-6">
+            {mobileSocials.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs font-normal transition-colors group"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                <span>{social.name}</span>
+                <FiArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              </a>
+            ))}
           </div>
         </motion.div>
 
@@ -251,9 +316,9 @@ export default function HeroSection() {
           {statsItems.map((stat, index) => {
             const isLast = index === statsItems.length - 1;
             const mobileBorderClasses = 
-              index === 0 ? "border-r border-b pt-11 pb-9 pr-3" :
-              index === 1 ? "border-b pt-11 pb-9 pl-3" :
-              index === 2 ? "border-r pt-11 pb-9 pr-3" : "pt-11 pb-9 pl-3";
+              index === 0 ? "border-r border-b pt-8 pb-7 pr-3" :
+              index === 1 ? "border-b pt-8 pb-7 pl-3" :
+              index === 2 ? "border-r pt-8 pb-7 pr-3" : "pt-8 pb-7 pl-3";
 
             return (
               <a
@@ -265,7 +330,7 @@ export default function HeroSection() {
                 style={{ borderColor: 'var(--border-color)' }}
               >
                 <div className="flex items-center justify-start gap-1.5 w-full">
-                  <span className="text-2xl sm:text-2xl font-normal tracking-tight truncate leading-none" style={{ color: 'var(--text-primary)' }}>
+                  <span className="text-xl sm:text-2xl font-normal tracking-tight truncate leading-none" style={{ color: 'var(--text-primary)' }}>
                     {stat.number}
                   </span>
                   <FiArrowUpRight 
@@ -281,10 +346,28 @@ export default function HeroSection() {
           })}
         </motion.div>
 
+
+        {/* Ask Anything Text Button for Mobile view */}
+        <motion.div
+          variants={itemVariants}
+          className="flex sm:hidden mt-10 mb-1 w-full justify-start"
+        >
+          <button
+            onClick={() => {
+              window.dispatchEvent(new Event('open-ask-modal'));
+            }}
+            className="inline-flex items-center gap-2 text-[12px] font-normal transition-colors cursor-pointer group bg-transparent border-none p-0 text-left"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            <span>Ask anything</span>
+            <FiArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        </motion.div>
+
         {/* Total Visitors & Live Viewers */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-row items-center justify-start flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-20 sm:mt-10 mb-2 text-left"
+          className="flex flex-row items-center justify-start flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-8 sm:mt-10 mb-2 text-left"
           style={{ color: 'var(--text-secondary)' }}
         >
           <span>Total Visitors: <strong style={{ color: 'var(--text-primary)' }}>{visitorCount}</strong></span>
@@ -326,22 +409,7 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Ask Anything Text Button for Mobile view */}
-        <motion.div
-          variants={itemVariants}
-          className="flex sm:hidden mt-3 mb-1 w-full justify-start"
-        >
-          <button
-            onClick={() => {
-              window.dispatchEvent(new Event('open-ask-modal'));
-            }}
-            className="inline-flex items-center gap-2 text-xs font-normal transition-colors cursor-pointer group bg-transparent border-none p-0 text-left"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            <span>Ask anything</span>
-            <FiArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-        </motion.div>
+      
 
         {/* Keyboard Shortcuts */}
         <motion.div

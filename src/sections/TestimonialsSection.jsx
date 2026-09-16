@@ -92,11 +92,7 @@ export default function TestimonialsSection() {
     >
       {/* Heading na may Icon */}
       <div className="flex flex-col items-start gap-2 mb-6">
-        <MessageSquareQuote 
-          className="w-7 h-7" 
-          strokeWidth={1.5} 
-          style={{ color: 'var(--text-secondary)' }}
-        />
+        
         <h2 
           className="text-xl sm:text-2xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}
@@ -137,7 +133,7 @@ export default function TestimonialsSection() {
               }}
             >
               <p 
-                className="text-xs sm:text-sm leading-relaxed mb-6"
+                className="text-xs sm:text-sm leading-relaxed mb-6 text-justify"
                 style={{ color: 'var(--text-secondary)' }}
               >
                 "{item.content}"
