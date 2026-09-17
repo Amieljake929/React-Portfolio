@@ -26,23 +26,59 @@ import AIAssistant from './components/AIAssistant';
 import ThemeTransition from './components/ThemeTransition';
 import AskAnythingModal from './components/AskAnythingModal';
 
+// Reusable 2-row Dotted Divider with edge blending
+function DottedDivider() {
+  return (
+    <div className="w-full my-8 sm:my-12 flex flex-col items-center select-none overflow-hidden py-3">
+      <div 
+        className="w-full max-w-3xl flex flex-col gap-2 px-2"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)'
+        }}
+      >
+        {/* Row 1 */}
+        <div className="w-full flex justify-between items-center opacity-30">
+          {Array.from({ length: 32 }).map((_, i) => (
+            <div
+              key={`r1-${i}`}
+              className="w-1 h-1 rounded-full"
+              style={{ backgroundColor: 'var(--text-secondary)' }}
+            />
+          ))}
+        </div>
+        {/* Row 2 */}
+        <div className="w-full flex justify-between items-center opacity-30">
+          {Array.from({ length: 32 }).map((_, i) => (
+            <div
+              key={`r2-${i}`}
+              className="w-1 h-1 rounded-full"
+              style={{ backgroundColor: 'var(--text-secondary)' }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function HomeOverview() {
   return (
     <>
       <HeroSection />
-      <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <AboutSnippet />
-      <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <ProjectsSection />
-      <hr className="my-8 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <ServicesSection />
-      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <StackSection />
-      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <TestimonialsSection />
-      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <FAQSection />
-      <hr className="my-12 transition-colors duration-300" style={{ borderColor: 'var(--border-color)' }} />
+      <DottedDivider />
       <GithubSection />
     </>
   );
@@ -77,13 +113,6 @@ function App() {
     localStorage.setItem('theme', appliedTheme);
   }, [appliedTheme]);
 
-  const toggleTheme = () => {
-    if (isAnimatingRef.current) return;
-    const nextTheme = pendingTheme === 'dark' ? 'light' : 'dark';
-    isAnimatingRef.current = true;
-    setPendingTheme(nextTheme);
-  };
-
   const setThemeExplicit = (targetTheme) => {
     if (isAnimatingRef.current) return;
     if (pendingTheme !== targetTheme) {
@@ -92,7 +121,6 @@ function App() {
     }
   };
 
-  // I-stop o i-start ang Lenis smooth scroll depende kung bukas ang modal
   useEffect(() => {
     if (lenisRef.current) {
       if (isAskModalOpen || isChatOpen) {
@@ -109,11 +137,7 @@ function App() {
         return;
       }
 
-      if (e.key === 'd' || e.key === 'D') {
-        setThemeExplicit('dark');
-      } else if (e.key === 'l' || e.key === 'L') {
-        setThemeExplicit('light');
-      } else if (e.key === 'a' || e.key === 'A') {
+      if (e.key === 'a' || e.key === 'A') {
         e.preventDefault();
         setIsAskModalOpen(true);
       }
@@ -121,7 +145,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [pendingTheme]);
+  }, []);
 
   useEffect(() => {
     const handleOpenAsk = () => setIsAskModalOpen(true);
@@ -130,8 +154,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleCustomThemeToggle = () => {
-      toggleTheme();
+    const handleCustomThemeToggle = (e) => {
+      const targetTheme = e.detail;
+      if (targetTheme === 'dark' || targetTheme === 'light') {
+        setThemeExplicit(targetTheme);
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setThemeExplicit(prefersDark ? 'dark' : 'light');
+      }
     };
 
     window.addEventListener('trigger-theme-toggle', handleCustomThemeToggle);
@@ -167,17 +197,6 @@ function App() {
 
   return (
     <>
-      {/* Inline styles for the fixed, non-scrollable blended dotted grid background */}
-      <style>{`
-        .fixed-dotted-bg {
-          background-image: radial-gradient(circle, var(--text-secondary) 1px, transparent 1px);
-          background-size: 24px 24px;
-          opacity: 0.22;
-          mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
-          -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
-        }
-      `}</style>
-
       {isLoading && <IntroLoader theme={pendingTheme} onFinish={() => setIsLoading(false)} />}
 
       <ThemeTransition 
@@ -191,10 +210,18 @@ function App() {
             color: 'var(--text-primary)' 
           }}
         >
-          {/* Fixed Non-Scrollable Dotted Background Overlay */}
-          <div className="fixed inset-0 pointer-events-none fixed-dotted-bg z-0" />
+          {/* Unique & Minimalist Ambient Background Glows */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+            <div 
+              className="absolute top-[0] left-[20%] w-[500px] h-[500px] rounded-full blur-[130px] opacity-25 dark:opacity-15 transition-all duration-700"
+              style={{ backgroundColor: 'var(--text-secondary)' }}
+            />
+            <div 
+              className="absolute top-[53%] right-[-70%] sm:right-[-10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-15 dark:opacity-8 transition-all duration-700"
+              style={{ backgroundColor: 'var(--text-primary)' }}
+            />
+          </div>
 
-          {/* Main content wrapper placed above the background */}
           <div className="relative z-10 w-full flex flex-col items-center">
             <FloatingNavbar 
               isLoading={isLoading} 

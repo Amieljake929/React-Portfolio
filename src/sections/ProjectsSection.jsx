@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { Briefcase } from 'lucide-react';
 
 const ALL_PROJECTS = [
   {
@@ -93,14 +92,20 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
-            className={`w-full ${
+            className={`w-full max-w-6xl mx-auto px-4 ${
               viewMode === 'grid' 
-                ? 'grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6' 
-                : 'max-w-xl flex flex-col gap-12 mx-auto'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8' 
+                : 'flex flex-col gap-16 max-w-3xl'
             }`}
           >
             {ALL_PROJECTS.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} isActive={true} isGrid={viewMode === 'grid'} />
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                index={index} 
+                isActive={true} 
+                isGrid={viewMode === 'grid'} 
+              />
             ))}
           </motion.div>
         </AnimatePresence>
@@ -129,7 +134,7 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
     >
-      <div className="w-full max-w-5xl mb-4 flex flex-col items-start px-4 gap-2">
+      <div className="w-full max-w-4xl mb-4 flex flex-col items-start px-4 gap-2">
         <motion.div variants={itemVariants} className="flex flex-col items-start gap-1">
           <h2 
             className="text-2xl font-normal tracking-tight sm:text-3xl"
@@ -146,22 +151,35 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
         </motion.div>
       </div>
 
-      {/* Steady Laptop Viewport with Navigation Buttons on Left & Right */}
-      <div className="w-full max-w-4xl relative flex items-center justify-center px-2 sm:px-12 my-2 mt-8">
-        {/* Left Arrow Button */}
+      <div className="w-full max-w-4xl relative flex items-center justify-center px-2 my-2 mt-8">
+        <div className="w-full max-w-xl flex justify-center">
+          <ProjectCard 
+            project={currentProject} 
+            isActive={true} 
+            isGrid={false}
+            direction={direction}
+            onSwipeNext={handleNext}
+            onSwipePrev={handlePrev}
+          />
+        </div>
+      </div>
+
+      {/* Integrated Navigation Arrows and Indicators Section */}
+      <div className="flex items-center gap-4 mb-2 mt-8">
+        {/* Previous Arrow Button */}
         <button
           onClick={handlePrev}
-          className="absolute left-1 sm:left-2 z-30 p-2 sm:p-3 rounded-full border transition-colors shadow-md cursor-pointer"
+          className="p-2 rounded-full border transition-colors shadow-sm cursor-pointer flex items-center justify-center"
           style={{ 
             backgroundColor: 'var(--bg-primary)',
             borderColor: 'var(--border-color)',
           }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--bg-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
           aria-label="Previous project"
         >
           <svg 
-            className="w-4 h-4 sm:w-5 sm:h-5" 
+            className="w-4 h-4" 
             fill="none" 
             stroke="currentColor" 
             strokeWidth="2" 
@@ -172,28 +190,40 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
           </svg>
         </button>
 
-        <ProjectCard 
-          project={currentProject} 
-          isActive={true} 
-          direction={direction}
-          onSwipeNext={handleNext}
-          onSwipePrev={handlePrev}
-        />
+        {/* Indicators Dots */}
+        <div className="flex items-center gap-1.5">
+          {projectsToDisplay.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                setDirection(idx > activeIndex ? 1 : -1);
+                setActiveIndex(idx);
+              }}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === idx ? 'w-6' : 'w-1.5 bg-gray-400/40'
+              }`}
+              style={{
+                backgroundColor: activeIndex === idx ? 'var(--text-primary)' : undefined
+              }}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
 
-        {/* Right Arrow Button */}
+        {/* Next Arrow Button */}
         <button
           onClick={handleNext}
-          className="absolute right-1 sm:right-2 z-30 p-2 sm:p-3 rounded-full border transition-colors shadow-md cursor-pointer"
+          className="p-2 rounded-full border transition-colors shadow-sm cursor-pointer flex items-center justify-center"
           style={{ 
             backgroundColor: 'var(--bg-primary)',
             borderColor: 'var(--border-color)',
           }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = 'var(--bg-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
           aria-label="Next project"
         >
           <svg 
-            className="w-4 h-4 sm:w-5 sm:h-5" 
+            className="w-4 h-4" 
             fill="none" 
             stroke="currentColor" 
             strokeWidth="2" 
@@ -205,33 +235,13 @@ export default function ProjectsSection({ isPage = false, viewMode = 'list' }) {
         </button>
       </div>
 
-      {/* Pagination Dots indicator */}
-      <div className="flex items-center gap-1.5 mb-2 mt-8">
-        {projectsToDisplay.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => {
-              setDirection(idx > activeIndex ? 1 : -1);
-              setActiveIndex(idx);
-            }}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              activeIndex === idx ? 'w-6 bg-primary' : 'w-1.5 bg-gray-400/40'
-            }`}
-            style={{
-              backgroundColor: activeIndex === idx ? 'var(--text-primary)' : undefined
-            }}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
-      </div>
-
       <motion.div variants={itemVariants} className="mt-8 w-full flex justify-center">
         <Link
           to="/projects"
           className="inline-flex items-center gap-2 text-sm font-medium transition-colors py-1"
           style={{ color: 'var(--text-primary)' }}
-          onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
-          onMouseLeave={(e) => e.target.style.color = 'var(--text-primary)'}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
         >
           See all projects <span>&rarr;</span>
         </Link>
@@ -244,6 +254,7 @@ function ProjectCard({ project, isActive, isGrid = false, direction = 0, onSwipe
   const navigate = useNavigate();
 
   const handleDragEnd = (e, info) => {
+    if (!onSwipeNext || !onSwipePrev) return;
     const swipeThreshold = 40;
     if (info.offset.x < -swipeThreshold) {
       onSwipeNext();
@@ -253,17 +264,17 @@ function ProjectCard({ project, isActive, isGrid = false, direction = 0, onSwipe
   };
 
   return (
-    <div className="w-[280px] sm:w-[480px] group flex flex-col text-left transition-all duration-300">
-      <div className="w-full flex items-center justify-center p-1 mb-1 relative">
-        {/* Steady Laptop Shell */}
+    <div className="w-full group flex flex-col text-left transition-all duration-300">
+      <div className="w-full flex flex-col items-center p-1 mb-1 relative">
         <div className="w-full relative z-10 flex flex-col items-center">
           
+          {/* Laptop Lid / Shell */}
           <div className="w-full bg-[#0a0a0b] border-[2px] sm:border-[2.5px] border-[#38383a] rounded-t-lg sm:rounded-t-xl p-[2px] sm:p-[3px] relative shadow-[0_15px_35px_rgba(0,0,0,0.2)]">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-6 sm:w-8 h-1.5 sm:h-2 bg-[#0a0a0b] border-b border-x border-[#2b2b2e] rounded-b-sm sm:rounded-b-md z-30 flex justify-center items-center">
               <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full bg-[#111] border border-gray-700"></div>
             </div>
 
-            {/* Slideable Screen Area */}
+            {/* Screen Viewport */}
             <div className="w-full aspect-[16/10] bg-black rounded-t-sm sm:rounded-t-md overflow-hidden relative cursor-grab active:cursor-grabbing touch-pan-y">
               <AnimatePresence mode="popLayout" custom={direction}>
                 <motion.div
@@ -273,10 +284,12 @@ function ProjectCard({ project, isActive, isGrid = false, direction = 0, onSwipe
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: direction * -300, opacity: 0.8 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
+                  {...(onSwipeNext && onSwipePrev ? {
+                    drag: "x",
+                    dragConstraints: { left: 0, right: 0 },
+                    dragElastic: 0.2,
+                    onDragEnd: handleDragEnd
+                  } : {})}
                   className="absolute inset-0 cursor-pointer"
                   onClick={() => {
                     if (isActive) {
@@ -295,16 +308,18 @@ function ProjectCard({ project, isActive, isGrid = false, direction = 0, onSwipe
             </div>
           </div>
 
+          {/* Laptop Base / Keyboard Ridge */}
           <div className="w-[105%] h-1.5 sm:h-2 bg-gradient-to-r from-[#2c2c2e] via-[#4a4a4d] to-[#2c2c2e] rounded-b-sm sm:rounded-b-md relative shadow-md flex justify-center border-t border-gray-700/50">
             <div className="w-6 sm:w-10 h-0.5 sm:h-1 bg-[#1a1a1c] rounded-b-sm border-t border-gray-600"></div>
           </div>
 
+          {/* Shadow beneath laptop */}
           <div className="w-[92%] h-2 sm:h-3 bg-black/15 rounded-[100%] blur-sm mt-1"></div>
         </div>
       </div>
 
-      {/* Project details area below the laptop */}
-      <div className="flex flex-col items-start w-full px-1 min-h-[55px] mt-1">
+      {/* Project Details */}
+      <div className="flex flex-col items-start w-full px-1 mt-2">
         {isActive ? (
           <div className="w-full flex flex-col items-start">
             <div 
@@ -318,7 +333,7 @@ function ProjectCard({ project, isActive, isGrid = false, direction = 0, onSwipe
                 {project.title}
               </h3>
               <div 
-                className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0"
+                className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:translate-x-0.5 shadow-sm shrink-0 ml-2"
                 style={{ 
                   backgroundColor: 'var(--bg-secondary)',
                   color: 'var(--text-primary)',
