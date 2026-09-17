@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle } from 'lucide-react';
 
 const FAQS = [
   {
@@ -36,7 +35,6 @@ export default function FAQSection() {
     }
   };
 
-  // Configuration para sa smooth spring animation na may bounce
   const springConfig = { type: 'spring', stiffness: 300, damping: 25, mass: 1 };
 
   return (
@@ -47,9 +45,8 @@ export default function FAQSection() {
       transition={{ duration: 0.5 }}
       className="w-full flex flex-col items-start text-left py-6"
     >
-      {/* Heading na may kasamang Icon */}
-      <div className="flex flex-col items-start gap-2 mb-6">
-        
+      {/* Heading */}
+      <div className="flex flex-col items-start gap-2 mb-4">
         <h2 
           className="text-xl sm:text-2xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}
@@ -58,7 +55,8 @@ export default function FAQSection() {
         </h2>
       </div>
 
-      <div className="flex flex-col gap-3 w-full">
+      {/* FAQ List */}
+      <div className="w-full flex flex-col">
         {FAQS.map((faq) => {
           const isOpen = openIds.includes(faq.id);
 
@@ -66,16 +64,10 @@ export default function FAQSection() {
             <div
               key={faq.id}
               onClick={() => toggleFAQ(faq.id)}
-              className="rounded-2xl p-4 sm:p-5 shadow-2xs transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              className="py-5 cursor-pointer transition-colors duration-200"
               style={{
-                // Gumamit ng bg-secondary para magkaroon ng contrast mula sa main background (parang original na bg-[#f9fafb])
-                backgroundColor: 'var(--bg-secondary)',
-                borderColor: 'var(--border-color)',
-                borderWidth: '1px',
-                borderStyle: 'solid'
+                borderBottom: '1px solid var(--border-color)',
               }}
-              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text-secondary)'}
-              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
             >
               {/* Question Header */}
               <div className="flex items-center justify-between w-full">
@@ -85,20 +77,12 @@ export default function FAQSection() {
                 >
                   {faq.question}
                 </h3>
-                <div 
+                <span 
                   className="text-lg font-light shrink-0 select-none"
                   style={{ color: 'var(--text-primary)' }}
                 >
-                  <svg
-                    className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                  </svg>
-                </div>
+                  {isOpen ? '—' : '+'}
+                </span>
               </div>
 
               {/* Animated Answer Container */}
@@ -112,15 +96,7 @@ export default function FAQSection() {
                     transition={springConfig}
                     className="overflow-hidden"
                   >
-                    {/* Inner wrapper para sa border at padding para maging smooth ang exit */}
-                    <div 
-                      className="pt-3 mt-3"
-                      style={{ 
-                        borderColor: 'var(--border-color)',
-                        borderTopWidth: '1px',
-                        borderTopStyle: 'solid'
-                      }}
-                    >
+                    <div className="pt-3 pr-8">
                       <p 
                         className="text-xs sm:text-sm leading-relaxed"
                         style={{ color: 'var(--text-secondary)' }}
