@@ -198,9 +198,9 @@ export default function TestimonialsSection() {
                   top-1/2
                   -translate-x-1/2
                   -translate-y-1/2
-                  w-[275px]
+                  w-[245px]
                   sm:w-[340px]
-                  h-[365px]
+                  h-[315px]
                   sm:h-[390px]
                   rounded-[18px]
                   p-5
@@ -231,7 +231,7 @@ export default function TestimonialsSection() {
                 {/* CONTENT */}
                 <div className="flex-1 overflow-hidden">
                   <p
-                    className="text-[12px] sm:text-[13px] leading-[1.7]"
+                    className="text-[8px] sm:text-[11px] leading-[1.7]"
                     style={{ color: 'var(--text-primary)' }}
                   >
                     {item.content}

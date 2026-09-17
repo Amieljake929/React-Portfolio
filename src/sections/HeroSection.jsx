@@ -209,7 +209,7 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-15 pb-15 sm:pt-12 sm:pb-25 my-0 w-full flex flex-col items-start text-left justify-center relative"
+        className="pt-8 pb-15 sm:pt-12 sm:pb-25 my-0 w-full flex flex-col items-start text-left justify-center relative"
       >
         {/* Top Profile Header Row with Availability Badge */}
         <motion.div 
@@ -275,7 +275,7 @@ export default function HeroSection() {
             className="text-sm sm:text-base leading-relaxed text-justify sm:text-left mb-6"
             style={{ color: 'var(--text-secondary)' }}
           >
-            I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power backends with Laravel, PHP, and XAMPP. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
+            I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power backends with Laravel, PHP, and MySQL. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
           </p>
 
           {/* Text-only Social Links */}
@@ -356,7 +356,7 @@ export default function HeroSection() {
         {/* Total Visitors & Live Viewers */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-row items-center justify-start flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-8 sm:mt-10 mb-2 text-left"
+          className="flex flex-row items-center justify-start flex-wrap gap-2.5 text-xs sm:text-sm font-normal mt-3 sm:mt-10 mb-2 text-left"
           style={{ color: 'var(--text-secondary)' }}
         >
           <span>Total Visitors: <strong style={{ color: 'var(--text-primary)' }}>{visitorCount}</strong></span>
@@ -424,37 +424,7 @@ export default function HeroSection() {
 
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5">
-              <span>Press</span>
-              <kbd 
-                className="px-2 py-0.5 text-xs font-semibold rounded-md shadow-2xs"
-                style={{ 
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderColor: 'var(--border-color)',
-                  border: '1px solid'
-                }}
-              >
-                D
-              </kbd>
-              <span>for dark mode</span>
-            </div>
-            <span style={{ opacity: 0.4 }}>&bull;</span>
-            <div className="flex items-center gap-1.5">
-              <kbd 
-                className="px-2 py-0.5 text-xs font-semibold rounded-md shadow-2xs"
-                style={{ 
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderColor: 'var(--border-color)',
-                  border: '1px solid'
-                }}
-              >
-                L
-              </kbd>
-              <span>for light mode</span>
-            </div>
-            <span style={{ opacity: 0.4 }}>&bull;</span>
-            <div className="flex items-center gap-1.5">
+             <span>Press</span>
               <kbd 
                 className="px-2 py-0.5 text-xs font-semibold rounded-md shadow-2xs"
                 style={{ 
