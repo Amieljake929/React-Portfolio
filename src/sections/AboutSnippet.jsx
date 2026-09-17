@@ -1,186 +1,58 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { User, MousePointerClick } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 export default function AboutSnippet() {
-  const images = [
-    '/images/ako.png', 
-    '/images/me.jpg', 
-    '/images/baguio.jpg',
-
-  ];
-
-  const [cards, setCards] = useState(() =>
-    images.map((img, idx) => ({ id: idx, img }))
-  );
-
-  const [flyingCardId, setFlyingCardId] = useState(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleCardClick = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-
-    const topCard = cards[cards.length - 1];
-    setFlyingCardId(topCard.id);
-
-    // Step 1: Lumipad sa gilid (3D Shuffle Flight)
-    setTimeout(() => {
-      setCards((prevCards) => {
-        const newCards = [...prevCards];
-        const popped = newCards.pop();
-        newCards.unshift(popped);
-        return newCards;
-      });
-      setFlyingCardId(null);
-    }, 280);
-
-    // Step 2: Clear animation lock
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 600);
-  };
-
-  const rotationAngles = [0, -7, 6, -5, 8];
-
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full flex flex-col items-start text-left py-2"
+      className="w-full flex flex-col items-center text-center py-6 px-4 max-w-2xl mx-auto mt-10 mb-10"
     >
-      <div className="flex flex-col items-start gap-2 mb-4">
-       
+      {/* Headings mimicking the reference layout style */}
+      <div className="flex flex-col items-center gap-2 mb-6">
         <h2 
-          className="text-xl sm:text-2xl font-normal tracking-tight"
+          className="text-2xl sm:text-3xl font-normal tracking-tight"
           style={{ color: 'var(--text-primary)' }}
         >
-          About my self.
+          Hi, I am Amiel Jake Baril
         </h2>
-      </div>
-
-      {/* Main Container: Flex-col-reverse sa mobile (image sa taas), sm:flex-row sa desktop */}
-      <div className="w-full flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-8 max-w-3xl">
-        
-        {/* Paragraphs */}
-        <div 
-          className="flex flex-col gap-3 text-sm sm:text-base leading-relaxed flex-1 text-justify"
+        <p 
+          className="text-[10px] sm:text-[13px] font-normal"
           style={{ color: 'var(--text-secondary)' }}
         >
-          <p>
-            I am a passionate Web Designer and Developer dedicated to bridging aesthetic design and technical performance. I build clean, user-centric web applications using modern frameworks.
-          </p>
-          <p>
-            With a solid academic background in IT and hands-on experience building full-stack platforms like school and community systems, I turn complex problems into elegant digital solutions.
-          </p>
-        </div>
-
-        {/* 3D Shuffle Deck Images Container with Note */}
-        <div className="shrink-0 self-center sm:self-auto flex flex-col items-center">
-          <div className="w-44 h-44 sm:w-52 sm:h-52 relative flex items-center justify-center select-none overflow-visible">
-            <div
-              className="relative w-full h-full flex items-center justify-center overflow-visible"
-              style={{ perspective: '1200px' }}
-            >
-              {cards.map((card, index) => {
-                const isTop = index === cards.length - 1;
-                const isFlying = card.id === flyingCardId;
-                const stackIndex = cards.length - 1 - index;
-                const rotation = rotationAngles[card.id % rotationAngles.length];
-                const xOffset = stackIndex % 2 === 0 ? stackIndex * 4 : stackIndex * -4;
-
-                return (
-                  <motion.div
-                    key={card.id}
-                    onClick={isTop ? handleCardClick : undefined}
-                    animate={
-                      isFlying
-                        ? {
-                            x: 180,
-                            y: -10,
-                            z: 100,
-                            rotateY: -20,
-                            rotateZ: 10,
-                            scale: 1.02,
-                            opacity: 0.95,
-                            zIndex: 999,
-                          }
-                        : {
-                            x: isTop ? 0 : xOffset,
-                            y: stackIndex * -3,
-                            z: -stackIndex * 20,
-                            rotateZ: isTop ? 0 : rotation,
-                            rotateY: isTop ? 0 : (stackIndex % 2 === 0 ? 3 : -3),
-                            scale: 1 - stackIndex * 0.03,
-                            opacity: stackIndex > 4 ? 0 : 1,
-                            zIndex: index,
-                          }
-                    }
-                    transition={
-                      isFlying
-                        ? { duration: 0.28, ease: 'easeOut' }
-                        : {
-                            type: 'spring',
-                            stiffness: 220,
-                            damping: 24,
-                            mass: 0.8,
-                          }
-                    }
-                    whileHover={
-                      isTop && !isAnimating
-                        ? {
-                            scale: 1.02,
-                            z: 20,
-                            rotateZ: 1,
-                            transition: { duration: 0.2 },
-                          }
-                        : {}
-                    }
-                    whileTap={isTop && !isAnimating ? { scale: 0.98 } : {}}
-                    className="absolute inset-0 rounded-2xl overflow-hidden border shadow-md"
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      backfaceVisibility: 'hidden',
-                      backgroundColor: 'var(--bg-primary)',
-                      borderColor: 'var(--border-color)',
-                      // Simulate the ring effect for the top card
-                      boxShadow: (isTop && !isAnimating) 
-                        ? '0 0 0 2px var(--border-color), 0 10px 15px -3px rgba(0, 0, 0, 0.1)' 
-                        : '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    <img
-                      src={card.img}
-                      alt={`About Photo ${card.id + 1}`}
-                      className="w-full h-full object-cover pointer-events-none"
-                    />
-                    <div
-                      className={`absolute inset-0 transition-opacity duration-300 pointer-events-none ${
-                        isTop ? 'bg-transparent' : 'bg-black/15'
-                      }`}
-                    />
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Note sa baba ng image */}
-          <div 
-            className="mt-3 flex items-center gap-1.5 text-xs font-medium select-none"
-            style={{ color: 'var(--text-secondary)' }}
-          >
-            <MousePointerClick className="w-3.5 h-3.5 animate-pulse" />
-            <span>Click photo to shuffle card</span>
-          </div>
-        </div>
-
+          A Fresh IT Graduate & Full-Stack Web Developer
+        </p>
       </div>
 
-      <div className="mt-4">
+      {/* Paragraph content tailored to a fresh IT graduate and full-stack developer */}
+      <div 
+        className="flex flex-col gap-4 text-sm sm:text-base leading-relaxed text-justify sm:text-center mb-8"
+        style={{ color: 'var(--text-secondary)' }}
+      >
+        <p>
+          I am a passionate full-stack web developer and recent Bachelor of Science in Information Technology graduate. I specialize in building robust, user-centric web applications using modern technologies like React, Tailwind CSS, JavaScript, PHP, and Laravel.
+        </p>
+        <p>
+          From architecting capstone platforms like school and community management systems to designing seamless user interfaces, I focus on transforming complex technical requirements into clean, scalable, and high-performance digital solutions.
+        </p>
+      </div>
+
+      {/* Bottom Actions: CV Button (no container box, just text + icon) & More About Me */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+        <a
+          href="/resume/Amiel_Jake_Baril_CV.pdf" 
+          download="Amiel_Jake_Baril_Resume.pdf"
+          className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-80"
+          style={{ color: 'var(--text-primary)', background: 'transparent', border: 'none' }}
+        >
+          <span>Download CV</span>
+          <Download className="w-4 h-4" />
+        </a>
+
         <Link
           to="/about"
           className="inline-flex items-center gap-2 text-sm font-medium transition-colors"

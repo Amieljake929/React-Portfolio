@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers } from 'lucide-react';
 
 const SERVICES = [
   {
@@ -30,11 +29,8 @@ const SERVICES = [
 ];
 
 export default function ServicesSection() {
-  const [openId, setOpenId] = useState(null);
-
-  const toggleService = (id) => {
-    setOpenId(openId === id ? null : id);
-  };
+  const [activeId, setActiveId] = useState(1);
+  const activeService = SERVICES.find((s) => s.id === activeId) || SERVICES[0];
 
   return (
     <motion.section
@@ -42,111 +38,100 @@ export default function ServicesSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full flex flex-col items-start text-left py-2"
+      className="w-full flex flex-col items-start text-left py-4 px-3 sm:px-0 mt-10 mb-10"
     >
-      <div className="flex flex-col items-start gap-2 mb-4">
-      
+      <div className="flex flex-col items-start gap-2 mb-15 sm:mb-15">
         <h2 
-          className="text-xl sm:text-2xl font-normal tracking-tight"
-          style={{ color: 'var(--text-primary)' }}
+          className="text-2xl font-normal tracking-tight sm:text-3xl"
+            style={{ color: 'var(--text-primary)' }}
         >
           Services
         </h2>
+        <p 
+            className="text-xs sm:text-base font-normal"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Some of the recent websites I've worked on.
+          </p>
       </div>
 
-      {/* Ginamit ang grid-cols-2 para maging dalawa ang column kahit sa mobile */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full items-start">
-        {SERVICES.map((service) => {
-          const isOpen = openId === service.id;
+      {/* Main Layout Container: Side-by-side on both mobile and desktop */}
+      <div className="w-full grid grid-cols-12 gap-4 sm:gap-12 items-center">
+        
+        {/* Left Side: Circular Image Nodes List */}
+        <div className="col-span-5 sm:col-span-5 flex flex-col gap-3 sm:gap-4 w-full">
+          {SERVICES.map((service) => {
+            const isActive = service.id === activeId;
 
-          return (
-            <div
-              key={service.id}
-              onClick={() => toggleService(service.id)}
-              className="rounded-2xl p-4 sm:p-6 shadow-sm transition-all duration-300 cursor-pointer relative flex flex-col justify-between self-start"
-              style={{ 
-                backgroundColor: 'var(--bg-primary)',
-                borderColor: 'var(--border-color)',
-                borderWidth: '1px',
-                borderStyle: 'solid'
-              }}
-              onMouseEnter={(e) => {
-                // Mag-iiba ang border color sa hover (mas prominent)
-                e.currentTarget.style.borderColor = 'var(--text-secondary)';
-              }}
-              onMouseLeave={(e) => {
-                // Babalik sa normal border color
-                e.currentTarget.style.borderColor = 'var(--border-color)';
-              }}
-            >
-              {/* Arrow sa kanang tuktok */}
-              <div 
-                className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-transform duration-300"
-                style={{ 
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
-                }}
+            return (
+              <button
+                key={service.id}
+                onClick={() => setActiveId(service.id)}
+                className="group flex items-center gap-3 sm:gap-4 text-left transition-all duration-300 focus:outline-none w-full"
               >
-                <svg
-                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-
-              {/* Nilalaman ng Card: Image at Title */}
-              <div className="flex flex-col items-start pr-8 sm:pr-10">
-                <div 
-                  className="w-12 h-12 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden border shrink-0 mb-3 sm:mb-4"
-                  style={{ borderColor: 'var(--border-color)' }}
+                {/* Circular Container with Image inside */}
+                <div
+                  className={`w-10 h-10 sm:w-14 sm:h-14 rounded-full overflow-hidden flex items-center justify-center transition-all duration-300 shadow-sm border shrink-0`}
+                  style={{
+                    backgroundColor: 'var(--bg-primary)',
+                    borderColor: isActive ? 'var(--text-primary)' : 'var(--border-color)',
+                    transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                    boxShadow: isActive ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'
+                  }}
                 >
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover grayscale brightness-95 hover:grayscale-0 transition-all duration-300 block"
+                    className={`w-full h-full object-cover transition-all duration-300 ${
+                      isActive ? 'grayscale-0 brightness-100 scale-105' : 'grayscale brightness-95 group-hover:grayscale-0'
+                    }`}
                   />
                 </div>
-                <h3 
-                  className="text-sm sm:text-lg font-normal mb-1 leading-snug"
+
+                {/* Service Title Label */}
+                <span 
+                  className={`text-xs sm:text-base transition-opacity duration-300 font-medium line-clamp-1 sm:line-clamp-none ${
+                    isActive ? 'opacity-100' : 'opacity-60 group-hover:opacity-90'
+                  }`}
                   style={{ color: 'var(--text-primary)' }}
                 >
                   {service.title}
-                </h3>
-              </div>
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
-              {/* Description Animation */}
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    key="content"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 20,
-                      mass: 1,
-                    }}
-                    className="overflow-hidden"
-                  >
-                    <p 
-                      className="text-xs sm:text-sm leading-relaxed pt-2"
-                      style={{ color: 'var(--text-secondary)' }}
-                    >
-                      {service.description}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+        {/* Right Side: Active Service Details (Text Only, Side-by-Side on Mobile too) */}
+        <div className="col-span-7 sm:col-span-7 w-full pl-2 sm:px-6 py-2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeService.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="flex flex-col items-start"
+            >
+              {/* Title */}
+              <h3 
+                className="text-[20px] sm:text-4xl font-normal tracking-tight mb-2 sm:mb-4 leading-snug"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                {activeService.title}
+              </h3>
+
+              {/* Description */}
+              <p 
+                className="text-[12px] sm:text-[15px] leading-relaxed"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                {activeService.description}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
       </div>
     </motion.section>
   );

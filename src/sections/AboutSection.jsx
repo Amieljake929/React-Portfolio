@@ -5,7 +5,7 @@ import BlurFade from '../components/BlurFade';
 
 export default function AboutSection() {
   const [images, setImages] = useState([
-    '/images/Jake.jpg',
+    '/images/hero-image.jpg',
     '/me/unnamed2.jpg',
     '/me/unnamed3.jpg',
     '/images/about-me.jpg',
@@ -48,7 +48,7 @@ export default function AboutSection() {
       company: 'Philippine Red Cross - QC Chapter',
       period: 'December 2025 - March 2026',
       description:
-        'Minimized workstation downtime for staff, improved internal software stability through QA testing, and enhanced the visual reach of chapter announcements. Troubleshot hardware/network connectivity issues, logged software bugs for the dev team, and designed promotional materials (pubmats).',
+        'Minimized workstation downtime for staff, improved internal software stability through QA testing, and enhanced the visual reach of chapter announcements. Troubleshot hardware/network connectivity issues, logged software bugs for the dev team, and designed promotional materials.',
     },
     {
       title: 'Full Stack Developer',

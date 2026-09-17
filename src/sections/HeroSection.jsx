@@ -8,8 +8,9 @@ export default function HeroSection() {
   const [visitorCount, setVisitorCount] = useState(0);
   const [liveViewers, setLiveViewers] = useState([]);
   
-  // State para sa pag-switch ng hero image
-  const [currentImage, setCurrentImage] = useState('/images/hero-image.jpg');
+  // Array of images for rotation
+  const images = ['/images/hero-image.jpg', '/images/hero-image2.png', '/images/hero-image3.png'];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // State para sa pag-switch ng title text (kada 2 segundo)
   const titles = ['Web Designer & Developer', 'Full Stack Developer'];
@@ -18,22 +19,20 @@ export default function HeroSection() {
   // Auto-switch image kada 5 segundo
   useEffect(() => {
     const imageInterval = setInterval(() => {
-      setCurrentImage((prev) => 
-        prev === '/images/hero-image.jpg' ? '/images/hero-image2.png' : '/images/hero-image.jpg'
-      );
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(imageInterval);
-  }, []);
+  }, [images.length]);
 
-  // Auto-switch title text kada 2 segundo na may scroll-up effect
+  // Auto-switch title text kada 5 segundo na may scroll-up effect
   useEffect(() => {
     const titleInterval = setInterval(() => {
       setTitleIndex((prev) => (prev + 1) % titles.length);
     }, 5000);
 
     return () => clearInterval(titleInterval);
-  }, []);
+  }, [titles.length]);
 
   // Secure Supabase Unique Visitor Tracking Logic using RPC Function
   useEffect(() => {
@@ -210,7 +209,7 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-15 pb-8 sm:pt-12 sm:pb-12 my-0 w-full flex flex-col items-start text-left justify-center relative"
+        className="pt-15 pb-15 sm:pt-12 sm:pb-25 my-0 w-full flex flex-col items-start text-left justify-center relative"
       >
         {/* Top Profile Header Row with Availability Badge */}
         <motion.div 
@@ -222,32 +221,22 @@ export default function HeroSection() {
             <div 
               className="w-35 h-35 sm:w-35 sm:h-35 rounded-full overflow-hidden flex-shrink-0 border cursor-pointer select-none relative" 
               style={{ borderColor: 'var(--border-color)' }}
-              onMouseEnter={() => setCurrentImage('/images/hero-image2.png')}
-              onMouseLeave={() => setCurrentImage('/images/hero-image.jpg')}
+              onMouseEnter={() => setCurrentImageIndex((prev) => (prev + 1) % images.length)}
               onClick={() => {
-                setCurrentImage((prev) => 
-                  prev === '/images/hero-image.jpg' ? '/images/hero-image2.png' : '/images/hero-image.jpg'
-                );
+                setCurrentImageIndex((prev) => (prev + 1) % images.length);
               }}
               title="Click or hover to toggle image"
             >
-              {/* Unang Larawan (hero-image.jpg) */}
-              <img
-                src="/images/hero-image.jpg"
-                alt="1000011"
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-in-out ${
-                  currentImage === '/images/hero-image.jpg' ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
-
-              {/* Pangalawang Larawan (hero-image2.png) */}
-              <img
-                src="/images/hero-image2.png"
-                alt="1000011"
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-in-out ${
-                  currentImage === '/images/hero-image2.png' ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
+              {images.map((imgSrc, index) => (
+                <img
+                  key={imgSrc}
+                  src={imgSrc}
+                  alt={`Profile photo ${index + 1}`}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-in-out ${
+                    currentImageIndex === index ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              ))}
             </div>
             
             {/* Name & Title with Scroll-Up Animation */}
@@ -318,7 +307,7 @@ export default function HeroSection() {
             const mobileBorderClasses = 
               index === 0 ? "border-r border-b pt-8 pb-7 pr-3" :
               index === 1 ? "border-b pt-8 pb-7 pl-3" :
-              index === 2 ? "border-r pt-8 pb-7 pr-3" : "pt-8 pb-7 pl-3";
+              index === 2 ? "border-r border-b pt-8 pb-7 pr-3" : "pt-8 pb-7 pl-3";
 
             return (
               <a
