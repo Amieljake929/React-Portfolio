@@ -6,6 +6,7 @@ import './App.css';
 import FloatingNavbar from './components/FloatingNavbar';
 import HeroSection from './sections/HeroSection';
 import AboutSnippet from './sections/AboutSnippet';
+import EducationSection from './sections/EducationSection'; // <-- 1. Import EducationSection
 import ServicesSection from './sections/ServicesSection';
 import TestimonialsSection from './sections/TestimonialsSection';
 import FAQSection from './sections/FAQSection';
@@ -68,6 +69,8 @@ function HomeOverview() {
       <HeroSection />
       <DottedDivider />
       <AboutSnippet />
+      <DottedDivider />
+      <EducationSection /> {/* <-- 2. Added EducationSection here */}
       <DottedDivider />
       <ProjectsSection />
       <DottedDivider />
