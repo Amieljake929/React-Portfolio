@@ -10,39 +10,39 @@ export default function AboutSnippet() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="w-full flex flex-col items-center text-center py-6 px-4 max-w-2xl mx-auto mt-10 mb-10"
+      className="w-full flex flex-col items-start text-left py-6 px-4 max-w-2xl mx-auto mt-10 mb-10"
     >
-      {/* Headings mimicking the reference layout style */}
-      <div className="flex flex-col items-center gap-2 mb-6">
+      {/* Headings aligned to the left */}
+      <div className="flex flex-col items-start gap-2 mb-6 w-full">
         <h2 
-          className="text-2xl sm:text-3xl font-normal tracking-tight"
+          className="text-3xl sm:text-3xl font-normal tracking-tight text-left"
           style={{ color: 'var(--text-primary)' }}
         >
-          Hi, I am Amiel Jake Baril
+          Professional Profile
         </h2>
         <p 
-          className="text-[10px] sm:text-[13px] font-normal"
+          className="text-[10px] sm:text-[13px] font-normal text-left"
           style={{ color: 'var(--text-secondary)' }}
         >
           A Fresh IT Graduate & Full-Stack Web Developer
         </p>
       </div>
 
-      {/* Paragraph content tailored to a fresh IT graduate and full-stack developer */}
+      {/* Paragraph content aligned to the left */}
       <div 
-        className="flex flex-col gap-4 text-sm sm:text-base leading-relaxed text-justify sm:text-center mb-8"
+        className="flex flex-col gap-4 text-[12px] sm:text-left leading-relaxed mb-8 w-full"
         style={{ color: 'var(--text-secondary)' }}
       >
-        <p>
+        <p className="text-justify">
           I am a passionate full-stack web developer and recent Bachelor of Science in Information Technology graduate. I specialize in building robust, user-centric web applications using modern technologies like React, Tailwind CSS, JavaScript, PHP, and Laravel.
         </p>
-        <p>
+        <p className="text-justify">
           From architecting capstone platforms like school and community management systems to designing seamless user interfaces, I focus on transforming complex technical requirements into clean, scalable, and high-performance digital solutions.
         </p>
       </div>
 
-      {/* Bottom Actions: CV Button (no container box, just text + icon) & More About Me */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+      {/* Bottom Actions aligned to the left/start */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-6 sm:gap-8 w-full">
         <a
           href="/resume/Amiel_Jake_Baril_CV.pdf" 
           download="Amiel_Jake_Baril_Resume.pdf"
