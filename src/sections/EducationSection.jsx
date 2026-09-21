@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
 
 export default function EducationSection() {
   return (
@@ -23,12 +22,12 @@ export default function EducationSection() {
           className="text-[10px] sm:text-[13px] font-normal text-left"
           style={{ color: 'var(--text-secondary)' }}
         >
-          Degrees and credentials in the specialized field of Information Technology.
+          Bachelor of Science in Information Technology (BSIT)
         </p>
       </div>
 
       {/* Education Item Container */}
-      <div className="w-full flex flex-col pb-6 border-b border-t border-[var(--border-color,rgba(0,0,0,0.1))]">
+      <div className="w-full flex flex-col pb-6 border-t border-[var(--border-color,rgba(0,0,0,0.1))]">
         <div className="flex flex-row items-start justify-between gap-4 w-full">
           
           {/* Left: School, Degree & Major Info */}
@@ -40,30 +39,40 @@ export default function EducationSection() {
               Bestlink College of the Philippines
             </h3>
             <p 
-              className="text-xs sm:text-sm text-left"
+              className="text-xs sm:text-sm text-left italic"
               style={{ color: 'var(--text-secondary)' }}
             >
-              Bachelor's degree • Information Technology (BSIT)
+              Bachelor of Science in Information Technology (BSIT)
             </p>
             <p 
-              className="text-xs sm:text-sm text-left"
+              className="text-xs sm:text-sm text-left italic"
               style={{ color: 'var(--text-secondary)' }}
             >
               Major in Information Management
             </p>
           </div>
 
-          {/* Right: Date (Container removed, aligned to right on all screens) */}
+          {/* Right: Date */}
           <div 
             className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium shrink-0"
             style={{ color: 'var(--text-secondary)' }}
           >
-        
-            <span className="whitespace-nowrap">2022 - 2026</span>
+            <span className="whitespace-nowrap italic">2022 - 2026</span>
           </div>
 
         </div>
+
+        {/* Bullet Points Section */}
+        <ul className="mt-4 pl-6 list-disc list-outside flex flex-col gap-2 text-xs sm:text-sm text-left" style={{ color: 'var(--text-secondary)' }}>
+          <li>
+            <strong style={{ color: 'var(--text-primary)' }}>Capstone Projects:</strong> Developed a School Management System and a Barangay Management System (Full-Stack Developer).
+          </li>
+          <li>
+            <strong style={{ color: 'var(--text-primary)' }}>Relevant Coursework:</strong> Web Systems and Technologies (Frontend/Backend), System Analysis and Design, Data Structure and Algorithms, Application Programming Interfaces (API).
+          </li>
+        </ul>
       </div>
+      
     </motion.section>
   );
 }
