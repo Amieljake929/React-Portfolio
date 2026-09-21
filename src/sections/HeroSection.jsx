@@ -209,7 +209,7 @@ export default function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="pt-8 pb-15 sm:pt-12 sm:pb-25 my-0 w-full flex flex-col items-start text-left justify-center relative"
+        className="pt-10 pb-15 sm:pt-12 sm:pb-25 my-0 w-full flex flex-col items-start text-left justify-center relative"
       >
         {/* Top Profile Header Row with Availability Badge */}
         <motion.div 
@@ -272,10 +272,10 @@ export default function HeroSection() {
         {/* Main Hero Headline & Description */}
         <motion.div variants={itemVariants} className="w-full max-w-3xl mb-8">
           <p
-            className="text-sm sm:text-base leading-relaxed text-justify sm:text-left mb-6"
+            className="text-[12px] sm:text-[13px] leading-relaxed text-justify sm:text-left mb-6"
             style={{ color: 'var(--text-secondary)' }}
           >
-            I am a fresh IT graduate with a solid foundation in full-stack web development. I build modern, responsive interfaces using React, Tailwind CSS, and JavaScript, and power backends with Laravel, PHP, and MySQL. Eager to bring my hands-on experience in building AI-integrated web applications to a dynamic software team.
+            I build modern, high-performance web applications using React, Tailwind CSS, Laravel, and MySQL. Passionate about turning complex logic into seamless, user-centric digital experiences.
           </p>
 
           {/* Text-only Social Links */}

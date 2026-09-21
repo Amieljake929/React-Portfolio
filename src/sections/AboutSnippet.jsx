@@ -34,11 +34,9 @@ export default function AboutSnippet() {
         style={{ color: 'var(--text-secondary)' }}
       >
         <p className="text-justify">
-          I am a passionate full-stack web developer and recent Bachelor of Science in Information Technology graduate. I specialize in building robust, user-centric web applications using modern technologies like React, Tailwind CSS, JavaScript, PHP, and Laravel.
+          As a recent Bachelor of Science in Information Technology graduate, I combine academic foundations with hands-on experience architecting full-stack platforms—including school and community management systems. I specialize in bridging intuitive user interfaces with robust backend architectures, and I am eager to bring my drive for clean, scalable code to a dynamic software team.
         </p>
-        <p className="text-justify">
-          From architecting capstone platforms like school and community management systems to designing seamless user interfaces, I focus on transforming complex technical requirements into clean, scalable, and high-performance digital solutions.
-        </p>
+       
       </div>
 
       {/* Bottom Actions aligned to the left/start */}
